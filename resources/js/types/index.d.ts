@@ -41,3 +41,13 @@ export interface User {
     updated_at: string;
     [key: string]: unknown; // This allows for additional properties...
 }
+
+export interface CursorPagination<T> {
+    data: T[];
+    path: string;
+    per_page: number;
+    next_cursor: string | null;
+    next_page_url: string | null;
+    prev_cursor: string | null;
+    prev_page_url: string | null;
+}
