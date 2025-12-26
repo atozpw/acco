@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
@@ -23,4 +25,29 @@ class Product extends Model
         'image',
         'is_active',
     ];
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(ProductCategory::class, 'product_category_id');
+    }
+
+    public function stocks(): HasMany
+    {
+        return $this->hasMany(Stock::class);
+    }
+
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(UnitMeasurement::class, 'unit_measurement_id');
+    }
+
+    public function salesTax(): BelongsTo
+    {
+        return $this->belongsTo(Tax::class, 'sales_tax_id');
+    }
+
+    public function purchaseTax(): BelongsTo
+    {
+        return $this->belongsTo(Tax::class, 'purchase_tax_id');
+    }
 }

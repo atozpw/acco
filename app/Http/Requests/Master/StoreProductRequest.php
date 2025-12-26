@@ -71,7 +71,7 @@ class StoreProductRequest extends FormRequest
 
             'minimum_stock' => [
                 'nullable',
-                'decimal:2',
+                'numeric',
             ],
 
             'description' => [

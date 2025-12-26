@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Master\CoaController;
 use App\Http\Controllers\Master\ContactController;
+use App\Http\Controllers\Master\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->prefix('data-store')->group(function () {
@@ -20,4 +21,11 @@ Route::middleware('auth')->prefix('data-store')->group(function () {
     Route::get('account-data/{id}/edit', [CoaController::class, 'edit'])->name('coa.edit');
     Route::put('account-data/{id}', [CoaController::class, 'update'])->name('coa.update');
     Route::delete('account-data/{id}', [CoaController::class, 'destroy'])->name('coa.destroy');
+
+    Route::get('product-data', [ProductController::class, 'index'])->name('product-data.index');
+    Route::get('product-data/create', [ProductController::class, 'create'])->name('product-data.create');
+    Route::post('product-data', [ProductController::class, 'store'])->name('product-data.store');
+    Route::get('product-data/{id}/edit', [ProductController::class, 'edit'])->name('product-data.edit');
+    Route::put('product-data/{id}', [ProductController::class, 'update'])->name('product-data.update');
+    Route::delete('product-data/{id}', [ProductController::class, 'destroy'])->name('product-data.destroy');
 });

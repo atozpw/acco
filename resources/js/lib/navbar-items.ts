@@ -1,6 +1,7 @@
 import { dashboard } from '@/routes';
 import coa from '@/routes/coa';
 import contactData from '@/routes/contact-data';
+import productData from '@/routes/product-data';
 import type { NavItem } from '@/types';
 import { BookOpen, Folder, HardDrive, LayoutGrid } from 'lucide-react';
 
@@ -22,6 +23,10 @@ export const mainNavItems: NavItem[] = [
             {
                 title: 'Daftar Akun',
                 href: coa.index(),
+            },
+            {
+                title: 'Data Produk',
+                href: productData.index(),
             },
         ],
     },
