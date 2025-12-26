@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->string('code', 10)->unique();
             $table->string('name', 50);
-            $table->string('classification', 20)->nullable();
+            $table->unsignedBigInteger('coa_classification_id');
             $table->boolean('is_debit')->default(1);
             $table->boolean('is_cash_bank')->default(0);
             $table->boolean('is_active')->default(1);
@@ -24,6 +24,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->foreign('parent_id')->references('id')->on('coas')->onUpdate('cascade');
+            $table->foreign('coa_classification_id')->references('id')->on('coa_classifications')->onUpdate('cascade');
         });
     }
 

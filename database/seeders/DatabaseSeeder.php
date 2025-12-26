@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             JournalCategorySeeder::class,
             ProductCategorySeeder::class,
             ReferenceNumberSeeder::class,
+            CoaClassificationSeeder::class,
         ]);
     }
 }
