@@ -33,7 +33,7 @@ class UpdateProductRequest extends FormRequest
                 'required',
                 'string',
                 'max:8',
-                Rule::unique('products', 'code')->ignore($this->product->id),
+                Rule::unique('products', 'code')->ignore($this->route('id')),
             ],
 
             'name' => [
@@ -72,7 +72,7 @@ class UpdateProductRequest extends FormRequest
 
             'minimum_stock' => [
                 'nullable',
-                'decimal:2',
+                'numeric',
             ],
 
             'description' => [

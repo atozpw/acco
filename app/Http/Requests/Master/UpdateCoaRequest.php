@@ -33,7 +33,7 @@ class UpdateCoaRequest extends FormRequest
                 'required',
                 'string',
                 'max:10',
-                Rule::unique('coas', 'code')->ignore($this->coa->id),
+                Rule::unique('coas', 'code')->ignore($this->route('id')),
             ],
 
             'name' => [

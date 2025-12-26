@@ -27,7 +27,7 @@ class UpdateUnitMeasurementRequest extends FormRequest
                 'required',
                 'string',
                 'max:6',
-                Rule::unique('unit_measurements', 'code')->ignore($this->unit_measurement->id),
+                Rule::unique('unit_measurements', 'code')->ignore($this->route('id')),
             ],
 
             'name' => [

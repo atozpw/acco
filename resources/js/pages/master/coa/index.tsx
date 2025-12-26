@@ -10,7 +10,6 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -44,7 +43,7 @@ import {
 } from '@/components/ui/table';
 import { useDebounceValue } from '@/hooks/use-debounce';
 import AppLayout from '@/layouts/app-layout';
-import contactData from '@/routes/contact-data';
+import coa from '@/routes/coa';
 import dataStore from '@/routes/data-store';
 import { BreadcrumbItem, CursorPagination } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -63,23 +62,25 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: dataStore.index().url,
     },
     {
-        title: 'Data Kontak',
+        title: 'Daftar Akun',
         href: '',
     },
 ];
 
-type ContactProps = {
+type CoaClassificationProps = {
+    id: number;
+    name: string;
+    type: string;
+};
+
+type CoaProps = {
     id: number;
     code: string;
     name: string;
-    address: string | null;
-    email: string | null;
-    phone: string | null;
-    avatar: string | null;
-    is_customer: boolean;
-    is_vendor: boolean;
-    is_employee: boolean;
+    is_debit: boolean;
+    is_cash_bank: boolean;
     is_active: boolean;
+    classification?: CoaClassificationProps | null;
 };
 
 const listPerPage: { item: string; value: string }[] = [
@@ -90,21 +91,23 @@ const listPerPage: { item: string; value: string }[] = [
     { item: '25', value: '25' },
 ];
 
-export default function KontakIndexScreen({
-    contacts,
+export default function CoaIndexScreen({
+    accounts,
     filters,
 }: {
-    contacts: CursorPagination<ContactProps>;
+    accounts: CursorPagination<CoaProps>;
     filters: { search: string; perPage: number };
 }) {
     const [search, setSearch] = useState(filters.search || '');
     const searchBounce = useDebounceValue(search, 300);
-    const [itemsPage, setItemsPage] = useState<string>(String(filters.perPage));
+    const [itemsPage, setItemsPage] = useState<string>(
+        String(filters.perPage ?? 15),
+    );
     const [detailOpen, setDetailOpen] = useState(false);
-    const [selectedContact, setSelectedContact] = useState<ContactProps | null>(
+    const [selectedAccount, setSelectedAccount] = useState<CoaProps | null>(
         null,
     );
-    const [deleteTarget, setDeleteTarget] = useState<ContactProps | null>(null);
+    const [deleteTarget, setDeleteTarget] = useState<CoaProps | null>(null);
 
     useEffect(() => {
         if (
@@ -112,7 +115,7 @@ export default function KontakIndexScreen({
             Number(itemsPage) !== filters.perPage
         ) {
             router.get(
-                contactData.index(),
+                coa.index(),
                 {
                     search: searchBounce,
                     perPage: Number(itemsPage),
@@ -127,12 +130,12 @@ export default function KontakIndexScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Data Kontak" />
+            <Head title="Daftar Akun" />
 
             <div className="px-5 py-6">
                 <Heading
-                    title="Data Kontak"
-                    description="Mengelola data kontak"
+                    title="Daftar Akun"
+                    description="Mengelola daftar akun (Chart of Accounts)"
                 />
 
                 <div className="space-y-6">
@@ -140,14 +143,14 @@ export default function KontakIndexScreen({
                         <div className="flex items-center gap-2">
                             <Input
                                 className="text-sm lg:w-[250px]"
-                                placeholder="Cari..."
+                                placeholder="Cari kode atau nama..."
                                 autoComplete="off"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
                         <Button asChild>
-                            <Link href={contactData.create().url}>
+                            <Link href={coa.create()}>
                                 <CirclePlusIcon /> Buat Baru
                             </Link>
                         </Button>
@@ -162,17 +165,17 @@ export default function KontakIndexScreen({
                                     <TableHead className="min-w-[250px]">
                                         Nama
                                     </TableHead>
-                                    <TableHead className="min-w-[175px]">
-                                        Tipe
+                                    <TableHead className="min-w-[200px]">
+                                        Subklasifikasi
                                     </TableHead>
                                     <TableHead className="min-w-[125px]">
                                         Status
                                     </TableHead>
-                                    <TableHead className="text-right"></TableHead>
+                                    <TableHead className="text-right" />
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {contacts.data.length === 0 ? (
+                                {accounts.data.length === 0 ? (
                                     <TableRow>
                                         <TableCell
                                             colSpan={5}
@@ -182,7 +185,7 @@ export default function KontakIndexScreen({
                                         </TableCell>
                                     </TableRow>
                                 ) : (
-                                    contacts.data.map((item) => (
+                                    accounts.data.map((item) => (
                                         <TableRow key={item.id}>
                                             <TableCell className="ps-4 align-baseline">
                                                 {item.code}
@@ -194,16 +197,8 @@ export default function KontakIndexScreen({
                                             </TableCell>
                                             <TableCell className="align-baseline">
                                                 <div className="whitespace-normal">
-                                                    {[
-                                                        item.is_customer &&
-                                                            'Pelanggan',
-                                                        item.is_vendor &&
-                                                            'Pemasok',
-                                                        item.is_employee &&
-                                                            'Karyawan',
-                                                    ]
-                                                        .filter(Boolean)
-                                                        .join(', ')}
+                                                    {item.classification
+                                                        ?.name ?? '-'}
                                                 </div>
                                             </TableCell>
                                             <TableCell className="align-baseline">
@@ -246,7 +241,7 @@ export default function KontakIndexScreen({
                                                                     event,
                                                                 ) => {
                                                                     event.preventDefault();
-                                                                    setSelectedContact(
+                                                                    setSelectedAccount(
                                                                         item,
                                                                     );
                                                                     setDetailOpen(
@@ -261,7 +256,7 @@ export default function KontakIndexScreen({
                                                                 asChild
                                                             >
                                                                 <Link
-                                                                    href={contactData.edit(
+                                                                    href={coa.edit(
                                                                         item.id,
                                                                     )}
                                                                 >
@@ -302,12 +297,10 @@ export default function KontakIndexScreen({
                     >
                         <AlertDialogContent>
                             <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                    Hapus kontak?
-                                </AlertDialogTitle>
+                                <AlertDialogTitle>Hapus akun?</AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    Tindakan ini akan menghapus data kontak
-                                    secara soft delete. Anda masih dapat
+                                    Tindakan ini akan menghapus data akun secara
+                                    soft delete. Anda masih dapat
                                     mengembalikannya dari data yang terhapus.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
@@ -322,8 +315,7 @@ export default function KontakIndexScreen({
                                         if (!deleteTarget) return;
 
                                         router.delete(
-                                            contactData.destroy(deleteTarget.id)
-                                                .url,
+                                            coa.destroy(deleteTarget.id).url,
                                             {
                                                 preserveScroll: true,
                                             },
@@ -341,104 +333,79 @@ export default function KontakIndexScreen({
                         onOpenChange={(open) => {
                             setDetailOpen(open);
                             if (!open) {
-                                setSelectedContact(null);
+                                setSelectedAccount(null);
                             }
                         }}
                     >
                         <DialogContent>
                             <DialogHeader>
-                                <DialogTitle>Detail Kontak</DialogTitle>
+                                <DialogTitle>Detail Akun</DialogTitle>
                                 <DialogDescription>
-                                    Data kontak lengkap
+                                    Informasi lengkap akun
                                 </DialogDescription>
                             </DialogHeader>
-                            {selectedContact && (
-                                <div className="space-y-4">
-                                    <div className="flex items-center gap-4">
-                                        <Avatar className="h-14 w-14">
-                                            <AvatarImage
-                                                src={
-                                                    selectedContact.avatar ??
-                                                    undefined
-                                                }
-                                                alt={
-                                                    selectedContact.name ??
-                                                    'Avatar kontak'
-                                                }
-                                            />
-                                            <AvatarFallback>
-                                                {selectedContact.name
-                                                    ?.charAt(0)
-                                                    .toUpperCase() ?? 'C'}
-                                            </AvatarFallback>
-                                        </Avatar>
-                                        <div>
-                                            <div className="text-sm font-medium">
-                                                {selectedContact.name}
-                                            </div>
+                            {selectedAccount && (
+                                <div className="space-y-4 text-sm">
+                                    <div className="grid gap-4 md:grid-cols-2">
+                                        <div className="grid gap-1">
                                             <div className="text-xs text-muted-foreground">
-                                                Kode: {selectedContact.code}
+                                                Kode
+                                            </div>
+                                            <div>{selectedAccount.code}</div>
+                                        </div>
+                                        <div className="grid gap-1">
+                                            <div className="text-xs text-muted-foreground">
+                                                Nama
+                                            </div>
+                                            <div>{selectedAccount.name}</div>
+                                        </div>
+                                    </div>
+                                    <div className="grid gap-1">
+                                        <div className="text-xs text-muted-foreground">
+                                            Subklasifikasi
+                                        </div>
+                                        <div>
+                                            {selectedAccount.classification
+                                                ?.name ?? '-'}
+                                        </div>
+                                    </div>
+                                    <div className="grid gap-4 md:grid-cols-2">
+                                        <div className="grid gap-1">
+                                            <div className="text-xs text-muted-foreground">
+                                                Posisi Saldo
+                                            </div>
+                                            <div>
+                                                {selectedAccount.is_debit
+                                                    ? 'Debit'
+                                                    : 'Kredit'}
+                                            </div>
+                                        </div>
+                                        <div className="grid gap-1">
+                                            <div className="text-xs text-muted-foreground">
+                                                Akun Kas / Bank
+                                            </div>
+                                            <div>
+                                                {selectedAccount.is_cash_bank
+                                                    ? 'Ya'
+                                                    : 'Tidak'}
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
-                                        <div>
-                                            <div className="text-xs text-muted-foreground">
-                                                Email
-                                            </div>
-                                            <div>
-                                                {selectedContact.email || '-'}
-                                            </div>
+                                    <div className="grid gap-1">
+                                        <div className="text-xs text-muted-foreground">
+                                            Status
                                         </div>
                                         <div>
-                                            <div className="text-xs text-muted-foreground">
-                                                Telepon
-                                            </div>
-                                            <div>
-                                                {selectedContact.phone || '-'}
-                                            </div>
-                                        </div>
-                                        <div className="sm:col-span-2">
-                                            <div className="text-xs text-muted-foreground">
-                                                Alamat
-                                            </div>
-                                            <div>
-                                                {selectedContact.address || '-'}
-                                            </div>
-                                        </div>
-                                        <div className="sm:col-span-2">
-                                            <div className="text-xs text-muted-foreground">
-                                                Tipe Kontak
-                                            </div>
-                                            <div>
-                                                {[
-                                                    selectedContact.is_customer &&
-                                                        'Pelanggan',
-                                                    selectedContact.is_vendor &&
-                                                        'Pemasok',
-                                                    selectedContact.is_employee &&
-                                                        'Karyawan',
-                                                ]
-                                                    .filter(Boolean)
-                                                    .join(', ') || '-'}
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="text-xs text-muted-foreground">
-                                                Status
-                                            </div>
-                                            <div>
-                                                {selectedContact.is_active
-                                                    ? 'Aktif'
-                                                    : 'Tidak Aktif'}
-                                            </div>
+                                            {selectedAccount.is_active
+                                                ? 'Aktif'
+                                                : 'Tidak Aktif'}
                                         </div>
                                     </div>
                                 </div>
                             )}
                         </DialogContent>
                     </Dialog>
+
                     <div className="flex items-center justify-end px-2">
                         <div className="flex items-center space-x-6 lg:space-x-8">
                             <div className="flex items-center space-x-2">
@@ -469,8 +436,8 @@ export default function KontakIndexScreen({
                                 </Select>
                             </div>
                             <SimplePaginate
-                                prevHref={contacts.prev_page_url}
-                                nextHref={contacts.next_page_url}
+                                prevHref={accounts.prev_page_url}
+                                nextHref={accounts.next_page_url}
                             />
                         </div>
                     </div>

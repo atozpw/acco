@@ -10,15 +10,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -44,8 +36,8 @@ import {
 } from '@/components/ui/table';
 import { useDebounceValue } from '@/hooks/use-debounce';
 import AppLayout from '@/layouts/app-layout';
-import contactData from '@/routes/contact-data';
 import dataStore from '@/routes/data-store';
+import productData from '@/routes/product-data';
 import { BreadcrumbItem, CursorPagination } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
@@ -56,6 +48,7 @@ import {
     Trash2,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import ProductDetailDialog from './partials/product-detail-dialog';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -63,23 +56,44 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: dataStore.index().url,
     },
     {
-        title: 'Data Kontak',
+        title: 'Data Produk',
         href: '',
     },
 ];
 
-type ContactProps = {
+type ProductCategoryProps = {
     id: number;
     code: string;
     name: string;
-    address: string | null;
-    email: string | null;
-    phone: string | null;
-    avatar: string | null;
-    is_customer: boolean;
-    is_vendor: boolean;
-    is_employee: boolean;
+};
+
+type UnitProps = {
+    id: number;
+    code: string;
+    name: string;
+};
+
+type TaxProps = {
+    id: number;
+    code: string;
+    name: string;
+};
+
+export type ProductProps = {
+    id: number;
+    code: string;
+    name: string;
+    sales_price: string;
+    purchase_price?: string;
+    minimum_stock?: string | null;
+    description?: string | null;
+    image?: string | null;
+    available_qty: string | number | null;
     is_active: boolean;
+    category?: ProductCategoryProps | null;
+    unit_measurement?: UnitProps | null;
+    sales_tax?: TaxProps | null;
+    purchase_tax?: TaxProps | null;
 };
 
 const listPerPage: { item: string; value: string }[] = [
@@ -90,21 +104,23 @@ const listPerPage: { item: string; value: string }[] = [
     { item: '25', value: '25' },
 ];
 
-export default function KontakIndexScreen({
-    contacts,
+export default function ProductIndexScreen({
+    products,
     filters,
 }: {
-    contacts: CursorPagination<ContactProps>;
+    products: CursorPagination<ProductProps>;
     filters: { search: string; perPage: number };
 }) {
     const [search, setSearch] = useState(filters.search || '');
     const searchBounce = useDebounceValue(search, 300);
-    const [itemsPage, setItemsPage] = useState<string>(String(filters.perPage));
+    const [itemsPage, setItemsPage] = useState<string>(
+        String(filters.perPage ?? 15),
+    );
     const [detailOpen, setDetailOpen] = useState(false);
-    const [selectedContact, setSelectedContact] = useState<ContactProps | null>(
+    const [selectedProduct, setSelectedProduct] = useState<ProductProps | null>(
         null,
     );
-    const [deleteTarget, setDeleteTarget] = useState<ContactProps | null>(null);
+    const [deleteTarget, setDeleteTarget] = useState<ProductProps | null>(null);
 
     useEffect(() => {
         if (
@@ -112,7 +128,7 @@ export default function KontakIndexScreen({
             Number(itemsPage) !== filters.perPage
         ) {
             router.get(
-                contactData.index(),
+                productData.index(),
                 {
                     search: searchBounce,
                     perPage: Number(itemsPage),
@@ -125,14 +141,24 @@ export default function KontakIndexScreen({
         }
     }, [searchBounce, filters.search, itemsPage, filters.perPage]);
 
+    const formatNumber = (value: string | number | null | undefined) => {
+        if (value === null || value === undefined) return '0';
+        const num = typeof value === 'number' ? value : Number(value);
+        if (Number.isNaN(num)) return String(value);
+        return new Intl.NumberFormat('id-ID', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        }).format(num);
+    };
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Data Kontak" />
+            <Head title="Data Produk" />
 
             <div className="px-5 py-6">
                 <Heading
-                    title="Data Kontak"
-                    description="Mengelola data kontak"
+                    title="Data Produk"
+                    description="Mengelola data produk"
                 />
 
                 <div className="space-y-6">
@@ -140,14 +166,14 @@ export default function KontakIndexScreen({
                         <div className="flex items-center gap-2">
                             <Input
                                 className="text-sm lg:w-[250px]"
-                                placeholder="Cari..."
+                                placeholder="Cari kode atau nama..."
                                 autoComplete="off"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
                         <Button asChild>
-                            <Link href={contactData.create().url}>
+                            <Link href={productData.create().url}>
                                 <CirclePlusIcon /> Buat Baru
                             </Link>
                         </Button>
@@ -156,33 +182,39 @@ export default function KontakIndexScreen({
                         <Table>
                             <TableHeader>
                                 <TableRow className="bg-muted/50">
-                                    <TableHead className="min-w-[125px] ps-4">
+                                    <TableHead className="min-w-[100px] ps-4">
                                         Kode
                                     </TableHead>
-                                    <TableHead className="min-w-[250px]">
+                                    <TableHead className="min-w-[200px]">
                                         Nama
                                     </TableHead>
-                                    <TableHead className="min-w-[175px]">
-                                        Tipe
+                                    <TableHead className="min-w-[100px]">
+                                        Kategori
                                     </TableHead>
-                                    <TableHead className="min-w-[125px]">
+                                    <TableHead className="min-w-[175px] text-right">
+                                        Harga Jual
+                                    </TableHead>
+                                    <TableHead className="min-w-[125px] text-right">
+                                        Available Qty
+                                    </TableHead>
+                                    <TableHead className="min-w-[100px]">
                                         Status
                                     </TableHead>
-                                    <TableHead className="text-right"></TableHead>
+                                    <TableHead className="text-right" />
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {contacts.data.length === 0 ? (
+                                {products.data.length === 0 ? (
                                     <TableRow>
                                         <TableCell
-                                            colSpan={5}
+                                            colSpan={7}
                                             className="text-center text-muted-foreground"
                                         >
                                             Tidak ada data ditemukan.
                                         </TableCell>
                                     </TableRow>
                                 ) : (
-                                    contacts.data.map((item) => (
+                                    products.data.map((item) => (
                                         <TableRow key={item.id}>
                                             <TableCell className="ps-4 align-baseline">
                                                 {item.code}
@@ -194,17 +226,14 @@ export default function KontakIndexScreen({
                                             </TableCell>
                                             <TableCell className="align-baseline">
                                                 <div className="whitespace-normal">
-                                                    {[
-                                                        item.is_customer &&
-                                                            'Pelanggan',
-                                                        item.is_vendor &&
-                                                            'Pemasok',
-                                                        item.is_employee &&
-                                                            'Karyawan',
-                                                    ]
-                                                        .filter(Boolean)
-                                                        .join(', ')}
+                                                    {item.category?.name ?? '-'}
                                                 </div>
+                                            </TableCell>
+                                            <TableCell className="text-right align-baseline">
+                                                {formatNumber(item.sales_price)}
+                                            </TableCell>
+                                            <TableCell className="text-right align-baseline">
+                                                {item.available_qty ?? '0'}
                                             </TableCell>
                                             <TableCell className="align-baseline">
                                                 <div className="flex items-center gap-2">
@@ -246,7 +275,7 @@ export default function KontakIndexScreen({
                                                                     event,
                                                                 ) => {
                                                                     event.preventDefault();
-                                                                    setSelectedContact(
+                                                                    setSelectedProduct(
                                                                         item,
                                                                     );
                                                                     setDetailOpen(
@@ -261,7 +290,7 @@ export default function KontakIndexScreen({
                                                                 asChild
                                                             >
                                                                 <Link
-                                                                    href={contactData.edit(
+                                                                    href={productData.edit(
                                                                         item.id,
                                                                     )}
                                                                 >
@@ -292,6 +321,7 @@ export default function KontakIndexScreen({
                             </TableBody>
                         </Table>
                     </div>
+
                     <AlertDialog
                         open={!!deleteTarget}
                         onOpenChange={(open) => {
@@ -303,10 +333,10 @@ export default function KontakIndexScreen({
                         <AlertDialogContent>
                             <AlertDialogHeader>
                                 <AlertDialogTitle>
-                                    Hapus kontak?
+                                    Hapus produk?
                                 </AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    Tindakan ini akan menghapus data kontak
+                                    Tindakan ini akan menghapus data produk
                                     secara soft delete. Anda masih dapat
                                     mengembalikannya dari data yang terhapus.
                                 </AlertDialogDescription>
@@ -322,7 +352,7 @@ export default function KontakIndexScreen({
                                         if (!deleteTarget) return;
 
                                         router.delete(
-                                            contactData.destroy(deleteTarget.id)
+                                            productData.destroy(deleteTarget.id)
                                                 .url,
                                             {
                                                 preserveScroll: true,
@@ -336,109 +366,18 @@ export default function KontakIndexScreen({
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>
-                    <Dialog
+                    <ProductDetailDialog
                         open={detailOpen}
                         onOpenChange={(open) => {
                             setDetailOpen(open);
                             if (!open) {
-                                setSelectedContact(null);
+                                setSelectedProduct(null);
                             }
                         }}
-                    >
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Detail Kontak</DialogTitle>
-                                <DialogDescription>
-                                    Data kontak lengkap
-                                </DialogDescription>
-                            </DialogHeader>
-                            {selectedContact && (
-                                <div className="space-y-4">
-                                    <div className="flex items-center gap-4">
-                                        <Avatar className="h-14 w-14">
-                                            <AvatarImage
-                                                src={
-                                                    selectedContact.avatar ??
-                                                    undefined
-                                                }
-                                                alt={
-                                                    selectedContact.name ??
-                                                    'Avatar kontak'
-                                                }
-                                            />
-                                            <AvatarFallback>
-                                                {selectedContact.name
-                                                    ?.charAt(0)
-                                                    .toUpperCase() ?? 'C'}
-                                            </AvatarFallback>
-                                        </Avatar>
-                                        <div>
-                                            <div className="text-sm font-medium">
-                                                {selectedContact.name}
-                                            </div>
-                                            <div className="text-xs text-muted-foreground">
-                                                Kode: {selectedContact.code}
-                                            </div>
-                                        </div>
-                                    </div>
+                        product={selectedProduct}
+                        formatNumber={formatNumber}
+                    />
 
-                                    <div className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
-                                        <div>
-                                            <div className="text-xs text-muted-foreground">
-                                                Email
-                                            </div>
-                                            <div>
-                                                {selectedContact.email || '-'}
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="text-xs text-muted-foreground">
-                                                Telepon
-                                            </div>
-                                            <div>
-                                                {selectedContact.phone || '-'}
-                                            </div>
-                                        </div>
-                                        <div className="sm:col-span-2">
-                                            <div className="text-xs text-muted-foreground">
-                                                Alamat
-                                            </div>
-                                            <div>
-                                                {selectedContact.address || '-'}
-                                            </div>
-                                        </div>
-                                        <div className="sm:col-span-2">
-                                            <div className="text-xs text-muted-foreground">
-                                                Tipe Kontak
-                                            </div>
-                                            <div>
-                                                {[
-                                                    selectedContact.is_customer &&
-                                                        'Pelanggan',
-                                                    selectedContact.is_vendor &&
-                                                        'Pemasok',
-                                                    selectedContact.is_employee &&
-                                                        'Karyawan',
-                                                ]
-                                                    .filter(Boolean)
-                                                    .join(', ') || '-'}
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="text-xs text-muted-foreground">
-                                                Status
-                                            </div>
-                                            <div>
-                                                {selectedContact.is_active
-                                                    ? 'Aktif'
-                                                    : 'Tidak Aktif'}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </DialogContent>
-                    </Dialog>
                     <div className="flex items-center justify-end px-2">
                         <div className="flex items-center space-x-6 lg:space-x-8">
                             <div className="flex items-center space-x-2">
@@ -469,8 +408,8 @@ export default function KontakIndexScreen({
                                 </Select>
                             </div>
                             <SimplePaginate
-                                prevHref={contacts.prev_page_url}
-                                nextHref={contacts.next_page_url}
+                                prevHref={products.prev_page_url}
+                                nextHref={products.next_page_url}
                             />
                         </div>
                     </div>

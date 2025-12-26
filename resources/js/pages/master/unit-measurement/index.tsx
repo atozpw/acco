@@ -10,7 +10,6 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -44,8 +43,8 @@ import {
 } from '@/components/ui/table';
 import { useDebounceValue } from '@/hooks/use-debounce';
 import AppLayout from '@/layouts/app-layout';
-import contactData from '@/routes/contact-data';
 import dataStore from '@/routes/data-store';
+import unitMeasurement from '@/routes/unit-measurement';
 import { BreadcrumbItem, CursorPagination } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
@@ -63,22 +62,15 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: dataStore.index().url,
     },
     {
-        title: 'Data Kontak',
+        title: 'Satuan Pengukuran',
         href: '',
     },
 ];
 
-type ContactProps = {
+type UnitMeasurementProps = {
     id: number;
     code: string;
     name: string;
-    address: string | null;
-    email: string | null;
-    phone: string | null;
-    avatar: string | null;
-    is_customer: boolean;
-    is_vendor: boolean;
-    is_employee: boolean;
     is_active: boolean;
 };
 
@@ -90,21 +82,23 @@ const listPerPage: { item: string; value: string }[] = [
     { item: '25', value: '25' },
 ];
 
-export default function KontakIndexScreen({
-    contacts,
+export default function UnitMeasurementIndexScreen({
+    units,
     filters,
 }: {
-    contacts: CursorPagination<ContactProps>;
+    units: CursorPagination<UnitMeasurementProps>;
     filters: { search: string; perPage: number };
 }) {
     const [search, setSearch] = useState(filters.search || '');
     const searchBounce = useDebounceValue(search, 300);
-    const [itemsPage, setItemsPage] = useState<string>(String(filters.perPage));
-    const [detailOpen, setDetailOpen] = useState(false);
-    const [selectedContact, setSelectedContact] = useState<ContactProps | null>(
-        null,
+    const [itemsPage, setItemsPage] = useState<string>(
+        String(filters.perPage ?? 15),
     );
-    const [deleteTarget, setDeleteTarget] = useState<ContactProps | null>(null);
+    const [detailOpen, setDetailOpen] = useState(false);
+    const [selectedUnit, setSelectedUnit] =
+        useState<UnitMeasurementProps | null>(null);
+    const [deleteTarget, setDeleteTarget] =
+        useState<UnitMeasurementProps | null>(null);
 
     useEffect(() => {
         if (
@@ -112,7 +106,7 @@ export default function KontakIndexScreen({
             Number(itemsPage) !== filters.perPage
         ) {
             router.get(
-                contactData.index(),
+                unitMeasurement.index(),
                 {
                     search: searchBounce,
                     perPage: Number(itemsPage),
@@ -127,12 +121,12 @@ export default function KontakIndexScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Data Kontak" />
+            <Head title="Satuan Pengukuran" />
 
             <div className="px-5 py-6">
                 <Heading
-                    title="Data Kontak"
-                    description="Mengelola data kontak"
+                    title="Satuan Pengukuran"
+                    description="Mengelola satuan pengukuran"
                 />
 
                 <div className="space-y-6">
@@ -140,14 +134,14 @@ export default function KontakIndexScreen({
                         <div className="flex items-center gap-2">
                             <Input
                                 className="text-sm lg:w-[250px]"
-                                placeholder="Cari..."
+                                placeholder="Cari kode atau nama..."
                                 autoComplete="off"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
                         <Button asChild>
-                            <Link href={contactData.create().url}>
+                            <Link href={unitMeasurement.create().url}>
                                 <CirclePlusIcon /> Buat Baru
                             </Link>
                         </Button>
@@ -156,33 +150,30 @@ export default function KontakIndexScreen({
                         <Table>
                             <TableHeader>
                                 <TableRow className="bg-muted/50">
-                                    <TableHead className="min-w-[125px] ps-4">
+                                    <TableHead className="min-w-[100px] ps-4">
                                         Kode
                                     </TableHead>
-                                    <TableHead className="min-w-[250px]">
+                                    <TableHead className="min-w-[200px]">
                                         Nama
                                     </TableHead>
-                                    <TableHead className="min-w-[175px]">
-                                        Tipe
-                                    </TableHead>
-                                    <TableHead className="min-w-[125px]">
+                                    <TableHead className="min-w-[100px]">
                                         Status
                                     </TableHead>
-                                    <TableHead className="text-right"></TableHead>
+                                    <TableHead className="text-right" />
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {contacts.data.length === 0 ? (
+                                {units.data.length === 0 ? (
                                     <TableRow>
                                         <TableCell
-                                            colSpan={5}
+                                            colSpan={4}
                                             className="text-center text-muted-foreground"
                                         >
                                             Tidak ada data ditemukan.
                                         </TableCell>
                                     </TableRow>
                                 ) : (
-                                    contacts.data.map((item) => (
+                                    units.data.map((item) => (
                                         <TableRow key={item.id}>
                                             <TableCell className="ps-4 align-baseline">
                                                 {item.code}
@@ -190,20 +181,6 @@ export default function KontakIndexScreen({
                                             <TableCell className="align-baseline">
                                                 <div className="whitespace-normal">
                                                     {item.name}
-                                                </div>
-                                            </TableCell>
-                                            <TableCell className="align-baseline">
-                                                <div className="whitespace-normal">
-                                                    {[
-                                                        item.is_customer &&
-                                                            'Pelanggan',
-                                                        item.is_vendor &&
-                                                            'Pemasok',
-                                                        item.is_employee &&
-                                                            'Karyawan',
-                                                    ]
-                                                        .filter(Boolean)
-                                                        .join(', ')}
                                                 </div>
                                             </TableCell>
                                             <TableCell className="align-baseline">
@@ -246,7 +223,7 @@ export default function KontakIndexScreen({
                                                                     event,
                                                                 ) => {
                                                                     event.preventDefault();
-                                                                    setSelectedContact(
+                                                                    setSelectedUnit(
                                                                         item,
                                                                     );
                                                                     setDetailOpen(
@@ -261,7 +238,7 @@ export default function KontakIndexScreen({
                                                                 asChild
                                                             >
                                                                 <Link
-                                                                    href={contactData.edit(
+                                                                    href={unitMeasurement.edit(
                                                                         item.id,
                                                                     )}
                                                                 >
@@ -292,153 +269,7 @@ export default function KontakIndexScreen({
                             </TableBody>
                         </Table>
                     </div>
-                    <AlertDialog
-                        open={!!deleteTarget}
-                        onOpenChange={(open) => {
-                            if (!open) {
-                                setDeleteTarget(null);
-                            }
-                        }}
-                    >
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                    Hapus kontak?
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    Tindakan ini akan menghapus data kontak
-                                    secara soft delete. Anda masih dapat
-                                    mengembalikannya dari data yang terhapus.
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel
-                                    onClick={() => setDeleteTarget(null)}
-                                >
-                                    Batal
-                                </AlertDialogCancel>
-                                <AlertDialogAction
-                                    onClick={() => {
-                                        if (!deleteTarget) return;
 
-                                        router.delete(
-                                            contactData.destroy(deleteTarget.id)
-                                                .url,
-                                            {
-                                                preserveScroll: true,
-                                            },
-                                        );
-                                        setDeleteTarget(null);
-                                    }}
-                                >
-                                    Ya, hapus
-                                </AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-                    <Dialog
-                        open={detailOpen}
-                        onOpenChange={(open) => {
-                            setDetailOpen(open);
-                            if (!open) {
-                                setSelectedContact(null);
-                            }
-                        }}
-                    >
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Detail Kontak</DialogTitle>
-                                <DialogDescription>
-                                    Data kontak lengkap
-                                </DialogDescription>
-                            </DialogHeader>
-                            {selectedContact && (
-                                <div className="space-y-4">
-                                    <div className="flex items-center gap-4">
-                                        <Avatar className="h-14 w-14">
-                                            <AvatarImage
-                                                src={
-                                                    selectedContact.avatar ??
-                                                    undefined
-                                                }
-                                                alt={
-                                                    selectedContact.name ??
-                                                    'Avatar kontak'
-                                                }
-                                            />
-                                            <AvatarFallback>
-                                                {selectedContact.name
-                                                    ?.charAt(0)
-                                                    .toUpperCase() ?? 'C'}
-                                            </AvatarFallback>
-                                        </Avatar>
-                                        <div>
-                                            <div className="text-sm font-medium">
-                                                {selectedContact.name}
-                                            </div>
-                                            <div className="text-xs text-muted-foreground">
-                                                Kode: {selectedContact.code}
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
-                                        <div>
-                                            <div className="text-xs text-muted-foreground">
-                                                Email
-                                            </div>
-                                            <div>
-                                                {selectedContact.email || '-'}
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="text-xs text-muted-foreground">
-                                                Telepon
-                                            </div>
-                                            <div>
-                                                {selectedContact.phone || '-'}
-                                            </div>
-                                        </div>
-                                        <div className="sm:col-span-2">
-                                            <div className="text-xs text-muted-foreground">
-                                                Alamat
-                                            </div>
-                                            <div>
-                                                {selectedContact.address || '-'}
-                                            </div>
-                                        </div>
-                                        <div className="sm:col-span-2">
-                                            <div className="text-xs text-muted-foreground">
-                                                Tipe Kontak
-                                            </div>
-                                            <div>
-                                                {[
-                                                    selectedContact.is_customer &&
-                                                        'Pelanggan',
-                                                    selectedContact.is_vendor &&
-                                                        'Pemasok',
-                                                    selectedContact.is_employee &&
-                                                        'Karyawan',
-                                                ]
-                                                    .filter(Boolean)
-                                                    .join(', ') || '-'}
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div className="text-xs text-muted-foreground">
-                                                Status
-                                            </div>
-                                            <div>
-                                                {selectedContact.is_active
-                                                    ? 'Aktif'
-                                                    : 'Tidak Aktif'}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </DialogContent>
-                    </Dialog>
                     <div className="flex items-center justify-end px-2">
                         <div className="flex items-center space-x-6 lg:space-x-8">
                             <div className="flex items-center space-x-2">
@@ -469,12 +300,96 @@ export default function KontakIndexScreen({
                                 </Select>
                             </div>
                             <SimplePaginate
-                                prevHref={contacts.prev_page_url}
-                                nextHref={contacts.next_page_url}
+                                prevHref={units.prev_page_url}
+                                nextHref={units.next_page_url}
                             />
                         </div>
                     </div>
                 </div>
+
+                <Dialog open={detailOpen} onOpenChange={setDetailOpen}>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle>Detail Satuan Pengukuran</DialogTitle>
+                            <DialogDescription>
+                                Informasi satuan pengukuran yang dipilih.
+                            </DialogDescription>
+                        </DialogHeader>
+                        {selectedUnit && (
+                            <div className="space-y-4 text-sm">
+                                <div className="flex justify-between">
+                                    <span className="text-muted-foreground">
+                                        Kode
+                                    </span>
+                                    <span className="font-medium">
+                                        {selectedUnit.code}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-muted-foreground">
+                                        Nama
+                                    </span>
+                                    <span className="font-medium">
+                                        {selectedUnit.name}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-muted-foreground">
+                                        Status
+                                    </span>
+                                    <span className="font-medium">
+                                        {selectedUnit.is_active
+                                            ? 'Aktif'
+                                            : 'Nonaktif'}
+                                    </span>
+                                </div>
+                            </div>
+                        )}
+                    </DialogContent>
+                </Dialog>
+
+                <AlertDialog
+                    open={Boolean(deleteTarget)}
+                    onOpenChange={(open) => {
+                        if (!open) {
+                            setDeleteTarget(null);
+                        }
+                    }}
+                >
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>
+                                Hapus satuan pengukuran?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                                Tindakan ini akan menghapus satuan pengukuran
+                                dari daftar. Anda yakin ingin melanjutkan?
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Batal</AlertDialogCancel>
+                            <AlertDialogAction
+                                onClick={() => {
+                                    if (!deleteTarget) return;
+
+                                    router.delete(
+                                        unitMeasurement.destroy(
+                                            deleteTarget.id,
+                                        ),
+                                        {
+                                            preserveScroll: true,
+                                            onSuccess: () => {
+                                                setDeleteTarget(null);
+                                            },
+                                        },
+                                    );
+                                }}
+                            >
+                                Hapus
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
             </div>
         </AppLayout>
     );
