@@ -27,7 +27,7 @@ class UpdateProductCategoryRequest extends FormRequest
                 'required',
                 'string',
                 'max:6',
-                Rule::unique('product_categories', 'code')->ignore($this->product_category->id),
+                Rule::unique('product_categories', 'code')->ignore($this->route('id')),
             ],
 
             'name' => [

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Master\CoaController;
 use App\Http\Controllers\Master\ContactController;
+use App\Http\Controllers\Master\ProductCategoryController;
 use App\Http\Controllers\Master\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,4 +29,11 @@ Route::middleware('auth')->prefix('data-store')->group(function () {
     Route::get('product-data/{id}/edit', [ProductController::class, 'edit'])->name('product-data.edit');
     Route::put('product-data/{id}', [ProductController::class, 'update'])->name('product-data.update');
     Route::delete('product-data/{id}', [ProductController::class, 'destroy'])->name('product-data.destroy');
+
+    Route::get('product-category', [ProductCategoryController::class, 'index'])->name('product-category.index');
+    Route::get('product-category/create', [ProductCategoryController::class, 'create'])->name('product-category.create');
+    Route::post('product-category', [ProductCategoryController::class, 'store'])->name('product-category.store');
+    Route::get('product-category/{id}/edit', [ProductCategoryController::class, 'edit'])->name('product-category.edit');
+    Route::put('product-category/{id}', [ProductCategoryController::class, 'update'])->name('product-category.update');
+    Route::delete('product-category/{id}', [ProductCategoryController::class, 'destroy'])->name('product-category.destroy');
 });

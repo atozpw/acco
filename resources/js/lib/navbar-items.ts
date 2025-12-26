@@ -1,6 +1,7 @@
 import { dashboard } from '@/routes';
 import coa from '@/routes/coa';
 import contactData from '@/routes/contact-data';
+import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
 import type { NavItem } from '@/types';
 import { BookOpen, Folder, HardDrive, LayoutGrid } from 'lucide-react';
@@ -27,6 +28,10 @@ export const mainNavItems: NavItem[] = [
             {
                 title: 'Data Produk',
                 href: productData.index(),
+            },
+            {
+                title: 'Kategori Produk',
+                href: productCategory.index(),
             },
         ],
     },
