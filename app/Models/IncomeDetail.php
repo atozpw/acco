@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class IncomeDetail extends Model
@@ -10,7 +11,7 @@ class IncomeDetail extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'expense_id',
+        'income_id',
         'coa_id',
         'amount',
         'note',
@@ -18,4 +19,29 @@ class IncomeDetail extends Model
         'project_id',
         'created_by',
     ];
+
+    public function income(): BelongsTo
+    {
+        return $this->belongsTo(Income::class);
+    }
+
+    public function coa(): BelongsTo
+    {
+        return $this->belongsTo(Coa::class);
+    }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
+
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

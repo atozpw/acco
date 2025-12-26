@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
@@ -30,5 +31,25 @@ class Product extends Model
     protected function active(Builder $query): void
     {
         $query->where('is_active', 1);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(ProductCategory::class);
+    }
+
+    public function unitMeasurement(): BelongsTo
+    {
+        return $this->belongsTo(UnitMeasurement::class);
+    }
+
+    public function salesTax(): BelongsTo
+    {
+        return $this->belongsTo(Tax::class, 'sales_tax_id');
+    }
+
+    public function purchaseTax(): BelongsTo
+    {
+        return $this->belongsTo(Tax::class, 'purchase_tax_id');
     }
 }
