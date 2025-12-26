@@ -4,6 +4,7 @@ use App\Http\Controllers\Master\CoaController;
 use App\Http\Controllers\Master\ContactController;
 use App\Http\Controllers\Master\ProductCategoryController;
 use App\Http\Controllers\Master\ProductController;
+use App\Http\Controllers\Master\UnitMeasurementController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->prefix('data-store')->group(function () {
@@ -36,4 +37,11 @@ Route::middleware('auth')->prefix('data-store')->group(function () {
     Route::get('product-category/{id}/edit', [ProductCategoryController::class, 'edit'])->name('product-category.edit');
     Route::put('product-category/{id}', [ProductCategoryController::class, 'update'])->name('product-category.update');
     Route::delete('product-category/{id}', [ProductCategoryController::class, 'destroy'])->name('product-category.destroy');
+
+    Route::get('measurement-unit-data', [UnitMeasurementController::class, 'index'])->name('unit-measurement.index');
+    Route::get('measurement-unit-data/create', [UnitMeasurementController::class, 'create'])->name('unit-measurement.create');
+    Route::post('measurement-unit-data', [UnitMeasurementController::class, 'store'])->name('unit-measurement.store');
+    Route::get('measurement-unit-data/{id}/edit', [UnitMeasurementController::class, 'edit'])->name('unit-measurement.edit');
+    Route::put('measurement-unit-data/{id}', [UnitMeasurementController::class, 'update'])->name('unit-measurement.update');
+    Route::delete('measurement-unit-data/{id}', [UnitMeasurementController::class, 'destroy'])->name('unit-measurement.destroy');
 });
