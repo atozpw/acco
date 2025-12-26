@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
@@ -26,19 +27,20 @@ class Product extends Model
         'is_active',
     ];
 
+    #[Scope]
+    protected function active(Builder $query): void
+    {
+        $query->where('is_active', 1);
+    }
+
     public function category(): BelongsTo
     {
-        return $this->belongsTo(ProductCategory::class, 'product_category_id');
+        return $this->belongsTo(ProductCategory::class);
     }
 
-    public function stocks(): HasMany
+    public function unitMeasurement(): BelongsTo
     {
-        return $this->hasMany(Stock::class);
-    }
-
-    public function unit(): BelongsTo
-    {
-        return $this->belongsTo(UnitMeasurement::class, 'unit_measurement_id');
+        return $this->belongsTo(UnitMeasurement::class);
     }
 
     public function salesTax(): BelongsTo

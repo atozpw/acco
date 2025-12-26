@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PurchaseInvoiceReceipt extends Model
@@ -15,4 +16,19 @@ class PurchaseInvoiceReceipt extends Model
         'note',
         'created_by',
     ];
+
+    public function purchaseInvoice(): BelongsTo
+    {
+        return $this->belongsTo(PurchaseInvoice::class);
+    }
+
+    public function purchaseReceipt(): BelongsTo
+    {
+        return $this->belongsTo(PurchaseReceipt::class);
+    }
+
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

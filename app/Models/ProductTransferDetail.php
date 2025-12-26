@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductTransferDetail extends Model
@@ -16,4 +17,19 @@ class ProductTransferDetail extends Model
         'note',
         'created_by',
     ];
+
+    public function productTransfer(): BelongsTo
+    {
+        return $this->belongsTo(ProductTransfer::class);
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

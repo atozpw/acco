@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PurchaseInvoice extends Model
@@ -25,4 +27,29 @@ class PurchaseInvoice extends Model
         'is_receipt',
         'created_by',
     ];
+
+    public function contact(): BelongsTo
+    {
+        return $this->belongsTo(Contact::class);
+    }
+
+    public function coa(): BelongsTo
+    {
+        return $this->belongsTo(Coa::class);
+    }
+
+    public function warehouse(): BelongsTo
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
+
+    public function details(): HasMany
+    {
+        return $this->hasMany(PurchaseInvoiceDetail::class);
+    }
+
+    public function receipts(): HasMany
+    {
+        return $this->hasMany(PurchaseInvoiceReceipt::class);
+    }
 }
