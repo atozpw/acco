@@ -21,7 +21,7 @@ return new class extends Migration
             $table->decimal('purchase_price', 16, 2)->default(0);
             $table->unsignedBigInteger('sales_tax_id')->nullable();
             $table->unsignedBigInteger('purchase_tax_id')->nullable();
-            $table->unsignedInteger('minimum_stock')->nullable();
+            $table->decimal('minimum_stock', 10, 2)->nullable();
             $table->string('description', 100)->nullable();
             $table->string('image', 100)->nullable();
             $table->boolean('is_active')->default(1);
