@@ -165,6 +165,9 @@ export default function KontakIndexScreen({
                                     <TableHead className="min-w-[175px]">
                                         Tipe
                                     </TableHead>
+                                    <TableHead className="min-w-[125px]">
+                                        Status
+                                    </TableHead>
                                     <TableHead className="text-right"></TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -172,7 +175,7 @@ export default function KontakIndexScreen({
                                 {contacts.data.length === 0 ? (
                                     <TableRow>
                                         <TableCell
-                                            colSpan={4}
+                                            colSpan={5}
                                             className="text-center text-muted-foreground"
                                         >
                                             Tidak ada data ditemukan.
@@ -201,6 +204,23 @@ export default function KontakIndexScreen({
                                                     ]
                                                         .filter(Boolean)
                                                         .join(', ')}
+                                                </div>
+                                            </TableCell>
+                                            <TableCell className="align-baseline">
+                                                <div className="flex items-center gap-2">
+                                                    {item.is_active ? (
+                                                        <>
+                                                            <span className="block h-2 w-2 rounded-full bg-green-500" />
+                                                            <span>Aktif</span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <span className="block h-2 w-2 rounded-full bg-red-500" />
+                                                            <span>
+                                                                Nonaktif
+                                                            </span>
+                                                        </>
+                                                    )}
                                                 </div>
                                             </TableCell>
                                             <TableCell className="text-right align-baseline">
