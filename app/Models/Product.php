@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
@@ -33,14 +34,19 @@ class Product extends Model
         $query->where('is_active', 1);
     }
 
+    public function stocks(): HasMany
+    {
+        return $this->hasMany(Stock::class);
+    }
+
     public function category(): BelongsTo
     {
-        return $this->belongsTo(ProductCategory::class);
+        return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }
 
     public function unitMeasurement(): BelongsTo
     {
-        return $this->belongsTo(UnitMeasurement::class);
+        return $this->belongsTo(UnitMeasurement::class, 'unit_measurement_id');
     }
 
     public function salesTax(): BelongsTo

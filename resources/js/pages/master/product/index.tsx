@@ -91,7 +91,7 @@ export type ProductProps = {
     available_qty: string | number | null;
     is_active: boolean;
     category?: ProductCategoryProps | null;
-    unit?: UnitProps | null;
+    unit_measurement?: UnitProps | null;
     sales_tax?: TaxProps | null;
     purchase_tax?: TaxProps | null;
 };

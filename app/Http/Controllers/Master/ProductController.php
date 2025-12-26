@@ -25,7 +25,7 @@ class ProductController extends Controller
         $perPage = (int) $request->input('perPage', 15);
 
         $products = Product::query()
-            ->with(['category', 'unit', 'salesTax', 'purchaseTax'])
+            ->with(['category', 'unitMeasurement', 'salesTax', 'purchaseTax'])
             ->withSum('stocks as available_qty', 'qty')
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {

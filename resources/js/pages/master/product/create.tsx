@@ -17,7 +17,7 @@ import dataStore from '@/routes/data-store';
 import productData from '@/routes/product-data';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
-import { useState, type FormEventHandler } from 'react';
+import { useEffect, useState, type FormEventHandler } from 'react';
 import { toast } from 'sonner';
 
 export type ProductCategoryProps = {
@@ -114,6 +114,23 @@ export default function ProductCreateScreen({
             image: null,
             is_active: true,
         });
+
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!data.image) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setImagePreview(null);
+            return;
+        }
+
+        const url = URL.createObjectURL(data.image);
+        setImagePreview(url);
+
+        return () => {
+            URL.revokeObjectURL(url);
+        };
+    }, [data.image]);
 
     const submit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
@@ -327,9 +344,8 @@ export default function ProductCreateScreen({
                                     id="minimum_stock"
                                     name="minimum_stock"
                                     type="number"
-                                    step="0.01"
                                     autoComplete="off"
-                                    placeholder="0.00"
+                                    placeholder="0"
                                     value={data.minimum_stock}
                                     onChange={(e) =>
                                         setData('minimum_stock', e.target.value)
@@ -365,7 +381,7 @@ export default function ProductCreateScreen({
                                 <InputError message={errors.description} />
                             </div>
                             <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
-                                <div className="grid gap-2 lg:basis-2/3">
+                                <div className="grid gap-2 w-full">
                                     <Label htmlFor="image">Gambar</Label>
                                     <Input
                                         id="image"
@@ -380,6 +396,26 @@ export default function ProductCreateScreen({
                                         }
                                     />
                                     <InputError message={errors.image} />
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label>Preview</Label>
+                                    <div className="flex h-50 w-50 items-center justify-center overflow-hidden rounded-md border bg-muted">
+                                        {imagePreview ? (
+                                            <img
+                                                src={imagePreview}
+                                                alt={
+                                                    data.name || 'Gambar produk'
+                                                }
+                                                className="h-full w-full object-cover"
+                                            />
+                                        ) : (
+                                            <div className="p-1 text-center">
+                                                <span className="text-xs text-muted-foreground">
+                                                    Tidak ada gambar
+                                                </span>
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                             <div className="grid max-w-2xl gap-4">

@@ -27,7 +27,7 @@ export default function ProductDetailDialog({
                 onOpenChange(next);
             }}
         >
-            <DialogContent>
+            <DialogContent className="max-w-lg sm:max-w-2xl">
                 <DialogHeader>
                     <DialogTitle>Detail Produk</DialogTitle>
                     <DialogDescription>
@@ -60,11 +60,11 @@ export default function ProductDetailDialog({
                                     <div className="text-xs text-muted-foreground">
                                         Satuan
                                     </div>
-                                    <div>{product.unit?.name ?? '-'}</div>
+                                    <div>{product.unit_measurement?.name ?? '-'}</div>
                                 </div>
                             </div>
                             <div className="flex justify-center md:w-32">
-                                <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-md border bg-muted">
+                                <div className="flex h-35 w-35 items-center justify-center overflow-hidden rounded-md border bg-muted">
                                     {product.image ? (
                                         <img
                                             src={product.image}

@@ -364,9 +364,8 @@ export default function ProductEditScreen({
                                     id="minimum_stock"
                                     name="minimum_stock"
                                     type="number"
-                                    step="0.01"
                                     autoComplete="off"
-                                    placeholder="0.00"
+                                    placeholder="0"
                                     value={data.minimum_stock}
                                     onChange={(e) =>
                                         setData('minimum_stock', e.target.value)
@@ -402,7 +401,7 @@ export default function ProductEditScreen({
                                 <InputError message={errors.description} />
                             </div>
                             <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
-                                <div className="grid gap-2 lg:basis-2/3">
+                                <div className="grid gap-2 w-full">
                                     <Label htmlFor="image">Gambar</Label>
                                     <Input
                                         id="image"
@@ -418,9 +417,9 @@ export default function ProductEditScreen({
                                     />
                                     <InputError message={errors.image} />
                                 </div>
-                                <div className="grid gap-2 lg:basis-1/3">
+                                <div className="grid gap-2">
                                     <Label>Preview</Label>
-                                    <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-md border bg-muted">
+                                    <div className="flex h-50 w-50 items-center justify-center overflow-hidden rounded-md border bg-muted">
                                         {imagePreview ? (
                                             <img
                                                 src={imagePreview}
@@ -430,9 +429,11 @@ export default function ProductEditScreen({
                                                 className="h-full w-full object-cover"
                                             />
                                         ) : (
-                                            <span className="text-xs text-muted-foreground">
-                                                Tidak ada gambar
-                                            </span>
+                                            <div className="p-1 text-center">
+                                                <span className="text-xs text-muted-foreground">
+                                                    Tidak ada gambar
+                                                </span>
+                                            </div>
                                         )}
                                     </div>
                                 </div>
