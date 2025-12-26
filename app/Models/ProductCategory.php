@@ -14,6 +14,13 @@ class ProductCategory extends Model
     protected $fillable = [
         'code',
         'name',
+        'inventory_coa_id',
+        'purchase_coa_id',
+        'purchase_receipt_coa_id',
+        'purchase_return_coa_id',
+        'sales_coa_id',
+        'sales_delivery_coa_id',
+        'sales_return_coa_id',
         'is_active',
     ];
 
