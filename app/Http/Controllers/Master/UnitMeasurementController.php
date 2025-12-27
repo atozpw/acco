@@ -18,7 +18,7 @@ class UnitMeasurementController extends Controller
      */
     public function index(Request $request): Response
     {
-        $search = $request->input('search');
+        $search = (string) $request->input('search');
         $perPage = (int) $request->input('perPage', 15);
 
         $units = UnitMeasurement::query()
