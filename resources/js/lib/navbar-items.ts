@@ -7,7 +7,7 @@ import productData from '@/routes/product-data';
 import taxData from '@/routes/tax-data';
 import unitMeasurement from '@/routes/unit-measurement';
 import type { NavItem } from '@/types';
-import { BookOpen, Folder, HardDrive, LayoutGrid } from 'lucide-react';
+import { Airplay, HardDrive, LayoutGrid } from 'lucide-react';
 
 export const mainNavItems: NavItem[] = [
     {
@@ -54,13 +54,26 @@ export const mainNavItems: NavItem[] = [
 
 export const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
-        href: 'https://github.com/laravel/react-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#react',
-        icon: BookOpen,
+        title: 'Saldo Awal',
+        href: '#',
+        icon: Airplay,
+        children: [
+            {
+                title: 'Akun',
+                href: '#',
+            },
+            {
+                title: 'Piutang',
+                href: '#',
+            },
+            {
+                title: 'Utang',
+                href: '#',
+            },
+            {
+                title: 'Persediaan',
+                href: '#',
+            },
+        ],
     },
 ];

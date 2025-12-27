@@ -1,14 +1,22 @@
-import { Icon } from '@/components/icon';
 import {
     SidebarGroup,
-    SidebarGroupContent,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
+    SidebarMenuSub,
+    SidebarMenuSubButton,
+    SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import { resolveUrl } from '@/lib/utils';
 import { type NavItem } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
+import { ChevronRight } from 'lucide-react';
 import { type ComponentPropsWithoutRef } from 'react';
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from './ui/collapsible';
 
 export function NavFooter({
     items,
@@ -17,37 +25,84 @@ export function NavFooter({
 }: ComponentPropsWithoutRef<typeof SidebarGroup> & {
     items: NavItem[];
 }) {
+    const page = usePage();
     return (
         <SidebarGroup
             {...props}
             className={`group-data-[collapsible=icon]:p-0 ${className || ''}`}
         >
-            <SidebarGroupContent>
-                <SidebarMenu>
-                    {items.map((item) => (
+            <SidebarMenu>
+                {items.map((item) => {
+                    const isParentActive = page.url.startsWith(
+                        resolveUrl(item.href),
+                    );
+                    const isAnyChildActive = item.children?.some((subItem) =>
+                        page.url.startsWith(resolveUrl(subItem.href)),
+                    );
+                    const isGroupActive = Boolean(
+                        isParentActive || isAnyChildActive,
+                    );
+
+                    return item.children ? (
+                        <Collapsible
+                            key={item.title}
+                            asChild
+                            defaultOpen={isGroupActive}
+                            className="group/collapsible"
+                        >
+                            <SidebarMenuItem>
+                                <CollapsibleTrigger asChild>
+                                    <SidebarMenuButton tooltip={item.title}>
+                                        {item.icon && <item.icon />}
+                                        <span>{item.title}</span>
+                                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                                    </SidebarMenuButton>
+                                </CollapsibleTrigger>
+                                <CollapsibleContent>
+                                    <SidebarMenuSub>
+                                        {item.children.map((subItem) => (
+                                            <SidebarMenuSubItem
+                                                key={subItem.title}
+                                            >
+                                                <SidebarMenuSubButton
+                                                    asChild
+                                                    isActive={page.url.startsWith(
+                                                        resolveUrl(
+                                                            subItem.href,
+                                                        ),
+                                                    )}
+                                                >
+                                                    <Link
+                                                        href={subItem.href}
+                                                        prefetch
+                                                    >
+                                                        {subItem.title}
+                                                    </Link>
+                                                </SidebarMenuSubButton>
+                                            </SidebarMenuSubItem>
+                                        ))}
+                                    </SidebarMenuSub>
+                                </CollapsibleContent>
+                            </SidebarMenuItem>
+                        </Collapsible>
+                    ) : (
                         <SidebarMenuItem key={item.title}>
                             <SidebarMenuButton
                                 asChild
-                                className="text-neutral-600 hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100"
+                                isActive={page.url.startsWith(
+                                    resolveUrl(item.href),
+                                )}
+                                tooltip={{ children: item.title }}
                             >
-                                <a
-                                    href={resolveUrl(item.href)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {item.icon && (
-                                        <Icon
-                                            iconNode={item.icon}
-                                            className="h-5 w-5"
-                                        />
-                                    )}
+                                <Link href={item.href} prefetch>
+                                    {item.icon && <item.icon />}
                                     <span>{item.title}</span>
-                                </a>
+                                </Link>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
-                    ))}
-                </SidebarMenu>
-            </SidebarGroupContent>
+                    );
+                })}
+            </SidebarMenu>
         </SidebarGroup>
     );
 }
