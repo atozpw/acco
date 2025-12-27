@@ -4,6 +4,7 @@ use App\Http\Controllers\Master\CoaController;
 use App\Http\Controllers\Master\ContactController;
 use App\Http\Controllers\Master\ProductCategoryController;
 use App\Http\Controllers\Master\ProductController;
+use App\Http\Controllers\Master\TaxController;
 use App\Http\Controllers\Master\UnitMeasurementController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,4 +45,11 @@ Route::middleware('auth')->prefix('data-store')->group(function () {
     Route::get('measurement-unit-data/{id}/edit', [UnitMeasurementController::class, 'edit'])->name('unit-measurement.edit');
     Route::put('measurement-unit-data/{id}', [UnitMeasurementController::class, 'update'])->name('unit-measurement.update');
     Route::delete('measurement-unit-data/{id}', [UnitMeasurementController::class, 'destroy'])->name('unit-measurement.destroy');
+
+    Route::get('tax-data', [TaxController::class, 'index'])->name('tax-data.index');
+    Route::get('tax-data/create', [TaxController::class, 'create'])->name('tax-data.create');
+    Route::post('tax-data', [TaxController::class, 'store'])->name('tax-data.store');
+    Route::get('tax-data/{id}/edit', [TaxController::class, 'edit'])->name('tax-data.edit');
+    Route::put('tax-data/{id}', [TaxController::class, 'update'])->name('tax-data.update');
+    Route::delete('tax-data/{id}', [TaxController::class, 'destroy'])->name('tax-data.destroy');
 });

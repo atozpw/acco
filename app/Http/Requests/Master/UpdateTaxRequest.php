@@ -27,7 +27,7 @@ class UpdateTaxRequest extends FormRequest
                 'required',
                 'string',
                 'max:10',
-                Rule::unique('taxes', 'code')->ignore($this->tax->id),
+                Rule::unique('taxes', 'code')->ignore($this->route('id')),
             ],
 
             'name' => [
