@@ -27,7 +27,7 @@ class UpdateDepartmentRequest extends FormRequest
                 'required',
                 'string',
                 'max:6',
-                Rule::unique('departments', 'code')->ignore($this->department->id),
+                Rule::unique('departments', 'code')->ignore($this->route('id')),
             ],
 
             'name' => [

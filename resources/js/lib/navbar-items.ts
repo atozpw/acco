@@ -1,6 +1,7 @@
 import { dashboard } from '@/routes';
 import coa from '@/routes/coa';
 import contactData from '@/routes/contact-data';
+import departmentData from '@/routes/department-data';
 import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
 import taxData from '@/routes/tax-data';
@@ -42,6 +43,10 @@ export const mainNavItems: NavItem[] = [
             {
                 title: 'Data Pajak',
                 href: taxData.index(),
+            },
+            {
+                title: 'Data Departemen',
+                href: departmentData.index(),
             },
         ],
     },

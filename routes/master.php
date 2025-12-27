@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Master\CoaController;
 use App\Http\Controllers\Master\ContactController;
+use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\ProductCategoryController;
 use App\Http\Controllers\Master\ProductController;
 use App\Http\Controllers\Master\TaxController;
@@ -52,4 +53,11 @@ Route::middleware('auth')->prefix('data-store')->group(function () {
     Route::get('tax-data/{id}/edit', [TaxController::class, 'edit'])->name('tax-data.edit');
     Route::put('tax-data/{id}', [TaxController::class, 'update'])->name('tax-data.update');
     Route::delete('tax-data/{id}', [TaxController::class, 'destroy'])->name('tax-data.destroy');
+
+    Route::get('department-data', [DepartmentController::class, 'index'])->name('department-data.index');
+    Route::get('department-data/create', [DepartmentController::class, 'create'])->name('department-data.create');
+    Route::post('department-data', [DepartmentController::class, 'store'])->name('department-data.store');
+    Route::get('department-data/{id}/edit', [DepartmentController::class, 'edit'])->name('department-data.edit');
+    Route::put('department-data/{id}', [DepartmentController::class, 'update'])->name('department-data.update');
+    Route::delete('department-data/{id}', [DepartmentController::class, 'destroy'])->name('department-data.destroy');
 });
