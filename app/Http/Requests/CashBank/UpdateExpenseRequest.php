@@ -39,7 +39,7 @@ class UpdateExpenseRequest extends FormRequest
                 'required',
                 'string',
                 'max:10',
-                Rule::unique('expenses', 'reference_no')->ignore($this->expense->reference_no),
+                Rule::unique('expenses', 'reference_no')->ignore($this->route('id')),
             ],
 
             'date' => [
@@ -61,7 +61,7 @@ class UpdateExpenseRequest extends FormRequest
             'details.*.coa_id' => [
                 'required',
                 'integer',
-                'exists:coa,id',
+                'exists:coas,id',
             ],
 
             'details.*.amount' => [
