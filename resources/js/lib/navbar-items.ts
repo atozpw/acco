@@ -4,6 +4,7 @@ import contactData from '@/routes/contact-data';
 import departmentData from '@/routes/department-data';
 import expense from '@/routes/expense';
 import generalJournal from '@/routes/general-journal';
+import income from '@/routes/income';
 import ledgerData from '@/routes/ledger-data';
 import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
@@ -82,6 +83,10 @@ export const mainNavItems: NavItem[] = [
             {
                 title: 'Pengeluaran',
                 href: expense.index(),
+            },
+            {
+                title: 'Penerimaan',
+                href: income.index(),
             },
         ],
     },

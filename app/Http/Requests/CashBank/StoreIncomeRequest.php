@@ -60,7 +60,7 @@ class StoreIncomeRequest extends FormRequest
             'details.*.coa_id' => [
                 'required',
                 'integer',
-                'exists:coa,id',
+                'exists:coas,id',
             ],
 
             'details.*.amount' => [

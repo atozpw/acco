@@ -39,7 +39,7 @@ class UpdateIncomeRequest extends FormRequest
                 'required',
                 'string',
                 'max:10',
-                Rule::unique('incomes', 'reference_no')->ignore($this->income->reference_no),
+                Rule::unique('incomes', 'reference_no')->ignore($this->route('id')),
             ],
 
             'date' => [
@@ -61,7 +61,7 @@ class UpdateIncomeRequest extends FormRequest
             'details.*.coa_id' => [
                 'required',
                 'integer',
-                'exists:coa,id',
+                'exists:coas,id',
             ],
 
             'details.*.amount' => [
