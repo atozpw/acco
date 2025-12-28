@@ -225,8 +225,15 @@ class ExpenseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
-        //
+        DB::transaction(function () use ($id) {
+            $expense = Expense::query()->findOrFail($id);
+    
+            $expense->details()->delete();
+            $expense->delete();
+        });
+
+        return redirect()->route('expense.index');
     }
 }
