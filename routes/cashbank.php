@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CashBank\CashTransferController;
 use App\Http\Controllers\CashBank\ExpenseController;
 use App\Http\Controllers\CashBank\IncomeController;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,12 @@ Route::middleware('auth')->prefix('cash-bank')->group(function () {
     Route::get('cash-in/{id}/edit', [IncomeController::class, 'edit'])->name('income.edit');
     Route::put('cash-in/{id}', [IncomeController::class, 'update'])->name('income.update');
     Route::delete('cash-in/{id}', [IncomeController::class, 'destroy'])->name('income.destroy');
+
+    Route::get('cash-transfer', [CashTransferController::class, 'index'])->name('cash-transfer.index');
+    Route::get('cash-transfer/create', [CashTransferController::class, 'create'])->name('cash-transfer.create');
+    Route::post('cash-transfer', [CashTransferController::class, 'store'])->name('cash-transfer.store');
+    Route::get('cash-transfer/{id}', [CashTransferController::class, 'show'])->name('cash-transfer.show');
+    Route::get('cash-transfer/{id}/edit', [CashTransferController::class, 'edit'])->name('cash-transfer.edit');
+    Route::put('cash-transfer/{id}', [CashTransferController::class, 'update'])->name('cash-transfer.update');
+    Route::delete('cash-transfer/{id}', [CashTransferController::class, 'destroy'])->name('cash-transfer.destroy');
 });

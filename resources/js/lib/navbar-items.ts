@@ -1,4 +1,5 @@
 import { dashboard } from '@/routes';
+import cashTransfer from '@/routes/cash-transfer';
 import coa from '@/routes/coa';
 import contactData from '@/routes/contact-data';
 import departmentData from '@/routes/department-data';
@@ -87,6 +88,10 @@ export const mainNavItems: NavItem[] = [
             {
                 title: 'Penerimaan',
                 href: income.index(),
+            },
+            {
+                title: 'Transfer Kas',
+                href: cashTransfer.index(),
             },
         ],
     },

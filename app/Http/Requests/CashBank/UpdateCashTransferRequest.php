@@ -39,7 +39,7 @@ class UpdateCashTransferRequest extends FormRequest
                 'required',
                 'string',
                 'max:10',
-                Rule::unique('cash_transfers', 'reference_no')->ignore($this->cash_transfer->reference_no),
+                Rule::unique('cash_transfers', 'reference_no')->ignore($this->route('id')),
             ],
 
             'date' => [
