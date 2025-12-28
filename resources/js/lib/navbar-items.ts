@@ -2,12 +2,14 @@ import { dashboard } from '@/routes';
 import coa from '@/routes/coa';
 import contactData from '@/routes/contact-data';
 import departmentData from '@/routes/department-data';
+import generalJournal from '@/routes/general-journal';
+import ledgerData from '@/routes/ledger-data';
 import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
 import taxData from '@/routes/tax-data';
 import unitMeasurement from '@/routes/unit-measurement';
 import type { NavItem } from '@/types';
-import { Airplay, HardDrive, LayoutGrid } from 'lucide-react';
+import { Airplay, HardDrive, LayoutGrid, NotebookText } from 'lucide-react';
 
 export const mainNavItems: NavItem[] = [
     {
@@ -47,6 +49,21 @@ export const mainNavItems: NavItem[] = [
             {
                 title: 'Data Departemen',
                 href: departmentData.index(),
+            },
+        ],
+    },
+    {
+        title: 'Buku Besar',
+        href: '#',
+        icon: NotebookText,
+        children: [
+            {
+                title: 'Buku Besar',
+                href: ledgerData.index(),
+            },
+            {
+                title: 'Jurnal Umum',
+                href: generalJournal.index(),
             },
         ],
     },

@@ -43,7 +43,7 @@ class StoreGeneralJournalRequest extends FormRequest
             'details.*.coa_id' => [
                 'required',
                 'integer',
-                'exists:coa,id',
+                'exists:coas,id',
             ],
 
             'details.*.debit' => [

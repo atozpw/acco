@@ -27,7 +27,7 @@ class UpdateGeneralJournalRequest extends FormRequest
                 'required',
                 'string',
                 'max:10',
-                Rule::unique('journals', 'reference_no')->ignore($this->journal->reference_no),
+                Rule::unique('journals', 'reference_no')->ignore($this->route('id')),
             ],
 
             'date' => [
@@ -44,7 +44,7 @@ class UpdateGeneralJournalRequest extends FormRequest
             'details.*.coa_id' => [
                 'required',
                 'integer',
-                'exists:coa,id',
+                'exists:coas,id',
             ],
 
             'details.*.debit' => [
