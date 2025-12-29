@@ -111,4 +111,130 @@ class ReferenceNumber
 
         $referenceNumber->save();
     }
+
+    public static function getSalesDelivery(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('sales-delivery')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updateSalesDelivery(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('sales-delivery')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
+
+        $referenceNumber->save();
+    }
+
+    public static function getSalesInvoice(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('sales-invoice')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updateSalesInvoice(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('sales-invoice')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
+
+        $referenceNumber->save();
+    }
+
+    public static function getReceivablePayment(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('receivable-payment')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updateReceivablePayment(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('receivable-payment')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
+
+        $referenceNumber->save();
+    }
+
+    public static function getPurchaseReceipt(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('purchase-receipt')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updatePurchaseReceipt(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('purchase-receipt')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
+
+        $referenceNumber->save();
+    }
+
+    public static function getPurchaseInvoice(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('purchase-invoice')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updatePurchaseInvoice(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('purchase-invoice')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
+
+        $referenceNumber->save();
+    }
+
+    public static function getPayablePayment(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('payable-payment')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updatePayablePayment(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('payable-payment')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
+
+        $referenceNumber->save();
+    }
 }
