@@ -20,6 +20,7 @@ class UserSeeder extends Seeder
             'name' => 'Administrator',
             'username' => 'admin',
             'password' => Hash::make('secret'),
+            'is_active' => true,
         ]);
     }
 }
