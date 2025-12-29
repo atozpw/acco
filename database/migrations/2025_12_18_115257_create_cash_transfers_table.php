@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('project_id')->nullable();
             $table->unsignedBigInteger('created_by');
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('from_coa_id')->references('id')->on('coas')->onUpdate('cascade');
             $table->foreign('to_coa_id')->references('id')->on('coas')->onUpdate('cascade');
