@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Observers\CashTransferObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[ObservedBy([CashTransferObserver::class])]
 class CashTransfer extends Model
 {
     use SoftDeletes;
