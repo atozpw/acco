@@ -7,10 +7,13 @@ import expense from '@/routes/expense';
 import generalJournal from '@/routes/general-journal';
 import income from '@/routes/income';
 import ledgerData from '@/routes/ledger-data';
+import permissions from '@/routes/permissions';
 import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
+import roles from '@/routes/roles';
 import taxData from '@/routes/tax-data';
 import unitMeasurement from '@/routes/unit-measurement';
+import users from '@/routes/users';
 import type { NavItem } from '@/types';
 import {
     Airplay,
@@ -18,6 +21,7 @@ import {
     Landmark,
     LayoutGrid,
     NotebookText,
+    Settings2,
 } from 'lucide-react';
 
 export const mainNavItems: NavItem[] = [
@@ -92,6 +96,25 @@ export const mainNavItems: NavItem[] = [
             {
                 title: 'Transfer Kas',
                 href: cashTransfer.index(),
+            },
+        ],
+    },
+    {
+        title: 'User Management',
+        href: '#',
+        icon: Settings2,
+        children: [
+            {
+                title: 'Daftar User',
+                href: users.index(),
+            },
+            {
+                title: 'Role',
+                href: roles.index(),
+            },
+            {
+                title: 'Permission',
+                href: permissions.index(),
             },
         ],
     },
