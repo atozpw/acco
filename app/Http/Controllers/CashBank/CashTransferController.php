@@ -165,16 +165,15 @@ class CashTransferController extends Controller
         DB::transaction(function () use ($validated, $id) {
             $cashTransfer = CashTransfer::query()->findOrFail($id);
 
-            $cashTransfer->update([
-                'from_coa_id' => $validated['from_coa_id'],
-                'to_coa_id' => $validated['to_coa_id'],
-                'reference_no' => $validated['reference_no'],
-                'date' => $validated['date'],
-                'description' => $validated['description'],
-                'amount' => $validated['amount'],
-                'department_id' => $validated['department_id'],
-                'project_id' => $validated['project_id'] ?? null,
-            ]);
+            $cashTransfer->from_coa_id = $validated['from_coa_id'];
+            $cashTransfer->to_coa_id = $validated['to_coa_id'];
+            $cashTransfer->reference_no = $validated['reference_no'];
+            $cashTransfer->date = $validated['date'];
+            $cashTransfer->description = $validated['description'];
+            $cashTransfer->amount = $validated['amount'];
+            $cashTransfer->department_id = $validated['department_id'];
+            $cashTransfer->project_id = $validated['project_id'] ?? null;
+            $cashTransfer->save();
         });
 
         return redirect()->route('cash-transfer.index');
