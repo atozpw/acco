@@ -9,14 +9,19 @@ class ReferenceNumber
 {
     public static function getAccountBeginningBalance(): string
     {
-        $referenceNumber = ReferenceNumberModel::where('module', 'account-beginning-balance')->first();
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('account-beginning-balance')
+            ->select('code', 'value')
+            ->first();
 
         return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
     }
 
     public static function updateAccountBeginningBalance(): void
     {
-        $referenceNumber = ReferenceNumberModel::where('module', 'account-beginning-balance')->first();
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('account-beginning-balance')
+            ->first();
 
         $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
 
@@ -25,14 +30,19 @@ class ReferenceNumber
 
     public static function getGeneralJournal(): string
     {
-        $referenceNumber = ReferenceNumberModel::where('module', 'general-journal')->first();
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('general-journal')
+            ->select('code', 'value')
+            ->first();
 
         return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
     }
 
     public static function updateGeneralJournal(): void
     {
-        $referenceNumber = ReferenceNumberModel::where('module', 'general-journal')->first();
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('general-journal')
+            ->first();
 
         $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
 
@@ -41,14 +51,19 @@ class ReferenceNumber
 
     public static function getIncome(): string
     {
-        $referenceNumber = ReferenceNumberModel::where('module', 'cash-in')->first();
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('cash-in')
+            ->select('code', 'value')
+            ->first();
 
         return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
     }
 
     public static function updateIncome(): void
     {
-        $referenceNumber = ReferenceNumberModel::where('module', 'cash-in')->first();
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('cash-in')
+            ->first();
 
         $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
 
@@ -57,14 +72,19 @@ class ReferenceNumber
 
     public static function getExpense(): string
     {
-        $referenceNumber = ReferenceNumberModel::where('module', 'cash-out')->first();
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('cash-out')
+            ->select('code', 'value')
+            ->first();
 
         return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
     }
 
     public static function updateExpense(): void
     {
-        $referenceNumber = ReferenceNumberModel::where('module', 'cash-out')->first();
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('cash-out')
+            ->first();
 
         $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
 
@@ -73,14 +93,19 @@ class ReferenceNumber
 
     public static function getCashTransfer(): string
     {
-        $referenceNumber = ReferenceNumberModel::where('module', 'cash-transfer')->first();
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('cash-transfer')
+            ->select('code', 'value')
+            ->first();
 
         return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
     }
 
     public static function updateCashTransfer(): void
     {
-        $referenceNumber = ReferenceNumberModel::where('module', 'cash-transfer')->first();
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('cash-transfer')
+            ->first();
 
         $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
 
