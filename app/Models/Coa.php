@@ -41,6 +41,6 @@ class Coa extends Model
 
     public function classification(): BelongsTo
     {
-        return $this->belongsTo(CoaClassification::class);
+        return $this->belongsTo(CoaClassification::class, 'coa_classification_id');
     }
 }
