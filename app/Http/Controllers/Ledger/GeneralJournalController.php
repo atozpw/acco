@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Ledger;
 
+use App\Helpers\ReferenceNumber;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Ledger\StoreGeneralJournalRequest;
 use App\Http\Requests\Ledger\UpdateGeneralJournalRequest;
@@ -58,6 +59,8 @@ class GeneralJournalController extends Controller
      */
     public function create(): Response
     {
+        $referenceNumber = ReferenceNumber::getGeneralJournal();
+
         $coas = Coa::query()
             ->active()
             ->orderBy('code')
@@ -74,6 +77,7 @@ class GeneralJournalController extends Controller
             ->get(['id', 'code', 'name']);
 
         return inertia('ledger/general-journal/create', [
+            'referenceNumber' => $referenceNumber,
             'coas' => $coas,
             'departments' => $departments,
             'projects' => $projects,
@@ -108,6 +112,8 @@ class GeneralJournalController extends Controller
                     'created_by' => $request->user()?->id,
                 ]);
             }
+
+            ReferenceNumber::updateGeneralJournal();
         });
 
         return redirect()->route('general-journal.index');
