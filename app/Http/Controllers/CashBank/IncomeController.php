@@ -200,14 +200,13 @@ class IncomeController extends Controller
         DB::transaction(function () use ($validated, $request, $id) {
             $income = Income::query()->findOrFail($id);
 
-            $income->update([
-                'contact_id' => $validated['contact_id'],
-                'coa_id' => $validated['coa_id'],
-                'reference_no' => $validated['reference_no'],
-                'date' => $validated['date'],
-                'description' => $validated['description'],
-                'amount' => $validated['amount'],
-            ]);
+            $income->contact_id = $validated['contact_id'];
+            $income->coa_id = $validated['coa_id'];
+            $income->reference_no = $validated['reference_no'];
+            $income->date = $validated['date'];
+            $income->description = $validated['description'];
+            $income->amount = $validated['amount'];
+            $income->save();
 
             $income->details()->delete();
 
