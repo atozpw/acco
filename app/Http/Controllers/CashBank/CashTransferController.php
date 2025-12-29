@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CashBank;
 
+use App\Helpers\ReferenceNumber;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CashBank\StoreCashTransferRequest;
 use App\Http\Requests\CashBank\UpdateCashTransferRequest;
@@ -62,6 +63,8 @@ class CashTransferController extends Controller
      */
     public function create(): Response
     {
+        $referenceNumber = ReferenceNumber::getCashTransfer();
+
         $cashCoas = Coa::query()
             ->active()
             ->where('is_cash_bank', 1)
@@ -79,6 +82,7 @@ class CashTransferController extends Controller
             ->get(['id', 'code', 'name']);
 
         return inertia('cash-bank/cash-transfer/create', [
+            'referenceNumber' => $referenceNumber,
             'cashCoas' => $cashCoas,
             'departments' => $departments,
             'projects' => $projects,

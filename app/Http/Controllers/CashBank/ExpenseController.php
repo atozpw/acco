@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CashBank;
 
+use App\Helpers\ReferenceNumber;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CashBank\StoreExpenseRequest;
 use App\Http\Requests\CashBank\UpdateExpenseRequest;
@@ -62,6 +63,8 @@ class ExpenseController extends Controller
      */
     public function create(): Response
     {
+        $referenceNumber = ReferenceNumber::getExpense();
+
         $contacts = Contact::query()
             ->active()
             ->orderBy('name')
@@ -89,6 +92,7 @@ class ExpenseController extends Controller
             ->get(['id', 'code', 'name']);
 
         return inertia('cash-bank/expense/create', [
+            'referenceNumber' => $referenceNumber,
             'contacts' => $contacts,
             'cashCoas' => $cashCoas,
             'coas' => $coas,
@@ -229,7 +233,7 @@ class ExpenseController extends Controller
     {
         DB::transaction(function () use ($id) {
             $expense = Expense::query()->findOrFail($id);
-    
+
             $expense->details()->delete();
             $expense->delete();
         });

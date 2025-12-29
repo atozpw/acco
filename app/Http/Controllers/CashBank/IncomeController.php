@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\CashBank;
 
+use App\Helpers\ReferenceNumber;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CashBank\StoreIncomeRequest;
 use App\Http\Requests\CashBank\UpdateIncomeRequest;
@@ -62,6 +63,8 @@ class IncomeController extends Controller
      */
     public function create(): Response
     {
+        $referenceNumber = ReferenceNumber::getIncome();
+
         $contacts = Contact::query()
             ->active()
             ->orderBy('name')
@@ -89,6 +92,7 @@ class IncomeController extends Controller
             ->get(['id', 'code', 'name']);
 
         return inertia('cash-bank/income/create', [
+            'referenceNumber' => $referenceNumber,
             'contacts' => $contacts,
             'cashCoas' => $cashCoas,
             'coas' => $coas,
@@ -229,7 +233,7 @@ class IncomeController extends Controller
     {
         DB::transaction(function () use ($id) {
             $income = Income::query()->findOrFail($id);
-    
+
             $income->details()->delete();
             $income->delete();
         });
