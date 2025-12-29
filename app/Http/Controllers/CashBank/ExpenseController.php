@@ -200,14 +200,13 @@ class ExpenseController extends Controller
         DB::transaction(function () use ($validated, $request, $id) {
             $expense = Expense::query()->findOrFail($id);
 
-            $expense->update([
-                'contact_id' => $validated['contact_id'],
-                'coa_id' => $validated['coa_id'],
-                'reference_no' => $validated['reference_no'],
-                'date' => $validated['date'],
-                'description' => $validated['description'],
-                'amount' => $validated['amount'],
-            ]);
+            $expense->contact_id = $validated['contact_id'];
+            $expense->coa_id = $validated['coa_id'];
+            $expense->reference_no = $validated['reference_no'];
+            $expense->date = $validated['date'];
+            $expense->description = $validated['description'];
+            $expense->amount = $validated['amount'];
+            $expense->save();
 
             $expense->details()->delete();
 
