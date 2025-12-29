@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,6 +20,12 @@ class Journal extends Model
         'description',
         'created_by',
     ];
+
+    #[Scope]
+    protected function ofReferenceNo(Builder $query, string $referenceNo): void
+    {
+        $query->where('reference_no', $referenceNo);
+    }
 
     public function category(): BelongsTo
     {
