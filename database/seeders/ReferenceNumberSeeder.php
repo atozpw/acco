@@ -49,5 +49,47 @@ class ReferenceNumberSeeder extends Seeder
             'code' => 'CT',
             'value' => '000001',
         ]);
+
+        ReferenceNumber::create([
+            'name' => 'Pengiriman Barang',
+            'module' => 'sales-delivery',
+            'code' => 'SD',
+            'value' => '000001',
+        ]);
+
+        ReferenceNumber::create([
+            'name' => 'Faktur Penjualan',
+            'module' => 'sales-invoice',
+            'code' => 'SI',
+            'value' => '000001',
+        ]);
+
+        ReferenceNumber::create([
+            'name' => 'Pembayaran Piutang',
+            'module' => 'receivable-payment',
+            'code' => 'SP',
+            'value' => '000001',
+        ]);
+
+        ReferenceNumber::create([
+            'name' => 'Penerimaan Barang',
+            'module' => 'purchase-receipt',
+            'code' => 'PR',
+            'value' => '000001',
+        ]);
+
+        ReferenceNumber::create([
+            'name' => 'Faktur Pembelian',
+            'module' => 'purchase-invoice',
+            'code' => 'PI',
+            'value' => '000001',
+        ]);
+
+        ReferenceNumber::create([
+            'name' => 'Pembayaran Utang',
+            'module' => 'payable-payment',
+            'code' => 'PP',
+            'value' => '000001',
+        ]);
     }
 }

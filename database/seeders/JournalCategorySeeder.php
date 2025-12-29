@@ -39,5 +39,40 @@ class JournalCategorySeeder extends Seeder
             'code' => 'CT',
             'name' => 'Cash Transfer',
         ]);
+
+        JournalCategory::create([
+            'code' => 'CT',
+            'name' => 'Cash Transfer',
+        ]);
+
+        JournalCategory::create([
+            'code' => 'SD',
+            'name' => 'Sales Delivery',
+        ]);
+
+        JournalCategory::create([
+            'code' => 'SI',
+            'name' => 'Sales Invoice',
+        ]);
+
+        JournalCategory::create([
+            'code' => 'SP',
+            'name' => 'Receivable Payment',
+        ]);
+
+        JournalCategory::create([
+            'code' => 'PR',
+            'name' => 'Purchase Receipt',
+        ]);
+
+        JournalCategory::create([
+            'code' => 'PI',
+            'name' => 'Purchase Invoice',
+        ]);
+
+        JournalCategory::create([
+            'code' => 'PP',
+            'name' => 'Payable Payment',
+        ]);
     }
 }
