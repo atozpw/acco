@@ -28,5 +28,26 @@ class ReferenceNumberSeeder extends Seeder
             'code' => 'GJ',
             'value' => '000001',
         ]);
+
+        ReferenceNumber::create([
+            'name' => 'Kas Masuk',
+            'module' => 'cash-in',
+            'code' => 'CI',
+            'value' => '000001',
+        ]);
+
+        ReferenceNumber::create([
+            'name' => 'Kas Keluar',
+            'module' => 'cash-out',
+            'code' => 'CO',
+            'value' => '000001',
+        ]);
+
+        ReferenceNumber::create([
+            'name' => 'Transfer Kas',
+            'module' => 'cash-transfer',
+            'code' => 'CT',
+            'value' => '000001',
+        ]);
     }
 }
