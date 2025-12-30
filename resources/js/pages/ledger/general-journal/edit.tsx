@@ -1,6 +1,7 @@
 import InputCombobox, {
     type ComboboxItem,
 } from '@/components/form/input-combobox';
+import InputDatepicker from '@/components/form/input-datepicker';
 import InputDecimal from '@/components/form/input-decimal';
 import Heading from '@/components/heading';
 import HeadingSmall from '@/components/heading-small';
@@ -112,12 +113,12 @@ export default function GeneralJournalEditScreen({
 
     const departmentItems: ComboboxItem[] = departments.map((d) => ({
         value: String(d.id),
-        label: `${d.code} - ${d.name}`,
+        label: d.name,
     }));
 
     const projectItems: ComboboxItem[] = projects.map((p) => ({
         value: String(p.id),
-        label: `${p.code} - ${p.name}`,
+        label: p.name,
     }));
 
     const initialDetails: JournalDetailForm[] =
@@ -305,13 +306,11 @@ export default function GeneralJournalEditScreen({
                                 </div>
                                 <div className="grid gap-2 lg:basis-1/3">
                                     <Label htmlFor="date">Tanggal</Label>
-                                    <Input
+                                    <InputDatepicker
                                         id="date"
-                                        name="date"
-                                        type="date"
-                                        value={data.date}
-                                        onChange={(e) =>
-                                            setData('date', e.target.value)
+                                        defaultValue={data.date}
+                                        onChange={(date, iso) =>
+                                            setData('date', iso)
                                         }
                                     />
                                     <InputError message={errors.date} />

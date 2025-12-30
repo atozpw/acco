@@ -26,6 +26,7 @@ class GeneralJournalController extends Controller
         $perPage = (int) $request->input('perPage', 25);
 
         $journals = Journal::query()
+            ->where('journal_category_id', 2)
             ->withSum('details as total_debit', 'debit')
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
@@ -33,7 +34,7 @@ class GeneralJournalController extends Controller
                         ->orWhere('description', 'like', '%' . $search . '%');
                 });
             })
-            ->orderByDesc('date')
+            ->orderByDesc('created_at')
             ->simplePaginate($perPage)
             ->withQueryString();
 
@@ -63,12 +64,13 @@ class GeneralJournalController extends Controller
 
         $coas = Coa::query()
             ->active()
+            ->doesntHave('children')
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
         $departments = Department::query()
             ->active()
-            ->orderBy('name')
+            ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
         $projects = Project::query()
@@ -140,12 +142,13 @@ class GeneralJournalController extends Controller
 
         $coas = Coa::query()
             ->active()
+            ->doesntHave('children')
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
         $departments = Department::query()
             ->active()
-            ->orderBy('name')
+            ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
         $projects = Project::query()
