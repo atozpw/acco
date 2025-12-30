@@ -1,6 +1,7 @@
 import InputCombobox, {
     type ComboboxItem,
 } from '@/components/form/input-combobox';
+import InputDatepicker from '@/components/form/input-datepicker';
 import InputDecimal from '@/components/form/input-decimal';
 import Heading from '@/components/heading';
 import HeadingSmall from '@/components/heading-small';
@@ -118,12 +119,12 @@ export default function ExpenseEditScreen({
 
     const departmentItems: ComboboxItem[] = departments.map((d) => ({
         value: String(d.id),
-        label: `${d.code} - ${d.name}`,
+        label: d.name,
     }));
 
     const projectItems: ComboboxItem[] = projects.map((p) => ({
         value: String(p.id),
-        label: `${p.code} - ${p.name}`,
+        label: p.name,
     }));
 
     const initialDetails: ExpenseDetailForm[] =
@@ -159,9 +160,6 @@ export default function ExpenseEditScreen({
         },
     );
 
-    const [formattedAmount, setFormattedAmount] = useState<string>(
-        formatLocal(expense.amount),
-    );
     const [formattedDetailAmounts, setFormattedDetailAmounts] = useState<
         string[]
     >(initialDetails.map((d) => formatLocal(d.amount)));
@@ -236,8 +234,6 @@ export default function ExpenseEditScreen({
         (sum, detail) => sum + parseNumber(detail.amount),
         0,
     );
-    const headerAmount = parseNumber(data.amount);
-    const difference = headerAmount - totalDetail;
 
     const formatCurrency = (value: number) =>
         new Intl.NumberFormat('id-ID', {
@@ -249,6 +245,7 @@ export default function ExpenseEditScreen({
 
     const submit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
+        setData('amount', totalDetail.toFixed(2));
 
         put(expenseRoutes.update(expense.id).url, {
             preserveScroll: true,
@@ -289,32 +286,6 @@ export default function ExpenseEditScreen({
                         <div className="flex-1 space-y-6 md:max-w-2xl">
                             <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
                                 <div className="grid gap-2 lg:basis-1/3">
-                                    <Label htmlFor="date">Tanggal</Label>
-                                    <Input
-                                        id="date"
-                                        name="date"
-                                        type="date"
-                                        value={data.date}
-                                        onChange={(e) =>
-                                            setData('date', e.target.value)
-                                        }
-                                    />
-                                    <InputError message={errors.date} />
-                                </div>
-                                <div className="grid gap-2 lg:basis-1/3">
-                                    <Label>Penerima</Label>
-                                    <InputCombobox
-                                        name="contact_id"
-                                        items={contactItems}
-                                        placeholder="Pilih kontak"
-                                        value={data.contact_id}
-                                        onValueChange={(value) =>
-                                            setData('contact_id', value)
-                                        }
-                                    />
-                                    <InputError message={errors.contact_id} />
-                                </div>
-                                <div className="grid gap-2 lg:basis-1/3">
                                     <Label htmlFor="reference_no">
                                         No. Referensi
                                     </Label>
@@ -334,14 +305,12 @@ export default function ExpenseEditScreen({
                                     />
                                     <InputError message={errors.reference_no} />
                                 </div>
-                            </div>
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
                                 <div className="grid gap-2 lg:basis-2/3">
-                                    <Label>Akun Kas/Bank</Label>
+                                    <Label>Dari Akun</Label>
                                     <InputCombobox
                                         name="coa_id"
                                         items={cashCoaItems}
-                                        placeholder="Pilih kas/bank"
+                                        placeholder="Pilih akun"
                                         value={data.coa_id}
                                         onValueChange={(value) =>
                                             setData('coa_id', value)
@@ -349,20 +318,31 @@ export default function ExpenseEditScreen({
                                     />
                                     <InputError message={errors.coa_id} />
                                 </div>
+                            </div>
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
                                 <div className="grid gap-2 lg:basis-1/3">
-                                    <Label>Jumlah</Label>
-                                    <InputDecimal
-                                        name="amount"
-                                        value={formattedAmount}
-                                        onValueChange={(formatted, numeric) => {
-                                            setFormattedAmount(formatted);
-                                            setData(
-                                                'amount',
-                                                numeric.toFixed(2),
-                                            );
-                                        }}
+                                    <Label htmlFor="date">Tanggal</Label>
+                                    <InputDatepicker
+                                        id="date"
+                                        defaultValue={data.date}
+                                        onChange={(date, iso) =>
+                                            setData('date', iso)
+                                        }
                                     />
-                                    <InputError message={errors.amount} />
+                                    <InputError message={errors.date} />
+                                </div>
+                                <div className="grid gap-2 lg:basis-2/3">
+                                    <Label>Diterima Oleh</Label>
+                                    <InputCombobox
+                                        name="contact_id"
+                                        items={contactItems}
+                                        placeholder="Pilih kontak"
+                                        value={data.contact_id}
+                                        onValueChange={(value) =>
+                                            setData('contact_id', value)
+                                        }
+                                    />
+                                    <InputError message={errors.contact_id} />
                                 </div>
                             </div>
                             <div className="grid max-w-2xl gap-2">
@@ -636,27 +616,6 @@ export default function ExpenseEditScreen({
                                             </td>
                                             <td className="px-4 py-2 text-right">
                                                 {formatCurrency(totalDetail)}
-                                            </td>
-                                            <td></td>
-                                        </tr>
-                                        <tr className="bg-muted/50 text-[15px] font-medium">
-                                            <td
-                                                colSpan={2}
-                                                className="px-4 py-2 text-right"
-                                            >
-                                                Selisih (Header - Detail)
-                                            </td>
-                                            <td
-                                                className={
-                                                    'px-4 py-2 text-right font-bold' +
-                                                    (difference !== 0
-                                                        ? ' text-destructive'
-                                                        : '')
-                                                }
-                                            >
-                                                {formatCurrency(
-                                                    Math.abs(difference),
-                                                )}
                                             </td>
                                             <td></td>
                                         </tr>
