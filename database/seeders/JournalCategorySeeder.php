@@ -41,11 +41,6 @@ class JournalCategorySeeder extends Seeder
         ]);
 
         JournalCategory::create([
-            'code' => 'CT',
-            'name' => 'Cash Transfer',
-        ]);
-
-        JournalCategory::create([
             'code' => 'SD',
             'name' => 'Sales Delivery',
         ]);
