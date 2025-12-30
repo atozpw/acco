@@ -147,7 +147,7 @@ export default function CashTransferIndexScreen({
                     <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
                         <div className="flex items-center gap-2">
                             <Input
-                                className="text-sm lg:w-[250px]"
+                                className="text-sm lg:w-[300px]"
                                 placeholder="Cari nomor, departemen atau deskripsi..."
                                 autoComplete="off"
                                 value={search}

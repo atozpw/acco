@@ -1,6 +1,7 @@
 import InputCombobox, {
     type ComboboxItem,
 } from '@/components/form/input-combobox';
+import InputDatepicker from '@/components/form/input-datepicker';
 import InputDecimal from '@/components/form/input-decimal';
 import Heading from '@/components/heading';
 import HeadingSmall from '@/components/heading-small';
@@ -65,11 +66,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function CashTransferCreateScreen({
+    referenceNumber,
     cashCoas,
     departments,
     projects,
     today,
 }: {
+    referenceNumber: string;
     cashCoas: CoaOption[];
     departments: DepartmentOption[];
     projects: ProjectOption[];
@@ -82,19 +85,19 @@ export default function CashTransferCreateScreen({
 
     const departmentItems: ComboboxItem[] = departments.map((d) => ({
         value: String(d.id),
-        label: `${d.code} - ${d.name}`,
+        label: d.name,
     }));
 
     const projectItems: ComboboxItem[] = projects.map((p) => ({
         value: String(p.id),
-        label: `${p.code} - ${p.name}`,
+        label: p.name,
     }));
 
     const { data, setData, post, processing, errors } =
         useForm<CashTransferFormData>({
             from_coa_id: '',
             to_coa_id: '',
-            reference_no: '',
+            reference_no: referenceNumber,
             date: today,
             description: '',
             amount: '0.00',
@@ -145,19 +148,6 @@ export default function CashTransferCreateScreen({
                         <div className="flex-1 space-y-6 md:max-w-2xl">
                             <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
                                 <div className="grid gap-2 lg:basis-1/3">
-                                    <Label htmlFor="date">Tanggal</Label>
-                                    <Input
-                                        id="date"
-                                        name="date"
-                                        type="date"
-                                        value={data.date}
-                                        onChange={(e) =>
-                                            setData('date', e.target.value)
-                                        }
-                                    />
-                                    <InputError message={errors.date} />
-                                </div>
-                                <div className="grid gap-2 lg:basis-1/3">
                                     <Label htmlFor="reference_no">
                                         No. Referensi
                                     </Label>
@@ -177,9 +167,7 @@ export default function CashTransferCreateScreen({
                                     />
                                     <InputError message={errors.reference_no} />
                                 </div>
-                            </div>
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
-                                <div className="grid gap-2 lg:basis-1/2">
+                                <div className="grid gap-2 lg:basis-2/3">
                                     <Label>Departemen</Label>
                                     <InputCombobox
                                         name="department_id"
@@ -194,7 +182,20 @@ export default function CashTransferCreateScreen({
                                         message={errors.department_id}
                                     />
                                 </div>
-                                <div className="grid gap-2 lg:basis-1/2">
+                            </div>
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                                <div className="grid gap-2 lg:basis-1/3">
+                                    <Label htmlFor="date">Tanggal</Label>
+                                    <InputDatepicker
+                                        id="date"
+                                        defaultValue={data.date}
+                                        onChange={(date, iso) =>
+                                            setData('date', iso)
+                                        }
+                                    />
+                                    <InputError message={errors.date} />
+                                </div>
+                                <div className="grid gap-2 lg:basis-2/3">
                                     <Label>Proyek</Label>
                                     <InputCombobox
                                         name="project_id"
