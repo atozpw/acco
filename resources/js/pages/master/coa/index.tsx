@@ -166,7 +166,7 @@ export default function CoaIndexScreen({
                                         Nama
                                     </TableHead>
                                     <TableHead className="min-w-[200px]">
-                                        Subklasifikasi
+                                        Klasifikasi
                                     </TableHead>
                                     <TableHead className="min-w-[125px]">
                                         Status

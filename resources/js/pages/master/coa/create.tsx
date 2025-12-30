@@ -70,7 +70,7 @@ export default function CoaCreateScreen({
 
     const classificationItems: ComboboxItem[] = classifications.map((c) => ({
         value: String(c.id),
-        label: `${c.name} (${c.type})`,
+        label: c.name,
     }));
 
     const { data, setData, post, processing, errors } = useForm<CoaFormData>({
@@ -173,12 +173,12 @@ export default function CoaCreateScreen({
                                 </div>
                                 <div className="grid gap-2 lg:basis-1/2">
                                     <Label htmlFor="coa_classification_id">
-                                        Subklasifikasi
+                                        Klasifikasi
                                     </Label>
                                     <InputCombobox
                                         name="coa_classification_id"
                                         items={classificationItems}
-                                        placeholder="Pilih subklasifikasi"
+                                        placeholder="Pilih klasifikasi"
                                         value={data.coa_classification_id}
                                         onValueChange={(value) =>
                                             setData(

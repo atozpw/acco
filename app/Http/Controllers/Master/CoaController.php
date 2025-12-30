@@ -52,8 +52,8 @@ class CoaController extends Controller
             ->get(['id', 'code', 'name']);
 
         $classifications = CoaClassification::query()
-            ->orderBy('name')
-            ->get(['id', 'name', 'type']);
+            ->orderBy('id')
+            ->get(['id', 'name']);
 
         return inertia('master/coa/create', [
             'parents' => $parents,
@@ -94,8 +94,8 @@ class CoaController extends Controller
             ->get(['id', 'code', 'name']);
 
         $classifications = CoaClassification::query()
-            ->orderBy('name')
-            ->get(['id', 'name', 'type']);
+            ->orderBy('id')
+            ->get(['id', 'name']);
 
         return inertia('master/coa/edit', [
             'account' => $account,
