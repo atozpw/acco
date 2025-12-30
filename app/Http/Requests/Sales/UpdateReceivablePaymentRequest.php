@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Sales;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateReceivablePaymentRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class UpdateReceivablePaymentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,69 @@ class UpdateReceivablePaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'contact_id' => [
+                'required',
+                'integer',
+                'exists:contacts,id',
+            ],
+
+            'coa_id' => [
+                'required',
+                'integer',
+                'exists:coas,id',
+            ],
+
+            'reference_no' => [
+                'required',
+                'string',
+                'max:10',
+                Rule::unique('receivable_payments', 'reference_no')->ignore($this->route('id')),
+            ],
+
+            'date' => [
+                'required',
+                'date_format:Y-m-d',
+            ],
+
+            'description' => [
+                'required',
+                'string',
+                'max:100',
+            ],
+
+            'amount' => [
+                'required',
+                'decimal:2',
+            ],
+
+            'details.*.sales_invoice_id' => [
+                'required',
+                'integer',
+                'exists:sales_invoices,id',
+            ],
+
+            'details.*.amount' => [
+                'required',
+                'decimal:2',
+            ],
+
+            'details.*.note' => [
+                'nullable',
+                'string',
+                'max:100',
+            ],
+
+            'details.*.department_id' => [
+                'required',
+                'integer',
+                'exists:departments,id',
+            ],
+
+            'details.*.project_id' => [
+                'nullable',
+                'integer',
+                'exists:projects,id',
+            ],
         ];
     }
 }
