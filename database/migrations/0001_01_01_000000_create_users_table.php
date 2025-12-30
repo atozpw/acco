@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('password', 150);
             $table->rememberToken();
             $table->string('avatar', 100)->nullable();
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });
