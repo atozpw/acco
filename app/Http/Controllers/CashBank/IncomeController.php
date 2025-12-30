@@ -37,7 +37,7 @@ class IncomeController extends Controller
                         });
                 });
             })
-            ->orderByDesc('date')
+            ->orderByDesc('created_at')
             ->simplePaginate($perPage)
             ->withQueryString();
 
@@ -73,17 +73,20 @@ class IncomeController extends Controller
         $cashCoas = Coa::query()
             ->active()
             ->where('is_cash_bank', 1)
+            ->doesntHave('children')
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
         $coas = Coa::query()
             ->active()
+            ->whereIn('coa_classification_id', [4, 8])
+            ->doesntHave('children')
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
         $departments = Department::query()
             ->active()
-            ->orderBy('name')
+            ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
         $projects = Project::query()
@@ -162,17 +165,20 @@ class IncomeController extends Controller
         $cashCoas = Coa::query()
             ->active()
             ->where('is_cash_bank', 1)
+            ->doesntHave('children')
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
         $coas = Coa::query()
             ->active()
+            ->whereIn('coa_classification_id', [4, 8])
+            ->doesntHave('children')
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
         $departments = Department::query()
             ->active()
-            ->orderBy('name')
+            ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
         $projects = Project::query()
