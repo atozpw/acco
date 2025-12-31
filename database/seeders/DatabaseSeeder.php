@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             ReferenceNumberSeeder::class,
             CoaClassificationSeeder::class,
             CoaSeeder::class,
+            ReferenceCoaSeeder::class,
         ]);
     }
 }
