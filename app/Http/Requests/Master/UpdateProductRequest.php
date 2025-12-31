@@ -87,6 +87,11 @@ class UpdateProductRequest extends FormRequest
                 'max:1024',
             ],
 
+            'is_stock_tracking' => [
+                'required',
+                'boolean',
+            ],
+
             'is_active' => [
                 'required',
                 'boolean',
