@@ -25,6 +25,7 @@ class Product extends Model
         'minimum_stock',
         'description',
         'image',
+        'is_stock_tracking',
         'is_active',
     ];
 
