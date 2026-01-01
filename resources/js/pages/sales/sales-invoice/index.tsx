@@ -342,16 +342,13 @@ export default function SalesInvoiceIndexScreen({
                     <AlertDialogHeader>
                         <AlertDialogTitle>Hapus Faktur</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Tindakan ini tidak dapat dibatalkan. Data faktur
-                            akan dihapus permanen.
+                            Tindakan ini akan menghapus data faktur penjualan.
+                            Anda yakin ingin melanjutkan?
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                         <AlertDialogCancel>Batal</AlertDialogCancel>
-                        <AlertDialogAction
-                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                            onClick={handleDelete}
-                        >
+                        <AlertDialogAction onClick={handleDelete}>
                             Hapus
                         </AlertDialogAction>
                     </AlertDialogFooter>
