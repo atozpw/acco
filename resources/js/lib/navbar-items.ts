@@ -11,6 +11,7 @@ import permissions from '@/routes/permissions';
 import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
 import roles from '@/routes/roles';
+import salesDelivery from '@/routes/sales-delivery';
 import taxData from '@/routes/tax-data';
 import unitMeasurement from '@/routes/unit-measurement';
 import users from '@/routes/users';
@@ -22,6 +23,7 @@ import {
     LayoutGrid,
     NotebookText,
     Settings2,
+    ShoppingBag,
 } from 'lucide-react';
 
 export const mainNavItems: NavItem[] = [
@@ -77,6 +79,17 @@ export const mainNavItems: NavItem[] = [
             {
                 title: 'Jurnal Umum',
                 href: generalJournal.index(),
+            },
+        ],
+    },
+    {
+        title: 'Penjualan',
+        href: '#',
+        icon: ShoppingBag,
+        children: [
+            {
+                title: 'Pengiriman Barang',
+                href: salesDelivery.index(),
             },
         ],
     },
