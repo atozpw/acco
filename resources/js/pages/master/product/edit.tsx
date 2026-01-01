@@ -34,6 +34,7 @@ type ProductProps = {
     minimum_stock: string | null;
     description: string | null;
     image: string | null;
+    is_stock_tracking: boolean;
     is_active: boolean;
 };
 
@@ -49,6 +50,7 @@ type ProductFormData = {
     minimum_stock: string;
     description: string;
     image: File | null;
+    is_stock_tracking: boolean;
     is_active: boolean;
 };
 
@@ -122,6 +124,7 @@ export default function ProductEditScreen({
             minimum_stock: product.minimum_stock ?? '',
             description: product.description ?? '',
             image: null,
+            is_stock_tracking: Boolean(product.is_stock_tracking),
             is_active: Boolean(product.is_active),
         });
 
@@ -356,22 +359,55 @@ export default function ProductEditScreen({
                                     />
                                 </div>
                             </div>
-                            <div className="grid max-w-2xl gap-2">
-                                <Label htmlFor="minimum_stock">
-                                    Minimum Stok
-                                </Label>
-                                <Input
-                                    id="minimum_stock"
-                                    name="minimum_stock"
-                                    type="number"
-                                    autoComplete="off"
-                                    placeholder="0"
-                                    value={data.minimum_stock}
-                                    onChange={(e) =>
-                                        setData('minimum_stock', e.target.value)
-                                    }
-                                />
-                                <InputError message={errors.minimum_stock} />
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                                <div className="grid gap-2 lg:basis-1/2">
+                                    <Label htmlFor="minimum_stock">
+                                        Minimum Stok
+                                    </Label>
+                                    <Input
+                                        id="minimum_stock"
+                                        name="minimum_stock"
+                                        type="number"
+                                        autoComplete="off"
+                                        placeholder="0"
+                                        value={data.minimum_stock}
+                                        onChange={(e) =>
+                                            setData(
+                                                'minimum_stock',
+                                                e.target.value,
+                                            )
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.minimum_stock}
+                                    />
+                                </div>
+                                <div className="grid gap-2 lg:basis-1/2">
+                                    <Label htmlFor="is_stock_tracking">
+                                        Lacak persediaan/ kontrol stok
+                                    </Label>
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-xs text-muted-foreground">
+                                            Nonaktif
+                                        </span>
+                                        <Switch
+                                            id="is_stock_tracking"
+                                            checked={data.is_stock_tracking}
+                                            onCheckedChange={(checked) =>
+                                                setData(
+                                                    'is_stock_tracking',
+                                                    Boolean(checked),
+                                                )
+                                            }
+                                        />
+                                        <span className="text-xs text-muted-foreground">
+                                            Aktif
+                                        </span>
+                                    </div>
+                                    <InputError
+                                        message={errors.minimum_stock}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -401,7 +437,7 @@ export default function ProductEditScreen({
                                 <InputError message={errors.description} />
                             </div>
                             <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
-                                <div className="grid gap-2 w-full">
+                                <div className="grid w-full gap-2">
                                     <Label htmlFor="image">Gambar</Label>
                                     <Input
                                         id="image"

@@ -116,7 +116,7 @@ export default function ProductDetailDialog({
                             </div>
                         </div>
 
-                        <div className="grid gap-4 md:grid-cols-2">
+                        <div className="grid gap-4 md:grid-cols-3">
                             <div className="grid gap-1">
                                 <div className="text-xs text-muted-foreground">
                                     Available Qty
@@ -128,6 +128,12 @@ export default function ProductDetailDialog({
                                     Minimum Stok
                                 </div>
                                 <div>{product.minimum_stock ?? '-'}</div>
+                            </div>
+                            <div className="grid gap-1">
+                                <div className="text-xs text-muted-foreground">
+                                    Lacak persediaan/ kontrol stok
+                                </div>
+                                <div>{product.is_stock_tracking ? 'Aktif' : 'Tidak Aktif'}</div>
                             </div>
                         </div>
 

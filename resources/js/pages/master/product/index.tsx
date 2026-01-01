@@ -89,6 +89,7 @@ export type ProductProps = {
     description?: string | null;
     image?: string | null;
     available_qty: string | number | null;
+    is_stock_tracking: boolean;
     is_active: boolean;
     category?: ProductCategoryProps | null;
     unit_measurement?: UnitProps | null;
