@@ -12,6 +12,7 @@ import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
 import roles from '@/routes/roles';
 import salesDelivery from '@/routes/sales-delivery';
+import salesInvoice from '@/routes/sales-invoice';
 import taxData from '@/routes/tax-data';
 import unitMeasurement from '@/routes/unit-measurement';
 import users from '@/routes/users';
@@ -90,6 +91,10 @@ export const mainNavItems: NavItem[] = [
             {
                 title: 'Pengiriman Barang',
                 href: salesDelivery.index(),
+            },
+            {
+                title: 'Faktur Penjualan',
+                href: salesInvoice.index(),
             },
         ],
     },

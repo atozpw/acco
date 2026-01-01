@@ -45,4 +45,9 @@ class SalesDelivery extends Model
     {
         return $this->hasMany(SalesDeliveryDetail::class);
     }
+
+    public function invoiceDeliveries(): HasMany
+    {
+        return $this->hasMany(SalesInvoiceDelivery::class);
+    }
 }
