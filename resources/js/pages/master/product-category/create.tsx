@@ -1,3 +1,6 @@
+import InputCombobox, {
+    type ComboboxItem,
+} from '@/components/form/input-combobox';
 import Heading from '@/components/heading';
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
@@ -15,9 +18,22 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import type { FormEventHandler } from 'react';
 import { toast } from 'sonner';
 
+type CoaOption = {
+    id: number;
+    code: string;
+    name: string;
+};
+
 type ProductCategoryFormData = {
     code: string;
     name: string;
+    inventory_coa_id: string;
+    purchase_coa_id: string;
+    purchase_receipt_coa_id: string;
+    purchase_return_coa_id: string;
+    sales_coa_id: string;
+    sales_delivery_coa_id: string;
+    sales_return_coa_id: string;
     is_active: boolean;
 };
 
@@ -36,11 +52,27 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function ProductCategoryCreateScreen() {
+export default function ProductCategoryCreateScreen({
+    coas,
+}: {
+    coas: CoaOption[];
+}) {
+    const coaItems: ComboboxItem[] = coas.map((coa) => ({
+        value: String(coa.id),
+        label: `${coa.code} - ${coa.name}`,
+    }));
+
     const { data, setData, post, processing, errors } =
         useForm<ProductCategoryFormData>({
             code: '',
             name: '',
+            inventory_coa_id: '',
+            purchase_coa_id: '',
+            purchase_receipt_coa_id: '',
+            purchase_return_coa_id: '',
+            sales_coa_id: '',
+            sales_delivery_coa_id: '',
+            sales_return_coa_id: '',
             is_active: true,
         });
 
@@ -147,6 +179,177 @@ export default function ProductCategoryCreateScreen() {
                                         </span>
                                     </div>
                                     <InputError message={errors.is_active} />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col lg:flex-row lg:space-x-12">
+                        <aside className="w-full max-w-xl lg:w-[250px] xl:w-[350px] 2xl:w-md">
+                            <HeadingSmall
+                                title="Kontrol Stok Produk"
+                                description="Atur akun-akun yang digunakan untuk pergerakan stok"
+                            />
+                        </aside>
+                        <Separator className="my-6 lg:hidden" />
+                        <div className="flex-1 space-y-6 md:max-w-2xl">
+                            <div className="grid max-w-2xl items-baseline gap-6 md:grid-cols-2">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="inventory_coa_id">
+                                        Akun Persediaan
+                                    </Label>
+                                    <InputCombobox
+                                        name="inventory_coa_id"
+                                        items={coaItems}
+                                        placeholder="Pilih akun persediaan"
+                                        value={data.inventory_coa_id}
+                                        onValueChange={(value) =>
+                                            setData('inventory_coa_id', value)
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.inventory_coa_id}
+                                    />
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="sales_delivery_coa_id">
+                                        Akun Pengiriman Barang
+                                    </Label>
+                                    <InputCombobox
+                                        name="sales_delivery_coa_id"
+                                        items={coaItems}
+                                        placeholder="Pilih akun pengiriman"
+                                        value={data.sales_delivery_coa_id}
+                                        onValueChange={(value) =>
+                                            setData(
+                                                'sales_delivery_coa_id',
+                                                value,
+                                            )
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.sales_delivery_coa_id}
+                                    />
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="purchase_receipt_coa_id">
+                                        Akun Penerimaan Barang
+                                    </Label>
+                                    <InputCombobox
+                                        name="purchase_receipt_coa_id"
+                                        items={coaItems}
+                                        placeholder="Pilih akun penerimaan"
+                                        value={data.purchase_receipt_coa_id}
+                                        onValueChange={(value) =>
+                                            setData(
+                                                'purchase_receipt_coa_id',
+                                                value,
+                                            )
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.purchase_receipt_coa_id}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col lg:flex-row lg:space-x-12">
+                        <aside className="w-full max-w-xl lg:w-[250px] xl:w-[350px] 2xl:w-md">
+                            <HeadingSmall
+                                title="Kategori Pembelian"
+                                description="Pilih akun-akun untuk transaksi pembelian"
+                            />
+                        </aside>
+                        <Separator className="my-6 lg:hidden" />
+                        <div className="flex-1 space-y-6 md:max-w-2xl">
+                            <div className="grid max-w-2xl items-baseline gap-6 md:grid-cols-2">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="purchase_coa_id">
+                                        Akun Pembelian
+                                    </Label>
+                                    <InputCombobox
+                                        name="purchase_coa_id"
+                                        items={coaItems}
+                                        placeholder="Pilih akun pembelian"
+                                        value={data.purchase_coa_id}
+                                        onValueChange={(value) =>
+                                            setData('purchase_coa_id', value)
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.purchase_coa_id}
+                                    />
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="purchase_return_coa_id">
+                                        Akun Retur Pembelian
+                                    </Label>
+                                    <InputCombobox
+                                        name="purchase_return_coa_id"
+                                        items={coaItems}
+                                        placeholder="Pilih akun retur pembelian"
+                                        value={data.purchase_return_coa_id}
+                                        onValueChange={(value) =>
+                                            setData(
+                                                'purchase_return_coa_id',
+                                                value,
+                                            )
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.purchase_return_coa_id}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col lg:flex-row lg:space-x-12">
+                        <aside className="w-full max-w-xl lg:w-[250px] xl:w-[350px] 2xl:w-md">
+                            <HeadingSmall
+                                title="Kategori Penjualan"
+                                description="Pilih akun-akun untuk transaksi penjualan"
+                            />
+                        </aside>
+                        <Separator className="my-6 lg:hidden" />
+                        <div className="flex-1 space-y-6 md:max-w-2xl">
+                            <div className="grid max-w-2xl items-baseline gap-6 md:grid-cols-2">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="sales_coa_id">
+                                        Akun Penjualan
+                                    </Label>
+                                    <InputCombobox
+                                        name="sales_coa_id"
+                                        items={coaItems}
+                                        placeholder="Pilih akun penjualan"
+                                        value={data.sales_coa_id}
+                                        onValueChange={(value) =>
+                                            setData('sales_coa_id', value)
+                                        }
+                                    />
+                                    <InputError message={errors.sales_coa_id} />
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="sales_return_coa_id">
+                                        Akun Retur Penjualan
+                                    </Label>
+                                    <InputCombobox
+                                        name="sales_return_coa_id"
+                                        items={coaItems}
+                                        placeholder="Pilih akun retur penjualan"
+                                        value={data.sales_return_coa_id}
+                                        onValueChange={(value) =>
+                                            setData(
+                                                'sales_return_coa_id',
+                                                value,
+                                            )
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.sales_return_coa_id}
+                                    />
                                 </div>
                             </div>
                         </div>

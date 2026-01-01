@@ -56,9 +56,9 @@ class ProductCategory extends Model
         return $this->belongsTo(Coa::class, 'sales_coa_id');
     }
 
-    public function salesReceiptCoa(): BelongsTo
+    public function salesDeliveryCoa(): BelongsTo
     {
-        return $this->belongsTo(Coa::class, 'sales_receipt_coa_id');
+        return $this->belongsTo(Coa::class, 'sales_delivery_coa_id');
     }
 
     public function salesReturnCoa(): BelongsTo

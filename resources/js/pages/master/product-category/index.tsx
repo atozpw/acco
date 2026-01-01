@@ -72,7 +72,28 @@ type ProductCategoryProps = {
     code: string;
     name: string;
     is_active: boolean;
+    inventory_coa?: { id: number; code: string; name: string } | null;
+    purchase_coa?: { id: number; code: string; name: string } | null;
+    purchase_receipt_coa?: { id: number; code: string; name: string } | null;
+    purchase_return_coa?: { id: number; code: string; name: string } | null;
+    sales_coa?: { id: number; code: string; name: string } | null;
+    sales_delivery_coa?: { id: number; code: string; name: string } | null;
+    sales_return_coa?: { id: number; code: string; name: string } | null;
 };
+
+const formatCoa = (
+    coa?: { id: number; code: string; name: string } | null,
+): string => {
+    if (!coa) return 'Belum diatur';
+    return `${coa.code} - ${coa.name}`;
+};
+
+const DetailRow = ({ label, value }: { label: string; value: string }) => (
+    <div className="grid gap-1">
+        <div className="text-xs text-muted-foreground">{label}</div>
+        <div>{value}</div>
+    </div>
+);
 
 const listPerPage: { item: string; value: string }[] = [
     { item: '5', value: '5' },
@@ -333,7 +354,7 @@ export default function ProductCategoryIndexScreen({
                                 </DialogDescription>
                             </DialogHeader>
                             {selectedCategory && (
-                                <div className="space-y-4 text-sm">
+                                <div className="space-y-6 text-sm">
                                     <div className="grid gap-4 md:grid-cols-2">
                                         <div className="grid gap-1">
                                             <div className="text-xs text-muted-foreground">
@@ -347,15 +368,81 @@ export default function ProductCategoryIndexScreen({
                                             </div>
                                             <div>{selectedCategory.name}</div>
                                         </div>
-                                    </div>
-                                    <div className="grid gap-1">
-                                        <div className="text-xs text-muted-foreground">
-                                            Status
+                                        <div className="grid gap-1">
+                                            <div className="text-xs text-muted-foreground">
+                                                Status
+                                            </div>
+                                            <div>
+                                                {selectedCategory.is_active
+                                                    ? 'Aktif'
+                                                    : 'Tidak Aktif'}
+                                            </div>
                                         </div>
-                                        <div>
-                                            {selectedCategory.is_active
-                                                ? 'Aktif'
-                                                : 'Tidak Aktif'}
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        <div className="text-xs font-semibold text-muted-foreground">
+                                            Kontrol Stok
+                                        </div>
+                                        <div className="grid gap-3 md:grid-cols-2">
+                                            <DetailRow
+                                                label="Akun Persediaan"
+                                                value={formatCoa(
+                                                    selectedCategory.inventory_coa,
+                                                )}
+                                            />
+                                            <DetailRow
+                                                label="Akun Pengiriman Barang"
+                                                value={formatCoa(
+                                                    selectedCategory.sales_delivery_coa,
+                                                )}
+                                            />
+                                            <DetailRow
+                                                label="Akun Penerimaan Barang"
+                                                value={formatCoa(
+                                                    selectedCategory.purchase_receipt_coa,
+                                                )}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        <div className="text-xs font-semibold text-muted-foreground">
+                                            Pembelian
+                                        </div>
+                                        <div className="grid gap-3 md:grid-cols-2">
+                                            <DetailRow
+                                                label="Akun Pembelian"
+                                                value={formatCoa(
+                                                    selectedCategory.purchase_coa,
+                                                )}
+                                            />
+                                            <DetailRow
+                                                label="Akun Retur Pembelian"
+                                                value={formatCoa(
+                                                    selectedCategory.purchase_return_coa,
+                                                )}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="space-y-3">
+                                        <div className="text-xs font-semibold text-muted-foreground">
+                                            Penjualan
+                                        </div>
+                                        <div className="grid gap-3 md:grid-cols-2">
+                                            <DetailRow
+                                                label="Akun Penjualan"
+                                                value={formatCoa(
+                                                    selectedCategory.sales_coa,
+                                                )}
+                                            />
+                                            <DetailRow
+                                                label="Akun Retur Penjualan"
+                                                value={formatCoa(
+                                                    selectedCategory.sales_return_coa,
+                                                )}
+                                            />
                                         </div>
                                     </div>
                                 </div>

@@ -35,6 +35,48 @@ class StoreProductCategoryRequest extends FormRequest
                 'max:50',
             ],
 
+            'inventory_coa_id' => [
+                'nullable',
+                'integer',
+                'exists:coas,id',
+            ],
+
+            'purchase_coa_id' => [
+                'nullable',
+                'integer',
+                'exists:coas,id',
+            ],
+
+            'purchase_receipt_coa_id' => [
+                'nullable',
+                'integer',
+                'exists:coas,id',
+            ],
+
+            'purchase_return_coa_id' => [
+                'nullable',
+                'integer',
+                'exists:coas,id',
+            ],
+
+            'sales_coa_id' => [
+                'nullable',
+                'integer',
+                'exists:coas,id',
+            ],
+
+            'sales_delivery_coa_id' => [
+                'nullable',
+                'integer',
+                'exists:coas,id',
+            ],
+
+            'sales_return_coa_id' => [
+                'nullable',
+                'integer',
+                'exists:coas,id',
+            ],
+
             'is_active' => [
                 'required',
                 'boolean',

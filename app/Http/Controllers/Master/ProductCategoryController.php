@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Master;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Master\StoreProductCategoryRequest;
 use App\Http\Requests\Master\UpdateProductCategoryRequest;
+use App\Models\Coa;
 use App\Models\ProductCategory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,6 +22,15 @@ class ProductCategoryController extends Controller
         $perPage = (int) $request->input('perPage', 15);
 
         $categories = ProductCategory::query()
+            ->with([
+                'inventoryCoa:id,code,name',
+                'purchaseCoa:id,code,name',
+                'purchaseReceiptCoa:id,code,name',
+                'purchaseReturnCoa:id,code,name',
+                'salesCoa:id,code,name',
+                'salesDeliveryCoa:id,code,name',
+                'salesReturnCoa:id,code,name',
+            ])
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('code', 'like', '%' . $search . '%')
@@ -45,7 +55,15 @@ class ProductCategoryController extends Controller
      */
     public function create(): Response
     {
-        return inertia('master/product-category/create');
+        $coas = Coa::query()
+            ->active()
+            ->doesntHave('children')
+            ->orderBy('code')
+            ->get(['id', 'code', 'name']);
+
+        return inertia('master/product-category/create', [
+            'coas' => $coas,
+        ]);
     }
 
     /**
@@ -75,8 +93,15 @@ class ProductCategoryController extends Controller
     {
         $category = ProductCategory::query()->findOrFail($id);
 
+        $coas = Coa::query()
+            ->active()
+            ->doesntHave('children')
+            ->orderBy('code')
+            ->get(['id', 'code', 'name']);
+
         return inertia('master/product-category/edit', [
             'category' => $category,
+            'coas' => $coas,
         ]);
     }
 
