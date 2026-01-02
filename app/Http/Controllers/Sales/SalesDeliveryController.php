@@ -153,6 +153,7 @@ class SalesDeliveryController extends Controller
                 ]);
             }
 
+            ReferenceNumber::updateSalesDelivery();
         });
 
         return redirect()->route('sales-delivery.index');
@@ -270,7 +271,7 @@ class SalesDeliveryController extends Controller
                 'is_closed' => $validated['is_closed'],
             ]);
 
-            $delivery->details()->delete();
+            $delivery->details->each->delete();
 
             foreach ($validated['details'] as $detail) {
                 $delivery->details()->create([
@@ -301,7 +302,7 @@ class SalesDeliveryController extends Controller
     {
         $delivery = SalesDelivery::findOrFail($id);
 
-        $delivery->details()->delete();
+        $delivery->details->each->delete();
         $delivery->delete();
 
         return redirect()->route('sales-delivery.index');
