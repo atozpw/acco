@@ -10,6 +10,7 @@ import ledgerData from '@/routes/ledger-data';
 import permissions from '@/routes/permissions';
 import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
+import receivablePayment from '@/routes/receivable-payment';
 import roles from '@/routes/roles';
 import salesDelivery from '@/routes/sales-delivery';
 import salesInvoice from '@/routes/sales-invoice';
@@ -95,6 +96,10 @@ export const mainNavItems: NavItem[] = [
             {
                 title: 'Faktur Penjualan',
                 href: salesInvoice.index(),
+            },
+            {
+                title: 'Pembayaran Piutang',
+                href: receivablePayment.index(),
             },
         ],
     },

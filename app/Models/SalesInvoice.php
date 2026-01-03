@@ -57,4 +57,9 @@ class SalesInvoice extends Model
     {
         return $this->hasMany(SalesInvoiceDelivery::class);
     }
+
+    public function receivablePaymentDetails(): HasMany
+    {
+        return $this->hasMany(ReceivablePaymentDetail::class);
+    }
 }

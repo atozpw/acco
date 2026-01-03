@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Sales\ReceivablePaymentController;
 use App\Http\Controllers\Sales\SalesDeliveryController;
 use App\Http\Controllers\Sales\SalesInvoiceController;
 use Illuminate\Support\Facades\Route;
@@ -22,4 +23,12 @@ Route::middleware('auth')->prefix('sales')->group(function () {
     Route::get('sales-invoice/{id}/edit', [SalesInvoiceController::class, 'edit'])->name('sales-invoice.edit');
     Route::put('sales-invoice/{id}', [SalesInvoiceController::class, 'update'])->name('sales-invoice.update');
     Route::delete('sales-invoice/{id}', [SalesInvoiceController::class, 'destroy'])->name('sales-invoice.destroy');
+
+    Route::get('account-receivable-payment', [ReceivablePaymentController::class, 'index'])->name('receivable-payment.index');
+    Route::get('account-receivable-payment/create', [ReceivablePaymentController::class, 'create'])->name('receivable-payment.create');
+    Route::post('account-receivable-payment', [ReceivablePaymentController::class, 'store'])->name('receivable-payment.store');
+    Route::get('account-receivable-payment/{id}', [ReceivablePaymentController::class, 'show'])->name('receivable-payment.show');
+    Route::get('account-receivable-payment/{id}/edit', [ReceivablePaymentController::class, 'edit'])->name('receivable-payment.edit');
+    Route::put('account-receivable-payment/{id}', [ReceivablePaymentController::class, 'update'])->name('receivable-payment.update');
+    Route::delete('account-receivable-payment/{id}', [ReceivablePaymentController::class, 'destroy'])->name('receivable-payment.destroy');
 });
