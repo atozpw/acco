@@ -24,6 +24,7 @@ return new class extends Migration
             $table->decimal('minimum_stock', 10, 2)->nullable();
             $table->string('description', 100)->nullable();
             $table->string('image', 100)->nullable();
+            $table->boolean('is_stock_tracking')->default(1);
             $table->boolean('is_active')->default(1);
             $table->timestamps();
             $table->softDeletes();
