@@ -186,6 +186,8 @@ class SalesInvoiceController extends Controller
                     ]);
                 }
             }
+
+            ReferenceNumber::updateSalesInvoice();
         });
 
         return redirect()->route('sales-invoice.index');
@@ -339,7 +341,7 @@ class SalesInvoiceController extends Controller
                 'is_delivery' => $validated['is_delivery'],
             ]);
 
-            $invoice->details()->delete();
+            $invoice->details->each->delete();
 
             foreach ($validated['details'] as $detail) {
                 $invoice->details()->create([
@@ -383,8 +385,8 @@ class SalesInvoiceController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         $invoice = SalesInvoice::findOrFail($id);
-        
-        $invoice->details()->delete();
+
+        $invoice->details->each->delete();
         $invoice->deliveries()->delete();
         $invoice->delete();
 
