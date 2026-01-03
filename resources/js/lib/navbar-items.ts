@@ -10,6 +10,7 @@ import ledgerData from '@/routes/ledger-data';
 import permissions from '@/routes/permissions';
 import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
+import purchaseReceipt from '@/routes/purchase-receipt';
 import receivablePayment from '@/routes/receivable-payment';
 import roles from '@/routes/roles';
 import salesDelivery from '@/routes/sales-delivery';
@@ -26,6 +27,7 @@ import {
     NotebookText,
     Settings2,
     ShoppingBag,
+    ShoppingCart,
 } from 'lucide-react';
 
 export const mainNavItems: NavItem[] = [
@@ -100,6 +102,17 @@ export const mainNavItems: NavItem[] = [
             {
                 title: 'Pembayaran Piutang',
                 href: receivablePayment.index(),
+            },
+        ],
+    },
+    {
+        title: 'Pembelian',
+        href: '#',
+        icon: ShoppingCart,
+        children: [
+            {
+                title: 'Penerimaan Barang',
+                href: purchaseReceipt.index(),
             },
         ],
     },
