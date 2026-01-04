@@ -341,7 +341,7 @@ class PurchaseInvoiceController extends Controller
                 'is_receipt' => $validated['is_receipt'],
             ]);
 
-            $invoice->details()->delete();
+            $invoice->details->each->delete();
 
             foreach ($validated['details'] as $detail) {
                 $invoice->details()->create([
@@ -386,7 +386,7 @@ class PurchaseInvoiceController extends Controller
     {
         $invoice = PurchaseInvoice::query()->findOrFail($id);
 
-        $invoice->details()->delete();
+        $invoice->details->each->delete();
         $invoice->receipts()->delete();
         $invoice->delete();
 

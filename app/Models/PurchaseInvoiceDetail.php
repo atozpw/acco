@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Observers\PurchaseInvoiceDetailObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[ObservedBy([PurchaseInvoiceDetailObserver::class])]
 class PurchaseInvoiceDetail extends Model
 {
     use SoftDeletes;
