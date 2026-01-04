@@ -265,11 +265,11 @@ export default function ExpenseEditScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Perbarui pengeluaran" />
+            <Head title="Perbarui Pengeluaran" />
 
             <div className="px-5 py-6">
                 <Heading
-                    title="Perbarui Pengeluaran"
+                    title="Ubah Pengeluaran"
                     description="Perbarui transaksi pengeluaran kas/bank"
                 />
 

@@ -267,7 +267,7 @@ export default function IncomeEditScreen({
 
             <div className="px-5 py-6">
                 <Heading
-                    title="Perbarui Penerimaan"
+                    title="Ubah Penerimaan"
                     description="Perbarui transaksi penerimaan kas/bank"
                 />
 

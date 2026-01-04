@@ -127,7 +127,7 @@ export default function CashTransferCreateScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Buat transfer kas" />
+            <Head title="Buat Baru Transfer Kas" />
 
             <div className="px-5 py-6">
                 <Heading

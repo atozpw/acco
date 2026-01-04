@@ -133,11 +133,11 @@ export default function CashTransferEditScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Perbarui transfer kas" />
+            <Head title="Perbarui Transfer Kas" />
 
             <div className="px-5 py-6">
                 <Heading
-                    title="Perbarui Transfer Kas"
+                    title="Ubah Transfer Kas"
                     description="Perbarui transaksi transfer antar kas/bank"
                 />
 

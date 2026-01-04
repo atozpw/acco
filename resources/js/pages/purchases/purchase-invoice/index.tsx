@@ -36,14 +36,13 @@ import {
 } from '@/components/ui/table';
 import { useDebounceValue } from '@/hooks/use-debounce';
 import AppLayout from '@/layouts/app-layout';
-import cashBank from '@/routes/cash-bank';
-import expense from '@/routes/expense';
+import purchaseInvoice from '@/routes/purchase-invoice';
+import purchases from '@/routes/purchases';
 import { BreadcrumbItem, CursorPagination } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
     CirclePlusIcon,
     MoreHorizontalIcon,
-    Search,
     Settings2,
     Trash2,
 } from 'lucide-react';
@@ -51,30 +50,24 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Kas & Bank',
-        href: cashBank.index().url,
-    },
-    {
-        title: 'Pengeluaran',
-        href: '',
-    },
+    { title: 'Pembelian', href: purchases.index().url },
+    { title: 'Faktur Pembelian', href: '' },
 ];
 
-type ExpenseContact = {
+type InvoiceContact = {
     id: number;
     name: string;
 };
 
-type ExpenseProps = {
+interface InvoiceProps {
     id: number;
     reference_no: string;
-    date: string;
+    date: string | null;
     formatted_date: string | null;
-    description: string;
-    amount: string | number;
-    contact?: ExpenseContact | null;
-};
+    description: string | null;
+    total: string | number;
+    contact?: InvoiceContact | null;
+}
 
 const listPerPage: { item: string; value: string }[] = [
     { item: '5', value: '5' },
@@ -84,11 +77,11 @@ const listPerPage: { item: string; value: string }[] = [
     { item: '100', value: '100' },
 ];
 
-export default function ExpenseIndexScreen({
-    expenses,
+export default function PurchaseInvoiceIndexScreen({
+    invoices,
     filters,
 }: {
-    expenses: CursorPagination<ExpenseProps>;
+    invoices: CursorPagination<InvoiceProps>;
     filters: { search: string; perPage: number };
 }) {
     const [search, setSearch] = useState(filters.search || '');
@@ -96,7 +89,7 @@ export default function ExpenseIndexScreen({
     const [itemsPage, setItemsPage] = useState<string>(
         String(filters.perPage ?? 25),
     );
-    const [deleteTarget, setDeleteTarget] = useState<ExpenseProps | null>(null);
+    const [deleteTarget, setDeleteTarget] = useState<InvoiceProps | null>(null);
 
     const formatCurrency = (value: string | number | null | undefined) => {
         if (value === null || value === undefined) return '-';
@@ -118,7 +111,7 @@ export default function ExpenseIndexScreen({
             Number(itemsPage) !== filters.perPage
         ) {
             router.get(
-                expense.index(),
+                purchaseInvoice.index(),
                 {
                     search: searchBounce,
                     perPage: Number(itemsPage),
@@ -133,12 +126,12 @@ export default function ExpenseIndexScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Pengeluaran" />
+            <Head title="Faktur Pembelian" />
 
             <div className="px-5 py-6">
                 <Heading
-                    title="Pengeluaran"
-                    description="Mengelola transaksi pengeluaran kas/bank"
+                    title="Faktur Pembelian"
+                    description="Kelola transaksi faktur pembelian"
                 />
 
                 <div className="space-y-6">
@@ -153,7 +146,7 @@ export default function ExpenseIndexScreen({
                             />
                         </div>
                         <Button asChild>
-                            <Link href={expense.create().url}>
+                            <Link href={purchaseInvoice.create().url}>
                                 <CirclePlusIcon /> Buat Baru
                             </Link>
                         </Button>
@@ -166,13 +159,13 @@ export default function ExpenseIndexScreen({
                                     <TableHead className="min-w-[120px] ps-4">
                                         Tanggal
                                     </TableHead>
-                                    <TableHead className="min-w-[140px]">
-                                        No. Referensi
+                                    <TableHead className="min-w-[160px]">
+                                        No. Faktur
                                     </TableHead>
-                                    <TableHead className="min-w-[180px]">
-                                        Nama
+                                    <TableHead className="min-w-[200px]">
+                                        Nama Pemasok
                                     </TableHead>
-                                    <TableHead className="min-w-[220px]">
+                                    <TableHead className="min-w-[240px]">
                                         Deskripsi
                                     </TableHead>
                                     <TableHead className="min-w-[140px] text-right">
@@ -182,7 +175,7 @@ export default function ExpenseIndexScreen({
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {expenses.data.length === 0 ? (
+                                {invoices.data.length === 0 ? (
                                     <TableRow>
                                         <TableCell
                                             colSpan={6}
@@ -192,7 +185,7 @@ export default function ExpenseIndexScreen({
                                         </TableCell>
                                     </TableRow>
                                 ) : (
-                                    expenses.data.map((item) => (
+                                    invoices.data.map((item) => (
                                         <TableRow key={item.id}>
                                             <TableCell className="ps-4 align-baseline">
                                                 {item.formatted_date ?? '-'}
@@ -207,11 +200,11 @@ export default function ExpenseIndexScreen({
                                             </TableCell>
                                             <TableCell className="align-baseline">
                                                 <div className="line-clamp-2 whitespace-normal">
-                                                    {item.description}
+                                                    {item.description ?? '-'}
                                                 </div>
                                             </TableCell>
                                             <TableCell className="text-right align-baseline">
-                                                {formatCurrency(item.amount)}
+                                                {formatCurrency(item.total)}
                                             </TableCell>
                                             <TableCell className="text-right align-baseline">
                                                 <DropdownMenu modal={false}>
@@ -235,19 +228,7 @@ export default function ExpenseIndexScreen({
                                                                 asChild
                                                             >
                                                                 <Link
-                                                                    href={expense.show(
-                                                                        item.id,
-                                                                    )}
-                                                                >
-                                                                    <Search />
-                                                                    Detail
-                                                                </Link>
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                asChild
-                                                            >
-                                                                <Link
-                                                                    href={expense.edit(
+                                                                    href={purchaseInvoice.edit(
                                                                         item.id,
                                                                     )}
                                                                 >
@@ -309,8 +290,8 @@ export default function ExpenseIndexScreen({
                                 </Select>
                             </div>
                             <SimplePaginate
-                                prevHref={expenses.prev_page_url}
-                                nextHref={expenses.next_page_url}
+                                prevHref={invoices.prev_page_url}
+                                nextHref={invoices.next_page_url}
                             />
                         </div>
                     </div>
@@ -327,11 +308,11 @@ export default function ExpenseIndexScreen({
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle>
-                                Hapus Pengeluaran
+                                Hapus Faktur Pembelian
                             </AlertDialogTitle>
                             <AlertDialogDescription>
-                                Tindakan ini akan menghapus transaksi
-                                pengeluaran. Anda yakin ingin melanjutkan?
+                                Tindakan ini akan menghapus data faktur
+                                pembelian. Anda yakin ingin melanjutkan?
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
@@ -341,20 +322,21 @@ export default function ExpenseIndexScreen({
                                     if (!deleteTarget) return;
 
                                     router.delete(
-                                        expense.destroy(deleteTarget.id).url,
+                                        purchaseInvoice.destroy(deleteTarget.id)
+                                            .url,
                                         {
                                             preserveScroll: true,
                                             onSuccess: () => {
                                                 toast.success('Berhasil', {
                                                     description:
-                                                        'Pengeluaran berhasil dihapus.',
+                                                        'Faktur berhasil dihapus.',
                                                 });
                                                 setDeleteTarget(null);
                                             },
                                             onError: () => {
                                                 toast.error('Gagal', {
                                                     description:
-                                                        'Terjadi kesalahan saat menghapus pengeluaran.',
+                                                        'Terjadi kesalahan saat menghapus faktur.',
                                                 });
                                             },
                                         },
