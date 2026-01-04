@@ -52,4 +52,9 @@ class PurchaseInvoice extends Model
     {
         return $this->hasMany(PurchaseInvoiceReceipt::class);
     }
+
+    public function payablePaymentDetails(): HasMany
+    {
+        return $this->hasMany(PayablePaymentDetail::class);
+    }
 }
