@@ -43,6 +43,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import {
     CirclePlusIcon,
     MoreHorizontalIcon,
+    Search,
     Settings2,
     Trash2,
 } from 'lucide-react';
@@ -204,9 +205,8 @@ export default function CashTransferIndexScreen({
                                             </TableCell>
                                             <TableCell className="align-baseline">
                                                 <div className="whitespace-normal">
-                                                    {item.department
-                                                        ? `${item.department.code} - ${item.department.name}`
-                                                        : '-'}
+                                                    {item.department?.name ??
+                                                        '-'}
                                                 </div>
                                             </TableCell>
                                             <TableCell className="align-baseline">
@@ -235,6 +235,18 @@ export default function CashTransferIndexScreen({
                                                         align="end"
                                                     >
                                                         <DropdownMenuGroup>
+                                                            <DropdownMenuItem
+                                                                asChild
+                                                            >
+                                                                <Link
+                                                                    href={cashTransfer.show(
+                                                                        item.id,
+                                                                    )}
+                                                                >
+                                                                    <Search />
+                                                                    Detail
+                                                                </Link>
+                                                            </DropdownMenuItem>
                                                             <DropdownMenuItem
                                                                 asChild
                                                             >

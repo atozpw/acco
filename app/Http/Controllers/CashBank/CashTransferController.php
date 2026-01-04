@@ -10,6 +10,7 @@ use App\Models\Coa;
 use App\Models\Department;
 use App\Models\CashTransfer;
 use App\Models\Project;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -118,9 +119,66 @@ class CashTransferController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): Response
     {
-        //
+        $cashTransfer = CashTransfer::query()
+            ->with([
+                'fromCoa:id,code,name',
+                'toCoa:id,code,name',
+                'department:id,code,name',
+                'project:id,code,name',
+                'createdBy:id,name',
+            ])
+            ->findOrFail($id);
+
+        $payload = [
+            'id' => $cashTransfer->id,
+            'reference_no' => $cashTransfer->reference_no,
+            'date' => $cashTransfer->date,
+            'formatted_date' => $cashTransfer->date
+                ? Carbon::parse($cashTransfer->date)->format('d/m/Y')
+                : null,
+            'description' => $cashTransfer->description,
+            'amount' => number_format((float) $cashTransfer->amount, 2, '.', ''),
+            'department' => $cashTransfer->department
+                ? [
+                    'id' => $cashTransfer->department->id,
+                    'code' => $cashTransfer->department->code,
+                    'name' => $cashTransfer->department->name,
+                ]
+                : null,
+            'project' => $cashTransfer->project
+                ? [
+                    'id' => $cashTransfer->project->id,
+                    'code' => $cashTransfer->project->code,
+                    'name' => $cashTransfer->project->name,
+                ]
+                : null,
+            'from_coa' => $cashTransfer->fromCoa
+                ? [
+                    'id' => $cashTransfer->fromCoa->id,
+                    'code' => $cashTransfer->fromCoa->code,
+                    'name' => $cashTransfer->fromCoa->name,
+                ]
+                : null,
+            'to_coa' => $cashTransfer->toCoa
+                ? [
+                    'id' => $cashTransfer->toCoa->id,
+                    'code' => $cashTransfer->toCoa->code,
+                    'name' => $cashTransfer->toCoa->name,
+                ]
+                : null,
+            'created_by' => $cashTransfer->createdBy
+                ? [
+                    'id' => $cashTransfer->createdBy->id,
+                    'name' => $cashTransfer->createdBy->name,
+                ]
+                : null,
+        ];
+
+        return inertia('cash-bank/cash-transfer/show', [
+            'cashTransfer' => $payload,
+        ]);
     }
 
     /**
