@@ -288,7 +288,7 @@ class PurchaseReceiptController extends Controller
                 'is_closed' => $validated['is_closed'],
             ]);
 
-            $receipt->details()->delete();
+            $receipt->details->each->delete();
 
             foreach ($validated['details'] as $detail) {
                 $receipt->details()->create([
@@ -319,7 +319,7 @@ class PurchaseReceiptController extends Controller
     {
         $receipt = PurchaseReceipt::query()->findOrFail($id);
 
-        $receipt->details()->delete();
+        $receipt->details->each->delete();
         $receipt->delete();
 
         return redirect()->route('purchase-receipt.index');
