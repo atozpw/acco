@@ -329,7 +329,7 @@ export default function SalesDeliveryIndexScreen({
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle>
-                                Hapus pengiriman
+                                Hapus Pengiriman Barang
                             </AlertDialogTitle>
                             <AlertDialogDescription>
                                 Tindakan ini akan menghapus data pengiriman.

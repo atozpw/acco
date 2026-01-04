@@ -263,7 +263,7 @@ export default function GeneralJournalEditScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Perbarui jurnal umum" />
+            <Head title="Perbarui Jurnal Umum" />
 
             <div className="px-5 py-6">
                 <Heading

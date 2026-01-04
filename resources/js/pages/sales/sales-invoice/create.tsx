@@ -715,12 +715,12 @@ export default function SalesInvoiceCreateScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Buat Faktur Penjualan" />
+            <Head title="Buat Baru Faktur Penjualan" />
 
             <div className="px-5 py-6">
                 <Heading
                     title="Tambah Faktur Penjualan"
-                    description="Buat baru faktur penjualan"
+                    description="Buat baru transaksi faktur penjualan"
                 />
 
                 <Separator className="mb-8" />

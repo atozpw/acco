@@ -315,7 +315,7 @@ export default function GeneralJournalIndexScreen({
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle>
-                                Hapus jurnal umum
+                                Hapus Jurnal Umum
                             </AlertDialogTitle>
                             <AlertDialogDescription>
                                 Tindakan ini akan menghapus jurnal umum dengan

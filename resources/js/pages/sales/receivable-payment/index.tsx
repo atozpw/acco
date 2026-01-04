@@ -332,10 +332,10 @@ export default function ReceivablePaymentIndexScreen({
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>
-                            Hapus Pembayaran
+                            Hapus Pembayaran Piutang
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                            Tindakan ini akan menghapus data pembayaran piutang
+                            Tindakan ini akan menghapus transaksi pembayaran piutang
                             usaha. Anda yakin ingin melanjutkan?
                         </AlertDialogDescription>
                     </AlertDialogHeader>

@@ -340,7 +340,9 @@ export default function SalesInvoiceIndexScreen({
             >
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Hapus Faktur</AlertDialogTitle>
+                        <AlertDialogTitle>
+                            Hapus Faktur Penjualan
+                        </AlertDialogTitle>
                         <AlertDialogDescription>
                             Tindakan ini akan menghapus data faktur penjualan.
                             Anda yakin ingin melanjutkan?

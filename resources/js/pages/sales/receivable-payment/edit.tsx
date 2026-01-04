@@ -79,7 +79,7 @@ type FormData = {
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Penjualan', href: sales.index().url },
     { title: 'Pembayaran Piutang', href: receivablePayment.index().url },
-    { title: 'Ubah Pembayaran', href: '' },
+    { title: 'Perbarui', href: '' },
 ];
 
 const parseLocalNumber = (
@@ -364,12 +364,12 @@ export default function ReceivablePaymentEditScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Ubah Pembayaran Piutang" />
+            <Head title="Perbarui Pembayaran Piutang" />
 
             <div className="px-5 py-6">
                 <Heading
                     title="Ubah Pembayaran Piutang"
-                    description="Sunting informasi pembayaran piutang usaha"
+                    description="Perbarui informasi pembayaran piutang usaha"
                 />
 
                 <Separator className="mb-8" />

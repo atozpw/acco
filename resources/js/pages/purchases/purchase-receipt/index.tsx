@@ -308,10 +308,10 @@ export default function PurchaseReceiptIndexScreen({
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle>
-                                Hapus penerimaan
+                                Hapus Penerimaan Barang
                             </AlertDialogTitle>
                             <AlertDialogDescription>
-                                Tindakan ini akan menghapus data penerimaan.
+                                Tindakan ini akan menghapus data penerimaan barang.
                                 Anda yakin ingin melanjutkan?
                             </AlertDialogDescription>
                         </AlertDialogHeader>

@@ -547,8 +547,8 @@ export default function PurchaseReceiptEditScreen({
 
             <div className="px-5 py-6">
                 <Heading
-                    title="Perbarui Penerimaan Barang"
-                    description="Ubah transaksi penerimaan barang"
+                    title="Ubah Penerimaan Barang"
+                    description="Perbarui transaksi penerimaan barang"
                 />
 
                 <Separator className="mb-8" />

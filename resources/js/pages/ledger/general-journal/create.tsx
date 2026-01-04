@@ -217,7 +217,7 @@ export default function GeneralJournalCreateScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Buat jurnal umum" />
+            <Head title="Buat Baru Jurnal Umum" />
 
             <div className="px-5 py-6">
                 <Heading

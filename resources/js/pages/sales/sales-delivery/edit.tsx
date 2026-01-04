@@ -171,7 +171,7 @@ export default function SalesDeliveryEditScreen({
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Penjualan', href: sales.index().url },
         { title: 'Pengiriman Barang', href: salesDelivery.index().url },
-        { title: 'Edit', href: '' },
+        { title: 'Perbarui', href: '' },
     ];
 
     const contactItems: ComboboxItem[] = contacts.map((c) => ({
@@ -483,7 +483,7 @@ export default function SalesDeliveryEditScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Ubah Pengiriman" />
+            <Head title="Perbarui Pengiriman Barang" />
 
             <div className="px-5 py-6">
                 <Heading

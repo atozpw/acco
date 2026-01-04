@@ -227,7 +227,7 @@ export default function SalesInvoiceEditScreen({
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Penjualan', href: sales.index().url },
         { title: 'Faktur Penjualan', href: salesInvoice.index().url },
-        { title: 'Edit', href: '' },
+        { title: 'Perbarui', href: '' },
     ];
 
     const contactItems: ComboboxItem[] = contacts.map((c) => ({
@@ -799,12 +799,12 @@ export default function SalesInvoiceEditScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Edit Faktur Penjualan" />
+            <Head title="Perbarui Faktur Penjualan" />
 
             <div className="px-5 py-6">
                 <Heading
-                    title="Edit Faktur Penjualan"
-                    description="Perbarui informasi faktur"
+                    title="Ubah Faktur Penjualan"
+                    description="Perbarui transaksi faktur penjualan"
                 />
 
                 <Separator className="mb-8" />

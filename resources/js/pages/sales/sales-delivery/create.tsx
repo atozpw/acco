@@ -417,7 +417,7 @@ export default function SalesDeliveryCreateScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Buat Pengiriman" />
+            <Head title="Buat Baru Pengiriman Barang" />
 
             <div className="px-5 py-6">
                 <Heading
