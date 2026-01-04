@@ -148,7 +148,8 @@ export default function ExpenseEditScreen({
                   },
               ];
 
-    const { data, setData, put, processing, errors } = useForm<ExpenseFormData>(
+    const { data, setData, put, processing, errors, transform } =
+        useForm<ExpenseFormData>(
         {
             contact_id: String(expense.contact_id),
             coa_id: String(expense.coa_id),
@@ -245,7 +246,12 @@ export default function ExpenseEditScreen({
 
     const submit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        setData('amount', totalDetail.toFixed(2));
+        const nextAmount = totalDetail.toFixed(2);
+        setData('amount', nextAmount);
+        transform((formData) => ({
+            ...formData,
+            amount: nextAmount,
+        }));
 
         put(expenseRoutes.update(expense.id).url, {
             preserveScroll: true,

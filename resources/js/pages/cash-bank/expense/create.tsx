@@ -134,7 +134,7 @@ export default function ExpenseCreateScreen({
         project_id: '',
     };
 
-    const { data, setData, post, processing, errors } =
+    const { data, setData, post, processing, errors, transform } =
         useForm<ExpenseFormData>({
             contact_id: '',
             coa_id: '',
@@ -222,7 +222,12 @@ export default function ExpenseCreateScreen({
 
     const submit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        setData('amount', totalDetail.toFixed(2));
+        const nextAmount = totalDetail.toFixed(2);
+        setData('amount', nextAmount);
+        transform((formData) => ({
+            ...formData,
+            amount: nextAmount,
+        }));
 
         post(expense.store().url, {
             preserveScroll: true,
