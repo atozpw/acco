@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Purchase\PayablePaymentController;
 use App\Http\Controllers\Purchase\PurchaseInvoiceController;
 use App\Http\Controllers\Purchase\PurchaseReceiptController;
 use Illuminate\Support\Facades\Route;
@@ -20,4 +21,11 @@ Route::middleware('auth')->prefix('purchases')->group(function () {
     Route::get('purchase-invoice/{id}/edit', [PurchaseInvoiceController::class, 'edit'])->name('purchase-invoice.edit');
     Route::put('purchase-invoice/{id}', [PurchaseInvoiceController::class, 'update'])->name('purchase-invoice.update');
     Route::delete('purchase-invoice/{id}', [PurchaseInvoiceController::class, 'destroy'])->name('purchase-invoice.destroy');
+
+    Route::get('payable-payment', [PayablePaymentController::class, 'index'])->name('payable-payment.index');
+    Route::get('payable-payment/create', [PayablePaymentController::class, 'create'])->name('payable-payment.create');
+    Route::post('payable-payment', [PayablePaymentController::class, 'store'])->name('payable-payment.store');
+    Route::get('payable-payment/{id}/edit', [PayablePaymentController::class, 'edit'])->name('payable-payment.edit');
+    Route::put('payable-payment/{id}', [PayablePaymentController::class, 'update'])->name('payable-payment.update');
+    Route::delete('payable-payment/{id}', [PayablePaymentController::class, 'destroy'])->name('payable-payment.destroy');
 });

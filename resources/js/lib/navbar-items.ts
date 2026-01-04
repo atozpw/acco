@@ -7,6 +7,7 @@ import expense from '@/routes/expense';
 import generalJournal from '@/routes/general-journal';
 import income from '@/routes/income';
 import ledgerData from '@/routes/ledger-data';
+import payablePayment from '@/routes/payable-payment';
 import permissions from '@/routes/permissions';
 import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
@@ -118,6 +119,10 @@ export const mainNavItems: NavItem[] = [
             {
                 title: 'Faktur Pembelian',
                 href: purchaseInvoice.index(),
+            },
+            {
+                title: 'Pembayaran Utang',
+                href: payablePayment.index(),
             },
         ],
     },
