@@ -148,15 +148,16 @@ export default function IncomeEditScreen({
                   },
               ];
 
-    const { data, setData, put, processing, errors } = useForm<IncomeFormData>({
-        contact_id: String(income.contact_id),
-        coa_id: String(income.coa_id),
-        reference_no: income.reference_no ?? '',
-        date: income.date ?? '',
-        description: income.description ?? '',
-        amount: income.amount ?? '0.00',
-        details: initialDetails,
-    });
+    const { data, setData, put, processing, errors, transform } =
+        useForm<IncomeFormData>({
+            contact_id: String(income.contact_id),
+            coa_id: String(income.coa_id),
+            reference_no: income.reference_no ?? '',
+            date: income.date ?? '',
+            description: income.description ?? '',
+            amount: income.amount ?? '0.00',
+            details: initialDetails,
+        });
 
     const [formattedDetailAmounts, setFormattedDetailAmounts] = useState<
         string[]
@@ -243,7 +244,12 @@ export default function IncomeEditScreen({
 
     const submit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        setData('amount', totalDetail.toFixed(2));
+        const nextAmount = totalDetail.toFixed(2);
+        setData('amount', nextAmount);
+        transform((formData) => ({
+            ...formData,
+            amount: nextAmount,
+        }));
 
         put(incomeRoutes.update(income.id).url, {
             preserveScroll: true,

@@ -134,8 +134,8 @@ export default function IncomeCreateScreen({
         project_id: '',
     };
 
-    const { data, setData, post, processing, errors } = useForm<IncomeFormData>(
-        {
+    const { data, setData, post, processing, errors, transform } =
+        useForm<IncomeFormData>({
             contact_id: '',
             coa_id: '',
             reference_no: referenceNumber,
@@ -143,8 +143,7 @@ export default function IncomeCreateScreen({
             description: '',
             amount: '0.00',
             details: [{ ...initialDetail }],
-        },
-    );
+        });
 
     const [formattedDetailAmounts, setFormattedDetailAmounts] = useState<
         string[]
@@ -223,7 +222,12 @@ export default function IncomeCreateScreen({
 
     const submit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
-        setData('amount', String(totalDetail));
+        const nextAmount = totalDetail.toFixed(2);
+        setData('amount', nextAmount);
+        transform((formData) => ({
+            ...formData,
+            amount: nextAmount,
+        }));
 
         post(income.store().url, {
             preserveScroll: true,
