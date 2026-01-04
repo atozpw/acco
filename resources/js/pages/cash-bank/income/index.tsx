@@ -146,7 +146,7 @@ export default function IncomeIndexScreen({
                         <div className="flex items-center gap-2">
                             <Input
                                 className="text-sm lg:w-[250px]"
-                                placeholder="Cari nomor, nama atau deskripsi..."
+                                placeholder="Cari ..."
                                 autoComplete="off"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
@@ -327,7 +327,7 @@ export default function IncomeIndexScreen({
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle>
-                                Hapus penerimaan
+                                Hapus Penerimaan
                             </AlertDialogTitle>
                             <AlertDialogDescription>
                                 Tindakan ini akan menghapus transaksi
