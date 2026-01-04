@@ -44,13 +44,13 @@ class UpdateTaxRequest extends FormRequest
             'sales_coa_id' => [
                 'nullable',
                 'integer',
-                'exists:coa,id',
+                'exists:coas,id',
             ],
 
             'purchase_coa_id' => [
                 'nullable',
                 'integer',
-                'exists:coa,id',
+                'exists:coas,id',
             ],
 
             'is_active' => [
