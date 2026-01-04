@@ -141,9 +141,73 @@ class ExpenseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): Response
     {
-        //
+        $expense = Expense::query()
+            ->with([
+                'contact:id,name',
+                'createdBy:id,name',
+                'details.coa:id,code,name',
+                'details.department:id,code,name',
+                'details.project:id,code,name',
+            ])
+            ->findOrFail($id);
+
+        $payload = [
+            'id' => $expense->id,
+            'reference_no' => $expense->reference_no,
+            'date' => $expense->date,
+            'formatted_date' => $expense->date
+                ? now()->parse($expense->date)->format('d/m/Y')
+                : null,
+            'description' => $expense->description,
+            'amount' => number_format((float) $expense->amount, 2, '.', ''),
+            'contact' => $expense->contact
+                ? [
+                    'id' => $expense->contact->id,
+                    'name' => $expense->contact->name,
+                ]
+                : null,
+            'created_by' => $expense->createdBy
+                ? [
+                    'id' => $expense->createdBy->id,
+                    'name' => $expense->createdBy->name,
+                ]
+                : null,
+            'details' => $expense->details
+                ->map(function ($detail) {
+                    return [
+                        'coa' => $detail->coa
+                            ? [
+                                'id' => $detail->coa->id,
+                                'code' => $detail->coa->code,
+                                'name' => $detail->coa->name,
+                            ]
+                            : null,
+                        'department' => $detail->department
+                            ? [
+                                'id' => $detail->department->id,
+                                'code' => $detail->department->code,
+                                'name' => $detail->department->name,
+                            ]
+                            : null,
+                        'project' => $detail->project
+                            ? [
+                                'id' => $detail->project->id,
+                                'code' => $detail->project->code,
+                                'name' => $detail->project->name,
+                            ]
+                            : null,
+                        'amount' => number_format((float) $detail->amount, 2, '.', ''),
+                        'note' => $detail->note,
+                    ];
+                })
+                ->values(),
+        ];
+
+        return inertia('cash-bank/expense/show', [
+            'expense' => $payload,
+        ]);
     }
 
     /**

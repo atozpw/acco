@@ -141,9 +141,73 @@ class IncomeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): Response
     {
-        //
+        $income = Income::query()
+            ->with([
+                'contact:id,name',
+                'createdBy:id,name',
+                'details.coa:id,code,name',
+                'details.department:id,code,name',
+                'details.project:id,code,name',
+            ])
+            ->findOrFail($id);
+
+        $payload = [
+            'id' => $income->id,
+            'reference_no' => $income->reference_no,
+            'date' => $income->date,
+            'formatted_date' => $income->date
+                ? now()->parse($income->date)->format('d/m/Y')
+                : null,
+            'description' => $income->description,
+            'amount' => number_format((float) $income->amount, 2, '.', ''),
+            'contact' => $income->contact
+                ? [
+                    'id' => $income->contact->id,
+                    'name' => $income->contact->name,
+                ]
+                : null,
+            'created_by' => $income->createdBy
+                ? [
+                    'id' => $income->createdBy->id,
+                    'name' => $income->createdBy->name,
+                ]
+                : null,
+            'details' => $income->details
+                ->map(function ($detail) {
+                    return [
+                        'coa' => $detail->coa
+                            ? [
+                                'id' => $detail->coa->id,
+                                'code' => $detail->coa->code,
+                                'name' => $detail->coa->name,
+                            ]
+                            : null,
+                        'department' => $detail->department
+                            ? [
+                                'id' => $detail->department->id,
+                                'code' => $detail->department->code,
+                                'name' => $detail->department->name,
+                            ]
+                            : null,
+                        'project' => $detail->project
+                            ? [
+                                'id' => $detail->project->id,
+                                'code' => $detail->project->code,
+                                'name' => $detail->project->name,
+                            ]
+                            : null,
+                        'amount' => number_format((float) $detail->amount, 2, '.', ''),
+                        'note' => $detail->note,
+                    ];
+                })
+                ->values(),
+        ];
+
+        return inertia('cash-bank/income/show', [
+            'income' => $payload,
+        ]);
     }
 
     /**
