@@ -51,7 +51,7 @@ import { toast } from 'sonner';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Pembelian', href: purchases.index().url },
-    { title: 'Faktur Pembelian', href: '' },
+    { title: 'Invoice Pembelian', href: '' },
 ];
 
 type InvoiceContact = {
@@ -126,12 +126,12 @@ export default function PurchaseInvoiceIndexScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Faktur Pembelian" />
+            <Head title="Invoice Pembelian" />
 
             <div className="px-5 py-6">
                 <Heading
-                    title="Faktur Pembelian"
-                    description="Kelola transaksi faktur pembelian"
+                    title="Invoice Pembelian"
+                    description="Kelola transaksi invoice pembelian"
                 />
 
                 <div className="space-y-6">
@@ -160,7 +160,7 @@ export default function PurchaseInvoiceIndexScreen({
                                         Tanggal
                                     </TableHead>
                                     <TableHead className="min-w-[160px]">
-                                        No. Faktur
+                                        No. Invoice
                                     </TableHead>
                                     <TableHead className="min-w-[200px]">
                                         Nama Pemasok
@@ -308,10 +308,10 @@ export default function PurchaseInvoiceIndexScreen({
                     <AlertDialogContent>
                         <AlertDialogHeader>
                             <AlertDialogTitle>
-                                Hapus Faktur Pembelian
+                                Hapus Invoice Pembelian
                             </AlertDialogTitle>
                             <AlertDialogDescription>
-                                Tindakan ini akan menghapus data faktur
+                                Tindakan ini akan menghapus data invoice
                                 pembelian. Anda yakin ingin melanjutkan?
                             </AlertDialogDescription>
                         </AlertDialogHeader>
@@ -329,14 +329,14 @@ export default function PurchaseInvoiceIndexScreen({
                                             onSuccess: () => {
                                                 toast.success('Berhasil', {
                                                     description:
-                                                        'Faktur berhasil dihapus.',
+                                                        'Invoice berhasil dihapus.',
                                                 });
                                                 setDeleteTarget(null);
                                             },
                                             onError: () => {
                                                 toast.error('Gagal', {
                                                     description:
-                                                        'Terjadi kesalahan saat menghapus faktur.',
+                                                        'Terjadi kesalahan saat menghapus invoice.',
                                                 });
                                             },
                                         },

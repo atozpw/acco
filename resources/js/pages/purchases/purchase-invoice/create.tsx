@@ -127,7 +127,7 @@ type FormData = {
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Pembelian', href: purchases.index().url },
-    { title: 'Faktur Pembelian', href: purchaseInvoice.index().url },
+    { title: 'Invoice Pembelian', href: purchaseInvoice.index().url },
     { title: 'Buat Baru', href: '' },
 ];
 
@@ -773,12 +773,12 @@ export default function PurchaseInvoiceCreateScreen({
             preserveScroll: true,
             onSuccess: () => {
                 toast.success('Berhasil', {
-                    description: 'Faktur pembelian berhasil dibuat.',
+                    description: 'Invoice pembelian berhasil dibuat.',
                 });
             },
             onError: () => {
                 toast.error('Gagal', {
-                    description: 'Terjadi kesalahan saat membuat faktur.',
+                    description: 'Terjadi kesalahan saat membuat invoice.',
                 });
             },
         });
@@ -786,12 +786,12 @@ export default function PurchaseInvoiceCreateScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Buat Baru Faktur Pembelian" />
+            <Head title="Buat Baru Invoice Pembelian" />
 
             <div className="px-5 py-6">
                 <Heading
-                    title="Tambah Faktur Pembelian"
-                    description="Buat baru transaksi faktur pembelian"
+                    title="Tambah Invoice Pembelian"
+                    description="Buat baru transaksi invoice pembelian"
                 />
 
                 <Separator className="mb-8" />
@@ -801,7 +801,7 @@ export default function PurchaseInvoiceCreateScreen({
                         <aside className="w-full max-w-xl lg:w-[260px] xl:w-[320px]">
                             <HeadingSmall
                                 title="Data Umum"
-                                description="Lengkapi informasi utama faktur"
+                                description="Lengkapi informasi utama invoice"
                             />
                         </aside>
                         <Separator className="my-6 lg:hidden" />
@@ -919,7 +919,7 @@ export default function PurchaseInvoiceCreateScreen({
                                     name="description"
                                     rows={3}
                                     className="dark:bg-transparent"
-                                    placeholder="Deskripsi faktur"
+                                    placeholder="Deskripsi invoice"
                                     value={data.description}
                                     onChange={(e) =>
                                         setData('description', e.target.value)
@@ -942,7 +942,7 @@ export default function PurchaseInvoiceCreateScreen({
                                         htmlFor="is_receipt"
                                         className="cursor-pointer text-xs"
                                     >
-                                        Faktur berasal dari penerimaan
+                                        Invoice berasal dari penerimaan
                                     </Label>
                                 </div>
                                 <InputError message={errors.is_receipt} />
@@ -954,7 +954,7 @@ export default function PurchaseInvoiceCreateScreen({
                         <div className="flex flex-col space-y-4 rounded-md border p-4">
                             <HeadingSmall
                                 title="Referensi Penerimaan"
-                                description="Hubungkan faktur dengan penerimaan yang sudah ada"
+                                description="Hubungkan invoice dengan penerimaan yang sudah ada"
                             />
                             <div className="space-y-3">
                                 {data.receipts.map((receiptLink, index) => {
@@ -1075,7 +1075,7 @@ export default function PurchaseInvoiceCreateScreen({
                         <aside className="w-full">
                             <HeadingSmall
                                 title="Detail Barang"
-                                description="Atur item yang difakturkan"
+                                description="Atur item yang termasuk dalam invoice"
                             />
                         </aside>
                         <Separator className="lg:hidden" />
@@ -1726,7 +1726,7 @@ export default function PurchaseInvoiceCreateScreen({
                                     Menyimpan...
                                 </>
                             ) : (
-                                'Simpan Faktur'
+                                'Simpan Invoice'
                             )}
                         </Button>
                     </div>

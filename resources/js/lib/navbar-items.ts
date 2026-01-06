@@ -117,7 +117,7 @@ export const mainNavItems: NavItem[] = [
                 href: purchaseReceipt.index(),
             },
             {
-                title: 'Faktur Pembelian',
+                title: 'Invoice Pembelian',
                 href: purchaseInvoice.index(),
             },
             {
