@@ -43,6 +43,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import {
     CirclePlusIcon,
     MoreHorizontalIcon,
+    ReceiptText,
     Search,
     Settings2,
     Trash2,
@@ -230,6 +231,19 @@ export default function GeneralJournalIndexScreen({
                                                                 >
                                                                     <Search />
                                                                     Detail
+                                                                </Link>
+                                                            </DropdownMenuItem>
+                                                            <DropdownMenuItem
+                                                                asChild
+                                                            >
+                                                                <Link
+                                                                    href={generalJournal.voucher(
+                                                                        item.id,
+                                                                    )}
+                                                                >
+                                                                    <ReceiptText />
+                                                                    Jurnal
+                                                                    Voucher
                                                                 </Link>
                                                             </DropdownMenuItem>
                                                             <DropdownMenuItem
