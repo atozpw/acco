@@ -8,6 +8,7 @@ Route::middleware('auth')->prefix('ledger')->group(function () {
     Route::redirect('', '/ledger/ledger-data')->name('ledger.index');
 
     Route::get('ledger-data', [LedgerController::class, 'index'])->name('ledger-data.index');
+    Route::get('ledger-data/journal-voucher/{id}', [LedgerController::class, 'show'])->name('ledger-data.show');
 
     Route::get('general-journal', [GeneralJournalController::class, 'index'])->name('general-journal.index');
     Route::get('general-journal/create', [GeneralJournalController::class, 'create'])->name('general-journal.create');
