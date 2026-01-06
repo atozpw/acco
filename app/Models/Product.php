@@ -23,6 +23,7 @@ class Product extends Model
         'unit_measurement_id',
         'sales_price',
         'purchase_price',
+        'cogs',
         'sales_tax_id',
         'purchase_tax_id',
         'minimum_stock',
