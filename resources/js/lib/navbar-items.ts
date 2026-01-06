@@ -98,7 +98,7 @@ export const mainNavItems: NavItem[] = [
                 href: salesDelivery.index(),
             },
             {
-                title: 'Faktur Penjualan',
+                title: 'Invoice Penjualan',
                 href: salesInvoice.index(),
             },
             {

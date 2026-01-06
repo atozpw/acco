@@ -67,7 +67,7 @@ type InvoiceProps = {
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Penjualan', href: sales.index().url },
-    { title: 'Faktur Penjualan', href: '' },
+    { title: 'Invoice Penjualan', href: '' },
 ];
 
 const listPerPage: { item: string; value: string }[] = [
@@ -132,12 +132,12 @@ export default function SalesInvoiceIndexScreen({
             preserveScroll: true,
             onSuccess: () => {
                 toast.success('Berhasil', {
-                    description: 'Faktur berhasil dihapus.',
+                    description: 'Invoice berhasil dihapus.',
                 });
             },
             onError: () => {
                 toast.error('Gagal', {
-                    description: 'Terjadi kesalahan saat menghapus faktur.',
+                    description: 'Terjadi kesalahan saat menghapus invoice.',
                 });
             },
             onFinish: () => setDeleteTarget(null),
@@ -146,12 +146,12 @@ export default function SalesInvoiceIndexScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Faktur Penjualan" />
+            <Head title="Invoice Penjualan" />
 
             <div className="px-5 py-6">
                 <Heading
-                    title="Faktur Penjualan"
-                    description="Mengelola data faktur penjualan"
+                    title="Invoice Penjualan"
+                    description="Mengelola data invoice penjualan"
                 />
 
                 <div className="space-y-6">
@@ -180,7 +180,7 @@ export default function SalesInvoiceIndexScreen({
                                         Tanggal
                                     </TableHead>
                                     <TableHead className="min-w-[160px]">
-                                        No. Faktur
+                                        No. Invoice
                                     </TableHead>
                                     <TableHead className="min-w-[200px]">
                                         Nama Pelanggan
@@ -341,10 +341,10 @@ export default function SalesInvoiceIndexScreen({
                 <AlertDialogContent>
                     <AlertDialogHeader>
                         <AlertDialogTitle>
-                            Hapus Faktur Penjualan
+                            Hapus Invoice Penjualan
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                            Tindakan ini akan menghapus data faktur penjualan.
+                            Tindakan ini akan menghapus data invoice penjualan.
                             Anda yakin ingin melanjutkan?
                         </AlertDialogDescription>
                     </AlertDialogHeader>

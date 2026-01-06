@@ -226,7 +226,7 @@ export default function SalesInvoiceEditScreen({
 }) {
     const breadcrumbs: BreadcrumbItem[] = [
         { title: 'Penjualan', href: sales.index().url },
-        { title: 'Faktur Penjualan', href: salesInvoice.index().url },
+        { title: 'Invoice Penjualan', href: salesInvoice.index().url },
         { title: 'Perbarui', href: '' },
     ];
 
@@ -786,12 +786,12 @@ export default function SalesInvoiceEditScreen({
             preserveScroll: true,
             onSuccess: () => {
                 toast.success('Berhasil', {
-                    description: 'Faktur berhasil diperbarui.',
+                    description: 'Invoice berhasil diperbarui.',
                 });
             },
             onError: () => {
                 toast.error('Gagal', {
-                    description: 'Terjadi kesalahan saat memperbarui faktur.',
+                    description: 'Terjadi kesalahan saat memperbarui invoice.',
                 });
             },
         });
@@ -799,12 +799,12 @@ export default function SalesInvoiceEditScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Perbarui Faktur Penjualan" />
+            <Head title="Perbarui Invoice Penjualan" />
 
             <div className="px-5 py-6">
                 <Heading
-                    title="Ubah Faktur Penjualan"
-                    description="Perbarui transaksi faktur penjualan"
+                    title="Ubah Invoice Penjualan"
+                    description="Perbarui transaksi invoice penjualan"
                 />
 
                 <Separator className="mb-8" />
@@ -814,7 +814,7 @@ export default function SalesInvoiceEditScreen({
                         <aside className="w-full max-w-xl lg:w-[260px] xl:w-[320px]">
                             <HeadingSmall
                                 title="Data Umum"
-                                description="Lengkapi informasi utama faktur"
+                                description="Lengkapi informasi utama invoice"
                             />
                         </aside>
                         <Separator className="my-6 lg:hidden" />
@@ -932,7 +932,7 @@ export default function SalesInvoiceEditScreen({
                                     name="description"
                                     rows={3}
                                     className="dark:bg-transparent"
-                                    placeholder="Deskripsi faktur"
+                                    placeholder="Deskripsi invoice"
                                     value={data.description}
                                     onChange={(e) =>
                                         setData('description', e.target.value)
@@ -954,7 +954,7 @@ export default function SalesInvoiceEditScreen({
                                         htmlFor="is_delivery"
                                         className="cursor-pointer text-xs"
                                     >
-                                        Faktur berasal dari pengiriman
+                                        Invoice berasal dari pengiriman
                                     </Label>
                                 </div>
                                 <InputError message={errors.is_delivery} />
@@ -966,7 +966,7 @@ export default function SalesInvoiceEditScreen({
                         <div className="flex flex-col space-y-4 rounded-md border p-4">
                             <HeadingSmall
                                 title="Referensi Pengiriman"
-                                description="Hubungkan faktur dengan pengiriman yang sudah ada"
+                                description="Hubungkan invoice dengan pengiriman yang sudah ada"
                             />
                             <div className="space-y-3">
                                 {data.deliveries.map((delivery, index) => {
@@ -1087,7 +1087,7 @@ export default function SalesInvoiceEditScreen({
                         <aside className="w-full">
                             <HeadingSmall
                                 title="Detail Barang"
-                                description="Atur item yang difakturkan"
+                                description="Atur item yang termasuk dalam invoice"
                             />
                         </aside>
                         <Separator className="lg:hidden" />
