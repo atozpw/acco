@@ -74,7 +74,7 @@ export const mainNavItems: NavItem[] = [
         ],
     },
     {
-        title: 'Buku Besar',
+        title: 'Akuntansi',
         href: '#',
         icon: NotebookText,
         children: [

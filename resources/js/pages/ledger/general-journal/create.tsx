@@ -58,7 +58,7 @@ type JournalFormData = {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Buku Besar',
+        title: 'Akuntansi',
         href: ledger.index().url,
     },
     {
