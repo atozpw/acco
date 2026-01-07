@@ -9,9 +9,11 @@ use App\Http\Requests\Sales\UpdateReceivablePaymentRequest;
 use App\Models\Coa;
 use App\Models\Contact;
 use App\Models\Department;
+use App\Models\Journal;
 use App\Models\Project;
 use App\Models\ReceivablePayment;
 use App\Models\SalesInvoice;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -173,9 +175,62 @@ class ReceivablePaymentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): Response
     {
-        //
+        $payment = ReceivablePayment::query()
+            ->with([
+                'contact:id,name',
+                'details' => function ($query) {
+                    $query
+                        ->with([
+                            'salesInvoice:id,reference_no,date,discount_amount',
+                        ])
+                        ->orderBy('id');
+                },
+            ])
+            ->findOrFail($id);
+
+        $payment->formatted_date = $payment->date
+            ? Carbon::parse($payment->date)->format('d/m/Y')
+            : null;
+
+        $details = $payment->details
+            ->map(function ($detail) {
+                $invoice = $detail->salesInvoice;
+
+                return [
+                    'id' => $detail->id,
+                    'amount' => (float) $detail->amount,
+                    'sales_invoice' => $invoice
+                        ? [
+                            'id' => $invoice->id,
+                            'reference_no' => $invoice->reference_no,
+                            'formatted_date' => $invoice->date
+                                ? Carbon::parse($invoice->date)->format('d/m/Y')
+                                : null,
+                            'discount_amount' => (float) ($invoice->discount_amount ?? 0),
+                        ]
+                        : null,
+                ];
+            })
+            ->values();
+
+        return inertia('sales/receivable-payment/show', [
+            'payment' => [
+                'id' => $payment->id,
+                'reference_no' => $payment->reference_no,
+                'formatted_date' => $payment->formatted_date,
+                'description' => $payment->description,
+                'amount' => (float) $payment->amount,
+                'contact' => $payment->contact
+                    ? [
+                        'id' => $payment->contact->id,
+                        'name' => $payment->contact->name,
+                    ]
+                    : null,
+                'details' => $details,
+            ],
+        ]);
     }
 
     /**
@@ -345,5 +400,69 @@ class ReceivablePaymentController extends Controller
         return redirect()
             ->route('receivable-payment.index')
             ->with('success', 'Pembayaran piutang berhasil dihapus.');
+    }
+
+    /**
+     * Generate journal voucher for the specified resource.
+     */
+    public function voucher(string $nomor): Response
+    {
+        $journal = Journal::query()
+            ->with([
+                'details.coa:id,code,name',
+                'details.department:id,code,name',
+                'details.project:id,code,name',
+                'createdBy:id,name',
+            ])
+            ->where('reference_no', $nomor)
+            ->firstOrFail();
+
+        $payload = [
+            'id' => $journal->id,
+            'reference_no' => $journal->reference_no,
+            'date' => $journal->date,
+            'formatted_date' => $journal->date
+                ? \Carbon\Carbon::parse($journal->date)->format('d/m/Y')
+                : null,
+            'description' => $journal->description,
+            'details' => $journal->details->map(function ($detail) {
+                return [
+                    'id' => $detail->id,
+                    'coa' => $detail->coa
+                        ? [
+                            'id' => $detail->coa->id,
+                            'code' => $detail->coa->code,
+                            'name' => $detail->coa->name,
+                        ]
+                        : null,
+                    'debit' => number_format((float) $detail->debit, 2, '.', ''),
+                    'credit' => number_format((float) $detail->credit, 2, '.', ''),
+                    'department' => $detail->department
+                        ? [
+                            'id' => $detail->department->id,
+                            'code' => $detail->department->code,
+                            'name' => $detail->department->name,
+                        ]
+                        : null,
+                    'project' => $detail->project
+                        ? [
+                            'id' => $detail->project->id,
+                            'code' => $detail->project->code,
+                            'name' => $detail->project->name,
+                        ]
+                        : null,
+                ];
+            }),
+            'created_by' => $journal->createdBy
+                ? [
+                    'id' => $journal->createdBy->id,
+                    'name' => $journal->createdBy->name,
+                ]
+                : null,
+        ];
+
+        return inertia('sales/receivable-payment/voucher', [
+            'journal' => $payload,
+        ]);
     }
 }

@@ -36,13 +36,14 @@ import {
 } from '@/components/ui/table';
 import { useDebounceValue } from '@/hooks/use-debounce';
 import AppLayout from '@/layouts/app-layout';
-import sales from '@/routes/sales';
 import receivablePayment from '@/routes/receivable-payment';
+import sales from '@/routes/sales';
 import { BreadcrumbItem, CursorPagination } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
     CirclePlusIcon,
     MoreHorizontalIcon,
+    ReceiptText,
     Search,
     Settings2,
     Trash2,
@@ -229,7 +230,9 @@ export default function ReceivablePaymentIndexScreen({
                                             </TableCell>
                                             <TableCell className="text-right align-baseline">
                                                 <DropdownMenu modal={false}>
-                                                    <DropdownMenuTrigger asChild>
+                                                    <DropdownMenuTrigger
+                                                        asChild
+                                                    >
                                                         <Button
                                                             variant="ghost"
                                                             aria-label="Open menu"
@@ -243,7 +246,9 @@ export default function ReceivablePaymentIndexScreen({
                                                         align="end"
                                                     >
                                                         <DropdownMenuGroup>
-                                                            <DropdownMenuItem asChild>
+                                                            <DropdownMenuItem
+                                                                asChild
+                                                            >
                                                                 <Link
                                                                     href={
                                                                         receivablePayment.show(
@@ -255,7 +260,24 @@ export default function ReceivablePaymentIndexScreen({
                                                                     Detail
                                                                 </Link>
                                                             </DropdownMenuItem>
-                                                            <DropdownMenuItem asChild>
+                                                            <DropdownMenuItem
+                                                                asChild
+                                                            >
+                                                                <Link
+                                                                    href={
+                                                                        receivablePayment.voucher(
+                                                                            item.reference_no,
+                                                                        ).url
+                                                                    }
+                                                                >
+                                                                    <ReceiptText />
+                                                                    Jurnal
+                                                                    Voucher
+                                                                </Link>
+                                                            </DropdownMenuItem>
+                                                            <DropdownMenuItem
+                                                                asChild
+                                                            >
                                                                 <Link
                                                                     href={
                                                                         receivablePayment.edit(
@@ -268,7 +290,9 @@ export default function ReceivablePaymentIndexScreen({
                                                                 </Link>
                                                             </DropdownMenuItem>
                                                             <DropdownMenuItem
-                                                                onSelect={(e) => {
+                                                                onSelect={(
+                                                                    e,
+                                                                ) => {
                                                                     e.preventDefault();
                                                                     setDeleteTarget(
                                                                         item,
@@ -300,7 +324,9 @@ export default function ReceivablePaymentIndexScreen({
                                     onValueChange={setItemsPage}
                                 >
                                     <SelectTrigger className="w-[65px]">
-                                        <SelectValue aria-label={String(itemsPage)}>
+                                        <SelectValue
+                                            aria-label={String(itemsPage)}
+                                        >
                                             {itemsPage}
                                         </SelectValue>
                                     </SelectTrigger>
@@ -335,8 +361,8 @@ export default function ReceivablePaymentIndexScreen({
                             Hapus Pembayaran Piutang
                         </AlertDialogTitle>
                         <AlertDialogDescription>
-                            Tindakan ini akan menghapus transaksi pembayaran piutang
-                            usaha. Anda yakin ingin melanjutkan?
+                            Tindakan ini akan menghapus transaksi pembayaran
+                            piutang usaha. Anda yakin ingin melanjutkan?
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>

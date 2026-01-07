@@ -43,6 +43,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import {
     CirclePlusIcon,
     MoreHorizontalIcon,
+    ReceiptText,
     Search,
     Settings2,
     Trash2,
@@ -256,6 +257,21 @@ export default function SalesInvoiceIndexScreen({
                                                                 >
                                                                     <Search />
                                                                     Detail
+                                                                </Link>
+                                                            </DropdownMenuItem>
+                                                            <DropdownMenuItem
+                                                                asChild
+                                                            >
+                                                                <Link
+                                                                    href={
+                                                                        salesInvoice.voucher(
+                                                                            item.reference_no,
+                                                                        ).url
+                                                                    }
+                                                                >
+                                                                    <ReceiptText />
+                                                                    Jurnal
+                                                                    Voucher
                                                                 </Link>
                                                             </DropdownMenuItem>
                                                             <DropdownMenuItem

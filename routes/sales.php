@@ -15,6 +15,7 @@ Route::middleware('auth')->prefix('sales')->group(function () {
     Route::get('sales-delivery/{id}/edit', [SalesDeliveryController::class, 'edit'])->name('sales-delivery.edit');
     Route::put('sales-delivery/{id}', [SalesDeliveryController::class, 'update'])->name('sales-delivery.update');
     Route::delete('sales-delivery/{id}', [SalesDeliveryController::class, 'destroy'])->name('sales-delivery.destroy');
+    Route::get('sales-delivery/journal-voucher/{nomor}', [SalesDeliveryController::class, 'voucher'])->name('sales-delivery.voucher');
 
     Route::get('sales-invoice', [SalesInvoiceController::class, 'index'])->name('sales-invoice.index');
     Route::get('sales-invoice/create', [SalesInvoiceController::class, 'create'])->name('sales-invoice.create');
@@ -23,6 +24,7 @@ Route::middleware('auth')->prefix('sales')->group(function () {
     Route::get('sales-invoice/{id}/edit', [SalesInvoiceController::class, 'edit'])->name('sales-invoice.edit');
     Route::put('sales-invoice/{id}', [SalesInvoiceController::class, 'update'])->name('sales-invoice.update');
     Route::delete('sales-invoice/{id}', [SalesInvoiceController::class, 'destroy'])->name('sales-invoice.destroy');
+    Route::get('sales-invoice/journal-voucher/{nomor}', [SalesInvoiceController::class, 'voucher'])->name('sales-invoice.voucher');
 
     Route::get('account-receivable-payment', [ReceivablePaymentController::class, 'index'])->name('receivable-payment.index');
     Route::get('account-receivable-payment/create', [ReceivablePaymentController::class, 'create'])->name('receivable-payment.create');
@@ -31,4 +33,5 @@ Route::middleware('auth')->prefix('sales')->group(function () {
     Route::get('account-receivable-payment/{id}/edit', [ReceivablePaymentController::class, 'edit'])->name('receivable-payment.edit');
     Route::put('account-receivable-payment/{id}', [ReceivablePaymentController::class, 'update'])->name('receivable-payment.update');
     Route::delete('account-receivable-payment/{id}', [ReceivablePaymentController::class, 'destroy'])->name('receivable-payment.destroy');
+    Route::get('account-receivable-payment/journal-voucher/{nomor}', [ReceivablePaymentController::class, 'voucher'])->name('receivable-payment.voucher');
 });
