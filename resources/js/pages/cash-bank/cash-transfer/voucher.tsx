@@ -25,8 +25,7 @@ export default function CashTransferVoucherScreen({
             <JournalVoucherDetail
                 journal={journal}
                 backUrl={cashTransfer.index().url}
-                showUpdateAction={true}
-                updateUrl={cashTransfer.edit(journal.id).url}
+                showUpdateAction={false}
             />
         </AppLayout>
     );

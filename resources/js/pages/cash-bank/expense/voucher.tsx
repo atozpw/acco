@@ -25,8 +25,7 @@ export default function ExpenseVoucherScreen({
             <JournalVoucherDetail
                 journal={journal}
                 backUrl={expense.index().url}
-                showUpdateAction={true}
-                updateUrl={expense.edit(journal.id).url}
+                showUpdateAction={false}
             />
         </AppLayout>
     );

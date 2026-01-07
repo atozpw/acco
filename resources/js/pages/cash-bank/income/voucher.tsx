@@ -25,8 +25,7 @@ export default function IncomeVoucherScreen({
             <JournalVoucherDetail
                 journal={journal}
                 backUrl={income.index().url}
-                showUpdateAction={true}
-                updateUrl={income.edit(journal.id).url}
+                showUpdateAction={false}
             />
         </AppLayout>
     );
