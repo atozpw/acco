@@ -15,6 +15,7 @@ Route::middleware('auth')->prefix('cash-bank')->group(function () {
     Route::get('disbursement/{id}/edit', [ExpenseController::class, 'edit'])->name('expense.edit');
     Route::put('disbursement/{id}', [ExpenseController::class, 'update'])->name('expense.update');
     Route::delete('disbursement/{id}', [ExpenseController::class, 'destroy'])->name('expense.destroy');
+    Route::get('disbursement/journal-voucher/{nomor}', [ExpenseController::class, 'voucher'])->name('expense.voucher');
 
     Route::get('cash-in', [IncomeController::class, 'index'])->name('income.index');
     Route::get('cash-in/create', [IncomeController::class, 'create'])->name('income.create');
@@ -23,6 +24,7 @@ Route::middleware('auth')->prefix('cash-bank')->group(function () {
     Route::get('cash-in/{id}/edit', [IncomeController::class, 'edit'])->name('income.edit');
     Route::put('cash-in/{id}', [IncomeController::class, 'update'])->name('income.update');
     Route::delete('cash-in/{id}', [IncomeController::class, 'destroy'])->name('income.destroy');
+    Route::get('cash-in/journal-voucher/{nomor}', [IncomeController::class, 'voucher'])->name('income.voucher');
 
     Route::get('cash-transfer', [CashTransferController::class, 'index'])->name('cash-transfer.index');
     Route::get('cash-transfer/create', [CashTransferController::class, 'create'])->name('cash-transfer.create');
@@ -31,4 +33,5 @@ Route::middleware('auth')->prefix('cash-bank')->group(function () {
     Route::get('cash-transfer/{id}/edit', [CashTransferController::class, 'edit'])->name('cash-transfer.edit');
     Route::put('cash-transfer/{id}', [CashTransferController::class, 'update'])->name('cash-transfer.update');
     Route::delete('cash-transfer/{id}', [CashTransferController::class, 'destroy'])->name('cash-transfer.destroy');
+    Route::get('cash-transfer/journal-voucher/{nomor}', [CashTransferController::class, 'voucher'])->name('cash-transfer.voucher');
 });

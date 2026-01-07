@@ -43,6 +43,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import {
     CirclePlusIcon,
     MoreHorizontalIcon,
+    ReceiptText,
     Search,
     Settings2,
     Trash2,
@@ -241,6 +242,19 @@ export default function IncomeIndexScreen({
                                                                 >
                                                                     <Search />
                                                                     Detail
+                                                                </Link>
+                                                            </DropdownMenuItem>
+                                                            <DropdownMenuItem
+                                                                asChild
+                                                            >
+                                                                <Link
+                                                                    href={income.voucher(
+                                                                        item.reference_no,
+                                                                    )}
+                                                                >
+                                                                    <ReceiptText />
+                                                                    Jurnal
+                                                                    Voucher
                                                                 </Link>
                                                             </DropdownMenuItem>
                                                             <DropdownMenuItem
