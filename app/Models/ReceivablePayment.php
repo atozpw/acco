@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Observers\ReceivablePaymentObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+#[ObservedBy([ReceivablePaymentObserver::class])]
 class ReceivablePayment extends Model
 {
     use SoftDeletes;
