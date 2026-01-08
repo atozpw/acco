@@ -43,6 +43,8 @@ import { Head, Link, router } from '@inertiajs/react';
 import {
     CirclePlusIcon,
     MoreHorizontalIcon,
+    ReceiptText,
+    Search,
     Settings2,
     Trash2,
 } from 'lucide-react';
@@ -228,6 +230,31 @@ export default function PurchaseReceiptIndexScreen({
                                                                 asChild
                                                             >
                                                                 <Link
+                                                                    href={purchaseReceipt.show(
+                                                                        item.id,
+                                                                    )}
+                                                                >
+                                                                    <Search />
+                                                                    Detail
+                                                                </Link>
+                                                            </DropdownMenuItem>
+                                                            <DropdownMenuItem
+                                                                asChild
+                                                            >
+                                                                <Link
+                                                                    href={purchaseReceipt.voucher(
+                                                                        item.reference_no,
+                                                                    )}
+                                                                >
+                                                                    <ReceiptText />
+                                                                    Jurnal
+                                                                    Voucher
+                                                                </Link>
+                                                            </DropdownMenuItem>
+                                                            <DropdownMenuItem
+                                                                asChild
+                                                            >
+                                                                <Link
                                                                     href={purchaseReceipt.edit(
                                                                         item.id,
                                                                     )}
@@ -311,8 +338,8 @@ export default function PurchaseReceiptIndexScreen({
                                 Hapus Penerimaan Barang
                             </AlertDialogTitle>
                             <AlertDialogDescription>
-                                Tindakan ini akan menghapus data penerimaan barang.
-                                Anda yakin ingin melanjutkan?
+                                Tindakan ini akan menghapus data penerimaan
+                                barang. Anda yakin ingin melanjutkan?
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>

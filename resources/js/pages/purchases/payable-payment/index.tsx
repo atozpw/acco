@@ -43,6 +43,8 @@ import { Head, Link, router } from '@inertiajs/react';
 import {
     CirclePlusIcon,
     MoreHorizontalIcon,
+    ReceiptText,
+    Search,
     Settings2,
     Trash2,
 } from 'lucide-react';
@@ -245,6 +247,35 @@ export default function PayablePaymentIndexScreen({
                                                         align="end"
                                                     >
                                                         <DropdownMenuGroup>
+                                                            <DropdownMenuItem
+                                                                asChild
+                                                            >
+                                                                <Link
+                                                                    href={
+                                                                        payablePayment.show(
+                                                                            item.id,
+                                                                        ).url
+                                                                    }
+                                                                >
+                                                                    <Search />
+                                                                    Detail
+                                                                </Link>
+                                                            </DropdownMenuItem>
+                                                            <DropdownMenuItem
+                                                                asChild
+                                                            >
+                                                                <Link
+                                                                    href={
+                                                                        payablePayment.voucher(
+                                                                            item.reference_no,
+                                                                        ).url
+                                                                    }
+                                                                >
+                                                                    <ReceiptText />
+                                                                    Jurnal
+                                                                    Voucher
+                                                                </Link>
+                                                            </DropdownMenuItem>
                                                             <DropdownMenuItem
                                                                 asChild
                                                             >

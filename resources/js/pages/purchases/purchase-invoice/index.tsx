@@ -43,6 +43,8 @@ import { Head, Link, router } from '@inertiajs/react';
 import {
     CirclePlusIcon,
     MoreHorizontalIcon,
+    ReceiptText,
+    Search,
     Settings2,
     Trash2,
 } from 'lucide-react';
@@ -224,6 +226,31 @@ export default function PurchaseInvoiceIndexScreen({
                                                         align="end"
                                                     >
                                                         <DropdownMenuGroup>
+                                                            <DropdownMenuItem
+                                                                asChild
+                                                            >
+                                                                <Link
+                                                                    href={purchaseInvoice.show(
+                                                                        item.id,
+                                                                    )}
+                                                                >
+                                                                    <Search />
+                                                                    Detail
+                                                                </Link>
+                                                            </DropdownMenuItem>
+                                                            <DropdownMenuItem
+                                                                asChild
+                                                            >
+                                                                <Link
+                                                                    href={purchaseInvoice.voucher(
+                                                                        item.reference_no,
+                                                                    )}
+                                                                >
+                                                                    <ReceiptText />
+                                                                    Jurnal
+                                                                    Voucher
+                                                                </Link>
+                                                            </DropdownMenuItem>
                                                             <DropdownMenuItem
                                                                 asChild
                                                             >
