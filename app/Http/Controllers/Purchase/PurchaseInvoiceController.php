@@ -10,6 +10,7 @@ use App\Http\Requests\Purchase\UpdatePurchaseInvoiceRequest;
 use App\Models\Coa;
 use App\Models\Contact;
 use App\Models\Department;
+use App\Models\Journal;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\PurchaseInvoice;
@@ -196,9 +197,75 @@ class PurchaseInvoiceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): Response
     {
-        //
+        $invoice = PurchaseInvoice::query()
+            ->with([
+                'contact:id,name,address',
+                'details' => function ($query) {
+                    $query
+                        ->with([
+                            'product:id,code,name',
+                            'tax:id,rate',
+                        ])
+                        ->orderBy('id');
+                },
+            ])
+            ->findOrFail($id);
+
+        $invoice->formatted_date = $invoice->date
+            ? Carbon::parse($invoice->date)->format('d/m/Y')
+            : null;
+
+        $details = $invoice->details->map(function ($detail) {
+            $amount = (float) $detail->amount;
+            $discountAmount = (float) $detail->discount_amount;
+            $discountPercent = (float) $detail->discount_percent;
+
+            if ($discountPercent === 0.0 && $discountAmount > 0 && $amount > 0) {
+                $discountPercent = round(($discountAmount / $amount) * 100, 2);
+            }
+
+            return [
+                'id' => $detail->id,
+                'qty' => (float) $detail->qty,
+                'price' => (float) $detail->price,
+                'amount' => $amount,
+                'discount_percent' => $discountPercent,
+                'discount_amount' => $discountAmount,
+                'tax_amount' => (float) $detail->tax_amount,
+                'total' => (float) $detail->total,
+                'tax_rate' => $detail->tax ? (float) $detail->tax->rate : null,
+                'product' => $detail->product
+                    ? [
+                        'id' => $detail->product->id,
+                        'code' => $detail->product->code,
+                        'name' => $detail->product->name,
+                    ]
+                    : null,
+            ];
+        });
+
+        return inertia('purchases/purchase-invoice/show', [
+            'invoice' => [
+                'id' => $invoice->id,
+                'reference_no' => $invoice->reference_no,
+                'formatted_date' => $invoice->formatted_date,
+                'contact' => $invoice->contact
+                    ? [
+                        'id' => $invoice->contact->id,
+                        'name' => $invoice->contact->name,
+                        'address' => $invoice->contact->address,
+                    ]
+                    : null,
+                'details' => $details,
+                'amount' => (float) $invoice->amount,
+                'discount_percent' => (float) $invoice->discount_percent,
+                'discount_amount' => (float) $invoice->discount_amount,
+                'tax_amount' => (float) $invoice->tax_amount,
+                'total' => (float) $invoice->total,
+            ],
+        ]);
     }
 
     /**
@@ -391,5 +458,69 @@ class PurchaseInvoiceController extends Controller
         $invoice->delete();
 
         return redirect()->route('purchase-invoice.index');
+    }
+
+    /**
+     * Generate journal voucher for the specified resource.
+     */
+    public function voucher(string $nomor): Response
+    {
+        $journal = Journal::query()
+            ->with([
+                'details.coa:id,code,name',
+                'details.department:id,code,name',
+                'details.project:id,code,name',
+                'createdBy:id,name',
+            ])
+            ->where('reference_no', $nomor)
+            ->firstOrFail();
+
+        $payload = [
+            'id' => $journal->id,
+            'reference_no' => $journal->reference_no,
+            'date' => $journal->date,
+            'formatted_date' => $journal->date
+                ? \Carbon\Carbon::parse($journal->date)->format('d/m/Y')
+                : null,
+            'description' => $journal->description,
+            'details' => $journal->details->map(function ($detail) {
+                return [
+                    'id' => $detail->id,
+                    'coa' => $detail->coa
+                        ? [
+                            'id' => $detail->coa->id,
+                            'code' => $detail->coa->code,
+                            'name' => $detail->coa->name,
+                        ]
+                        : null,
+                    'debit' => number_format((float) $detail->debit, 2, '.', ''),
+                    'credit' => number_format((float) $detail->credit, 2, '.', ''),
+                    'department' => $detail->department
+                        ? [
+                            'id' => $detail->department->id,
+                            'code' => $detail->department->code,
+                            'name' => $detail->department->name,
+                        ]
+                        : null,
+                    'project' => $detail->project
+                        ? [
+                            'id' => $detail->project->id,
+                            'code' => $detail->project->code,
+                            'name' => $detail->project->name,
+                        ]
+                        : null,
+                ];
+            }),
+            'created_by' => $journal->createdBy
+                ? [
+                    'id' => $journal->createdBy->id,
+                    'name' => $journal->createdBy->name,
+                ]
+                : null,
+        ];
+
+        return inertia('purchases/purchase-invoice/voucher', [
+            'journal' => $payload,
+        ]);
     }
 }

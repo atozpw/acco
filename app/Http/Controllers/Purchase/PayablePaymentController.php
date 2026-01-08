@@ -9,6 +9,7 @@ use App\Http\Requests\Purchase\UpdatePayablePaymentRequest;
 use App\Models\Coa;
 use App\Models\Contact;
 use App\Models\Department;
+use App\Models\Journal;
 use App\Models\PayablePayment;
 use App\Models\Project;
 use App\Models\PurchaseInvoice;
@@ -174,9 +175,72 @@ class PayablePaymentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): Response
     {
-        //
+        $payment = PayablePayment::query()
+            ->with([
+                'contact:id,name',
+                'details' => function ($query) {
+                    $query
+                        ->with([
+                            'purchaseInvoice:id,reference_no,date,amount,discount_percent,discount_amount',
+                        ])
+                        ->orderBy('id');
+                },
+            ])
+            ->findOrFail($id);
+
+        $payment->formatted_date = $payment->date
+            ? Carbon::parse($payment->date)->format('d/m/Y')
+            : null;
+
+        $details = $payment->details
+            ->map(function ($detail) {
+                $invoice = $detail->purchaseInvoice;
+
+                $discountAmount = (float) ($invoice->discount_amount ?? 0);
+                $discountPercent = (float) ($invoice->discount_percent ?? 0);
+
+                if ($discountAmount <= 0 && $discountPercent > 0) {
+                    $baseAmount = (float) ($invoice->amount ?? 0);
+                    if ($baseAmount > 0) {
+                        $discountAmount = round($baseAmount * ($discountPercent / 100), 2);
+                    }
+                }
+
+                return [
+                    'id' => $detail->id,
+                    'amount' => (float) $detail->amount,
+                    'purchase_invoice' => $invoice
+                        ? [
+                            'id' => $invoice->id,
+                            'reference_no' => $invoice->reference_no,
+                            'formatted_date' => $invoice->date
+                                ? Carbon::parse($invoice->date)->format('d/m/Y')
+                                : null,
+                            'discount_amount' => $discountAmount,
+                        ]
+                        : null,
+                ];
+            })
+            ->values();
+
+        return inertia('purchases/payable-payment/show', [
+            'payment' => [
+                'id' => $payment->id,
+                'reference_no' => $payment->reference_no,
+                'formatted_date' => $payment->formatted_date,
+                'description' => $payment->description,
+                'amount' => (float) $payment->amount,
+                'contact' => $payment->contact
+                    ? [
+                        'id' => $payment->contact->id,
+                        'name' => $payment->contact->name,
+                    ]
+                    : null,
+                'details' => $details,
+            ],
+        ]);
     }
 
     /**
@@ -346,5 +410,69 @@ class PayablePaymentController extends Controller
         return redirect()
             ->route('payable-payment.index')
             ->with('success', 'Pembayaran utang berhasil dihapus.');
+    }
+
+    /**
+     * Generate journal voucher for the specified resource.
+     */
+    public function voucher(string $nomor): Response
+    {
+        $journal = Journal::query()
+            ->with([
+                'details.coa:id,code,name',
+                'details.department:id,code,name',
+                'details.project:id,code,name',
+                'createdBy:id,name',
+            ])
+            ->where('reference_no', $nomor)
+            ->firstOrFail();
+
+        $payload = [
+            'id' => $journal->id,
+            'reference_no' => $journal->reference_no,
+            'date' => $journal->date,
+            'formatted_date' => $journal->date
+                ? \Carbon\Carbon::parse($journal->date)->format('d/m/Y')
+                : null,
+            'description' => $journal->description,
+            'details' => $journal->details->map(function ($detail) {
+                return [
+                    'id' => $detail->id,
+                    'coa' => $detail->coa
+                        ? [
+                            'id' => $detail->coa->id,
+                            'code' => $detail->coa->code,
+                            'name' => $detail->coa->name,
+                        ]
+                        : null,
+                    'debit' => number_format((float) $detail->debit, 2, '.', ''),
+                    'credit' => number_format((float) $detail->credit, 2, '.', ''),
+                    'department' => $detail->department
+                        ? [
+                            'id' => $detail->department->id,
+                            'code' => $detail->department->code,
+                            'name' => $detail->department->name,
+                        ]
+                        : null,
+                    'project' => $detail->project
+                        ? [
+                            'id' => $detail->project->id,
+                            'code' => $detail->project->code,
+                            'name' => $detail->project->name,
+                        ]
+                        : null,
+                ];
+            }),
+            'created_by' => $journal->createdBy
+                ? [
+                    'id' => $journal->createdBy->id,
+                    'name' => $journal->createdBy->name,
+                ]
+                : null,
+        ];
+
+        return inertia('purchases/payable-payment/voucher', [
+            'journal' => $payload,
+        ]);
     }
 }
