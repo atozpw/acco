@@ -376,7 +376,8 @@ export default function PurchaseInvoiceCreateScreen({
                   ? String(departments[0].id)
                   : '',
             project_id: detail.project_id ? String(detail.project_id) : '',
-            discount_type: 'amount',
+            discount_type:
+                Number(detail.discount_percent) <= 0 ? 'amount' : 'percent',
             source_receipt_id: String(receipt.id),
         }));
     };
@@ -391,8 +392,7 @@ export default function PurchaseInvoiceCreateScreen({
 
             if (detail.discount_type === 'amount') {
                 discountAmount = Math.min(Math.max(discountAmount, 0), amount);
-                discountPercent =
-                    amount > 0 ? (discountAmount / amount) * 100 : 0;
+                discountPercent = 0;
             } else {
                 discountPercent = Math.min(Math.max(discountPercent, 0), 100);
                 discountAmount = amount * (discountPercent / 100);
@@ -561,8 +561,7 @@ export default function PurchaseInvoiceCreateScreen({
             0,
         );
 
-        const discountPercent =
-            amount > 0 ? (discountAmount / amount) * 100 : 0;
+        const discountPercent = 0;
 
         return {
             amount,
@@ -1111,6 +1110,15 @@ export default function PurchaseInvoiceCreateScreen({
                                             const computedDetail =
                                                 totals.detailTotals[index] ??
                                                 computeDetail(detail);
+                                            const lineNet = Math.max(
+                                                0,
+                                                toNumber(
+                                                    computedDetail.amount,
+                                                ) -
+                                                    toNumber(
+                                                        computedDetail.discount_amount,
+                                                    ),
+                                            );
 
                                             return (
                                                 <Fragment key={index}>
@@ -1279,21 +1287,11 @@ export default function PurchaseInvoiceCreateScreen({
                                                             />
                                                         </td>
                                                         <td className="px-4 py-2 text-right align-top">
-                                                            <div className="font-semibold">
+                                                            <div className="mt-2 font-semibold">
                                                                 {formatCurrency(
-                                                                    toNumber(
-                                                                        computedDetail.total,
-                                                                    ),
+                                                                    lineNet,
                                                                 )}
                                                             </div>
-                                                            <p className="text-xs text-muted-foreground">
-                                                                Subtotal:{' '}
-                                                                {formatCurrency(
-                                                                    toNumber(
-                                                                        computedDetail.amount,
-                                                                    ),
-                                                                )}
-                                                            </p>
                                                         </td>
                                                         <td className="px-4 py-2 text-center align-top">
                                                             {!data.is_receipt && (
@@ -1435,6 +1433,9 @@ export default function PurchaseInvoiceCreateScreen({
                                                                                         index,
                                                                                         value as DiscountType,
                                                                                     )
+                                                                                }
+                                                                                disabled={
+                                                                                    data.is_receipt
                                                                                 }
                                                                             >
                                                                                 <SelectTrigger className="w-[80px]">
@@ -1648,23 +1649,11 @@ export default function PurchaseInvoiceCreateScreen({
                                                 </Fragment>
                                             );
                                         })}
-                                        <tr className="border-t bg-muted/50 text-[15px] font-medium">
-                                            <td
-                                                colSpan={4}
-                                                className="px-4 py-2 text-right"
-                                            >
-                                                Ringkasan
-                                            </td>
-                                            <td className="px-4 py-2 text-right">
-                                                {formatCurrency(totals.total)}
-                                            </td>
-                                            <td />
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            {!data.is_receipt && (
-                                <div className="flex justify-between">
+                            <div className="grid gap-6 lg:grid-cols-3 lg:items-baseline">
+                                {!data.is_receipt ? (
                                     <Button
                                         type="button"
                                         variant="outline"
@@ -1672,38 +1661,53 @@ export default function PurchaseInvoiceCreateScreen({
                                     >
                                         <PlusCircle /> Tambah Baris
                                     </Button>
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                                ) : (
+                                    <div
+                                        className="hidden lg:block"
+                                        aria-hidden="true"
+                                    />
+                                )}
 
-                    <div className="grid gap-4 rounded-md border p-4 md:ml-auto md:max-w-xl">
-                        <div className="flex items-center justify-between text-sm">
-                            <span>Subtotal</span>
-                            <span className="font-semibold">
-                                {formatCurrency(totals.amount)}
-                            </span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                            <span>
-                                Diskon ({totals.discountPercent.toFixed(2)}%)
-                            </span>
-                            <span className="font-semibold">
-                                {formatCurrency(totals.discountAmount)}
-                            </span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                            <span>Pajak</span>
-                            <span className="font-semibold">
-                                {formatCurrency(totals.taxAmount)}
-                            </span>
-                        </div>
-                        <Separator />
-                        <div className="flex items-center justify-between text-base">
-                            <span>Total</span>
-                            <span className="font-bold">
-                                {formatCurrency(totals.total)}
-                            </span>
+                                <div
+                                    className={`grid gap-4 rounded-md border p-4 ${
+                                        data.is_receipt
+                                            ? 'lg:col-span-3'
+                                            : 'lg:col-span-2'
+                                    } lg:ml-auto lg:w-full lg:max-w-lg`}
+                                >
+                                    <div className="flex items-center justify-between text-sm">
+                                        <span>Total Produk</span>
+                                        <span className="font-semibold">
+                                            {formatCurrency(totals.amount)}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center justify-between text-sm">
+                                        <span>
+                                            Diskon (
+                                            {totals.discountPercent.toFixed(2)}
+                                            %)
+                                        </span>
+                                        <span className="font-semibold">
+                                            {formatCurrency(
+                                                totals.discountAmount,
+                                            )}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center justify-between text-sm">
+                                        <span>Total Pajak</span>
+                                        <span className="font-semibold">
+                                            {formatCurrency(totals.taxAmount)}
+                                        </span>
+                                    </div>
+                                    <Separator />
+                                    <div className="flex items-center justify-between text-base">
+                                        <span>Total</span>
+                                        <span className="font-bold">
+                                            {formatCurrency(totals.total)}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
