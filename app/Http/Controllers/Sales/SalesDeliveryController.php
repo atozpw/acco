@@ -82,7 +82,7 @@ class SalesDeliveryController extends Controller
 
         $products = Product::query()
             ->active()
-            ->with(['salesTax:id,code,name,rate'])
+            ->with(['salesTax:id,code,name,rate', 'stocks:id,warehouse_id,product_id,qty'])
             ->orderBy('name')
             ->get(['id', 'code', 'name', 'sales_price', 'sales_tax_id']);
 
@@ -261,7 +261,7 @@ class SalesDeliveryController extends Controller
 
         $products = Product::query()
             ->active()
-            ->with(['salesTax:id,code,name,rate'])
+            ->with(['salesTax:id,code,name,rate', 'stocks:id,warehouse_id,product_id,qty'])
             ->orderBy('name')
             ->get(['id', 'code', 'name', 'sales_price', 'sales_tax_id']);
 

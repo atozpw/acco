@@ -47,6 +47,12 @@ type ProductOption = {
         name: string;
         rate: string | number;
     } | null;
+    stocks?: {
+        id: number;
+        warehouse_id: number;
+        product_id: number;
+        qty: string | number;
+    }[];
 };
 
 type TaxOption = {
@@ -238,6 +244,25 @@ export default function SalesDeliveryEditScreen({
         });
         return map;
     }, [taxes]);
+
+    const getProductStockLabel = useCallback(
+        (productId: string, warehouseId: string) => {
+            if (!warehouseId) return '-';
+            if (!productId) return 'N/A';
+
+            const product = productMap[productId];
+            if (!product?.stocks?.length) return 'N/A';
+
+            const stock = product.stocks.find(
+                (item) => String(item.warehouse_id) === warehouseId,
+            );
+
+            if (!stock) return 'N/A';
+
+            return formatLocal(toNumber(stock.qty ?? 0));
+        },
+        [productMap],
+    );
 
     const blankDetail: DetailForm = {
         product_id: '',
@@ -446,11 +471,6 @@ export default function SalesDeliveryEditScreen({
         });
 
         updateDetail(index, (detail) => {
-            const nextQty =
-                toNumber(detail.qty) > 0
-                    ? toNumber(detail.qty).toFixed(2)
-                    : '1.00';
-
             const nextPrice =
                 product?.sales_price !== null &&
                 product?.sales_price !== undefined
@@ -464,7 +484,7 @@ export default function SalesDeliveryEditScreen({
             return {
                 ...detail,
                 product_id: value,
-                qty: nextQty,
+                qty: '1.00',
                 price: nextPrice,
                 tax_id: nextTaxId,
             };
@@ -827,6 +847,15 @@ export default function SalesDeliveryEditScreen({
                                                                     'qty',
                                                                 )}
                                                             />
+                                                            {productDefault && (
+                                                                <p className="mt-1 text-xs text-muted-foreground">
+                                                                    Stok:{' '}
+                                                                    {getProductStockLabel(
+                                                                        detail.product_id,
+                                                                        data.warehouse_id,
+                                                                    )}
+                                                                </p>
+                                                            )}
                                                         </td>
                                                         <td className="px-4 py-2 align-top">
                                                             <InputDecimal
