@@ -1173,11 +1173,7 @@ export default function PurchaseReceiptCreateScreen({
                                         </span>
                                     </div>
                                     <div className="flex items-center justify-between text-sm">
-                                        <span>
-                                            Diskon (
-                                            {totals.discountPercent.toFixed(2)}
-                                            %)
-                                        </span>
+                                        <span>Diskon</span>
                                         <span className="font-semibold">
                                             {formatCurrency(
                                                 totals.discountAmount,
