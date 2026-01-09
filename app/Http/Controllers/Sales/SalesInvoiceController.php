@@ -218,13 +218,21 @@ class SalesInvoiceController extends Controller
             : null;
 
         $details = $invoice->details->map(function ($detail) {
+            $amount = (float) $detail->amount;
+            $discountAmount = (float) $detail->discount_amount;
+            $discountPercent = (float) $detail->discount_percent;
+
+            if ($discountPercent === 0.0 && $discountAmount > 0 && $amount > 0) {
+                $discountPercent = round(($discountAmount / $amount) * 100, 2);
+            }
+
             return [
                 'id' => $detail->id,
                 'qty' => (float) $detail->qty,
                 'price' => (float) $detail->price,
                 'amount' => (float) $detail->amount,
-                'discount_percent' => (float) $detail->discount_percent,
-                'discount_amount' => (float) $detail->discount_amount,
+                'discount_percent' => $discountPercent,
+                'discount_amount' => $discountAmount,
                 'tax_amount' => (float) $detail->tax_amount,
                 'total' => (float) $detail->total,
                 'tax_rate' => $detail->tax ? (float) $detail->tax->rate : null,

@@ -198,6 +198,16 @@ class ReceivablePaymentController extends Controller
             ->map(function ($detail) {
                 $invoice = $detail->salesInvoice;
 
+                $discountAmount = (float) ($invoice->discount_amount ?? 0);
+                $discountPercent = (float) ($invoice->discount_percent ?? 0);
+
+                if ($discountAmount <= 0 && $discountPercent > 0) {
+                    $baseAmount = (float) ($invoice->amount ?? 0);
+                    if ($baseAmount > 0) {
+                        $discountAmount = round($baseAmount * ($discountPercent / 100), 2);
+                    }
+                }
+
                 return [
                     'id' => $detail->id,
                     'amount' => (float) $detail->amount,
@@ -208,7 +218,7 @@ class ReceivablePaymentController extends Controller
                             'formatted_date' => $invoice->date
                                 ? Carbon::parse($invoice->date)->format('d/m/Y')
                                 : null,
-                            'discount_amount' => (float) ($invoice->discount_amount ?? 0),
+                            'discount_amount' => $discountAmount,
                         ]
                         : null,
                 ];
