@@ -9,6 +9,13 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
@@ -49,6 +56,8 @@ type TaxOption = {
     rate: string | number;
 };
 
+type DiscountType = 'percent' | 'amount';
+
 type DetailForm = {
     product_id: string;
     qty: string;
@@ -62,6 +71,7 @@ type DetailForm = {
     tax_id: string;
     department_id: string;
     project_id: string;
+    discount_type: DiscountType;
 };
 
 type FormData = {
@@ -164,6 +174,11 @@ export default function SalesDeliveryCreateScreen({
         })),
     ];
 
+    const discountTypeItems: ComboboxItem[] = [
+        { value: 'percent', label: '%' },
+        { value: 'amount', label: 'Rp' },
+    ];
+
     const departmentItems: ComboboxItem[] = departments.map((d) => ({
         value: String(d.id),
         label: d.name,
@@ -203,6 +218,7 @@ export default function SalesDeliveryCreateScreen({
         tax_id: '',
         department_id: departments[0] ? String(departments[0].id) : '',
         project_id: '',
+        discount_type: 'percent',
     };
 
     const { data, setData, post, processing, errors } = useForm<FormData>({
@@ -228,6 +244,8 @@ export default function SalesDeliveryCreateScreen({
     ]);
     const [formattedDetailDiscountPercent, setFormattedDetailDiscountPercent] =
         useState<string[]>(['']);
+    const [formattedDetailDiscountAmount, setFormattedDetailDiscountAmount] =
+        useState<string[]>(['']);
 
     const [rowExpanded, setRowExpanded] = useState<boolean[]>(() =>
         data.details.map(() => false),
@@ -238,8 +256,16 @@ export default function SalesDeliveryCreateScreen({
             const qty = toNumber(detail.qty);
             const price = toNumber(detail.price);
             const amount = qty * price;
-            const discountPercent = toNumber(detail.discount_percent);
-            const discountAmount = amount * (discountPercent / 100);
+            let discountPercent = toNumber(detail.discount_percent);
+            let discountAmount = toNumber(detail.discount_amount);
+
+            if (detail.discount_type === 'amount') {
+                discountAmount = Math.min(Math.max(discountAmount, 0), amount);
+                discountPercent = 0;
+            } else {
+                discountPercent = Math.min(Math.max(discountPercent, 0), 100);
+                discountAmount = amount * (discountPercent / 100);
+            }
             const net = amount - discountAmount;
             const taxRate = toNumber(taxMap[detail.tax_id] ?? 0);
             const taxAmount = net * (taxRate / 100);
@@ -248,6 +274,7 @@ export default function SalesDeliveryCreateScreen({
             return {
                 ...detail,
                 amount: amount.toFixed(2),
+                discount_percent: discountPercent.toFixed(2),
                 discount_amount: discountAmount.toFixed(2),
                 tax_amount: taxAmount.toFixed(2),
                 total: total.toFixed(2),
@@ -262,6 +289,10 @@ export default function SalesDeliveryCreateScreen({
             return { ...prev, details: nextDetails };
         });
         setRowExpanded((prev) => [...prev, false]);
+        setFormattedDetailQty((prev) => [...prev, '']);
+        setFormattedDetailPrice((prev) => [...prev, '']);
+        setFormattedDetailDiscountPercent((prev) => [...prev, '']);
+        setFormattedDetailDiscountAmount((prev) => [...prev, '']);
     };
 
     const removeRow = (index: number) => {
@@ -272,6 +303,14 @@ export default function SalesDeliveryCreateScreen({
             return { ...prev, details: nextDetails };
         });
         setRowExpanded((prev) => prev.filter((_, i) => i !== index));
+        setFormattedDetailQty((prev) => prev.filter((_, i) => i !== index));
+        setFormattedDetailPrice((prev) => prev.filter((_, i) => i !== index));
+        setFormattedDetailDiscountPercent((prev) =>
+            prev.filter((_, i) => i !== index),
+        );
+        setFormattedDetailDiscountAmount((prev) =>
+            prev.filter((_, i) => i !== index),
+        );
     };
 
     const updateDetail = (
@@ -295,6 +334,35 @@ export default function SalesDeliveryCreateScreen({
             next[index] = !next[index];
             return next;
         });
+    };
+
+    const handleDiscountTypeChange = (index: number, type: DiscountType) => {
+        const currentDetail = data.details[index];
+
+        setFormattedDetailDiscountPercent((prev) => {
+            const next = [...prev];
+            if (type === 'percent') {
+                next[index] = formatLocal(
+                    currentDetail?.discount_percent ?? '0.00',
+                );
+            }
+            return next;
+        });
+
+        setFormattedDetailDiscountAmount((prev) => {
+            const next = [...prev];
+            if (type === 'amount') {
+                next[index] = formatLocal(
+                    currentDetail?.discount_amount ?? '0.00',
+                );
+            }
+            return next;
+        });
+
+        updateDetail(index, (detail) => ({
+            ...detail,
+            discount_type: type,
+        }));
     };
 
     const onProductChange = (index: number, value: string) => {
@@ -357,8 +425,7 @@ export default function SalesDeliveryCreateScreen({
             0,
         );
 
-        const discountPercent =
-            amount > 0 ? (discountAmount / amount) * 100 : 0;
+        const discountPercent = 0;
 
         return {
             amount,
@@ -576,6 +643,15 @@ export default function SalesDeliveryCreateScreen({
                                             const computedDetail =
                                                 totals.detailTotals[index] ??
                                                 computeDetail(detail);
+                                            const lineNet = Math.max(
+                                                0,
+                                                toNumber(
+                                                    computedDetail.amount,
+                                                ) -
+                                                    toNumber(
+                                                        computedDetail.discount_amount,
+                                                    ),
+                                            );
 
                                             return (
                                                 <Fragment key={index}>
@@ -735,21 +811,11 @@ export default function SalesDeliveryCreateScreen({
                                                             />
                                                         </td>
                                                         <td className="px-4 py-2 text-right align-top">
-                                                            <div className="font-semibold">
+                                                            <div className="mt-2 font-semibold">
                                                                 {formatCurrency(
-                                                                    toNumber(
-                                                                        computedDetail.total,
-                                                                    ),
+                                                                    lineNet,
                                                                 )}
                                                             </div>
-                                                            <p className="text-xs text-muted-foreground">
-                                                                Subtotal:{' '}
-                                                                {formatCurrency(
-                                                                    toNumber(
-                                                                        computedDetail.amount,
-                                                                    ),
-                                                                )}
-                                                            </p>
                                                         </td>
                                                         <td className="px-4 py-2 text-center align-top">
                                                             <Button
@@ -780,60 +846,164 @@ export default function SalesDeliveryCreateScreen({
                                                             >
                                                                 <div className="grid gap-4 md:grid-cols-3">
                                                                     <div className="space-y-1">
-                                                                        <Label
-                                                                            htmlFor={`details.${index}.discount_percent`}
-                                                                        >
+                                                                        <Label>
                                                                             Diskon
-                                                                            %
                                                                         </Label>
-                                                                        <InputDecimal
-                                                                            id={`details.${index}.discount_percent`}
-                                                                            name={`details.${index}.discount_percent`}
-                                                                            value={
-                                                                                formattedDetailDiscountPercent[
-                                                                                    index
-                                                                                ] ??
-                                                                                ''
-                                                                            }
-                                                                            onValueChange={(
-                                                                                formatted,
-                                                                                numeric,
-                                                                            ) => {
-                                                                                setFormattedDetailDiscountPercent(
-                                                                                    (
-                                                                                        prev,
-                                                                                    ) => {
-                                                                                        const next =
-                                                                                            [
-                                                                                                ...prev,
-                                                                                            ];
-                                                                                        next[
+                                                                        <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
+                                                                            {detail.discount_type ===
+                                                                            'amount' ? (
+                                                                                <InputDecimal
+                                                                                    name={`details.${index}.discount_amount`}
+                                                                                    value={
+                                                                                        formattedDetailDiscountAmount[
                                                                                             index
-                                                                                        ] =
-                                                                                            formatted;
-                                                                                        return next;
-                                                                                    },
-                                                                                );
-                                                                                updateDetail(
-                                                                                    index,
-                                                                                    (
-                                                                                        detail,
-                                                                                    ) => ({
-                                                                                        ...detail,
-                                                                                        discount_percent:
-                                                                                            numeric.toFixed(
-                                                                                                2,
-                                                                                            ),
-                                                                                    }),
-                                                                                );
-                                                                            }}
-                                                                        />
-                                                                        <InputError
-                                                                            message={errorAt(
-                                                                                'details',
-                                                                                index,
-                                                                                'discount_percent',
+                                                                                        ] ??
+                                                                                        ''
+                                                                                    }
+                                                                                    onValueChange={(
+                                                                                        formatted,
+                                                                                        numeric,
+                                                                                    ) => {
+                                                                                        setFormattedDetailDiscountAmount(
+                                                                                            (
+                                                                                                prev,
+                                                                                            ) => {
+                                                                                                const next =
+                                                                                                    [
+                                                                                                        ...prev,
+                                                                                                    ];
+                                                                                                next[
+                                                                                                    index
+                                                                                                ] =
+                                                                                                    formatted;
+                                                                                                return next;
+                                                                                            },
+                                                                                        );
+                                                                                        updateDetail(
+                                                                                            index,
+                                                                                            (
+                                                                                                current,
+                                                                                            ) => ({
+                                                                                                ...current,
+                                                                                                discount_amount:
+                                                                                                    numeric.toFixed(
+                                                                                                        2,
+                                                                                                    ),
+                                                                                            }),
+                                                                                        );
+                                                                                    }}
+                                                                                />
+                                                                            ) : (
+                                                                                <InputDecimal
+                                                                                    id={`details.${index}.discount_percent`}
+                                                                                    name={`details.${index}.discount_percent`}
+                                                                                    value={
+                                                                                        formattedDetailDiscountPercent[
+                                                                                            index
+                                                                                        ] ??
+                                                                                        ''
+                                                                                    }
+                                                                                    onValueChange={(
+                                                                                        formatted,
+                                                                                        numeric,
+                                                                                    ) => {
+                                                                                        setFormattedDetailDiscountPercent(
+                                                                                            (
+                                                                                                prev,
+                                                                                            ) => {
+                                                                                                const next =
+                                                                                                    [
+                                                                                                        ...prev,
+                                                                                                    ];
+                                                                                                next[
+                                                                                                    index
+                                                                                                ] =
+                                                                                                    formatted;
+                                                                                                return next;
+                                                                                            },
+                                                                                        );
+                                                                                        updateDetail(
+                                                                                            index,
+                                                                                            (
+                                                                                                current,
+                                                                                            ) => ({
+                                                                                                ...current,
+                                                                                                discount_percent:
+                                                                                                    numeric.toFixed(
+                                                                                                        2,
+                                                                                                    ),
+                                                                                            }),
+                                                                                        );
+                                                                                    }}
+                                                                                />
                                                                             )}
+                                                                            <Select
+                                                                                value={
+                                                                                    detail.discount_type
+                                                                                }
+                                                                                onValueChange={(
+                                                                                    value,
+                                                                                ) =>
+                                                                                    handleDiscountTypeChange(
+                                                                                        index,
+                                                                                        value as DiscountType,
+                                                                                    )
+                                                                                }
+                                                                            >
+                                                                                <SelectTrigger className="w-[80px]">
+                                                                                    <SelectValue
+                                                                                        aria-label={String(
+                                                                                            detail.discount_type,
+                                                                                        )}
+                                                                                    >
+                                                                                        {discountTypeItems.find(
+                                                                                            (
+                                                                                                item,
+                                                                                            ) =>
+                                                                                                item.value ===
+                                                                                                detail.discount_type,
+                                                                                        )
+                                                                                            ?.label ??
+                                                                                            '%'}
+                                                                                    </SelectValue>
+                                                                                </SelectTrigger>
+                                                                                <SelectContent>
+                                                                                    {discountTypeItems.map(
+                                                                                        (
+                                                                                            item,
+                                                                                        ) => (
+                                                                                            <SelectItem
+                                                                                                key={
+                                                                                                    item.value
+                                                                                                }
+                                                                                                value={String(
+                                                                                                    item.value,
+                                                                                                )}
+                                                                                            >
+                                                                                                {
+                                                                                                    item.label
+                                                                                                }
+                                                                                            </SelectItem>
+                                                                                        ),
+                                                                                    )}
+                                                                                </SelectContent>
+                                                                            </Select>
+                                                                        </div>
+                                                                        <InputError
+                                                                            message={
+                                                                                detail.discount_type ===
+                                                                                'amount'
+                                                                                    ? errorAt(
+                                                                                          'details',
+                                                                                          index,
+                                                                                          'discount_amount',
+                                                                                      )
+                                                                                    : errorAt(
+                                                                                          'details',
+                                                                                          index,
+                                                                                          'discount_percent',
+                                                                                      )
+                                                                            }
                                                                         />
                                                                     </div>
                                                                     <div className="space-y-1">
@@ -981,22 +1151,10 @@ export default function SalesDeliveryCreateScreen({
                                                 </Fragment>
                                             );
                                         })}
-                                        <tr className="border-t bg-muted/50 text-[15px] font-medium">
-                                            <td
-                                                colSpan={4}
-                                                className="px-4 py-2 text-right"
-                                            >
-                                                Ringkasan
-                                            </td>
-                                            <td className="px-4 py-2 text-right">
-                                                {formatCurrency(totals.total)}
-                                            </td>
-                                            <td />
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="flex justify-between">
+                            <div className="grid gap-6 lg:grid-cols-3 lg:items-baseline">
                                 <Button
                                     type="button"
                                     variant="outline"
@@ -1004,37 +1162,37 @@ export default function SalesDeliveryCreateScreen({
                                 >
                                     <PlusCircle /> Tambah Baris
                                 </Button>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div className="grid gap-4 rounded-md border p-4 md:ml-auto md:max-w-xl">
-                        <div className="flex items-center justify-between text-sm">
-                            <span>Subtotal</span>
-                            <span className="font-semibold">
-                                {formatCurrency(totals.amount)}
-                            </span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                            <span>
-                                Diskon ({totals.discountPercent.toFixed(2)}%)
-                            </span>
-                            <span className="font-semibold">
-                                {formatCurrency(totals.discountAmount)}
-                            </span>
-                        </div>
-                        <div className="flex items-center justify-between text-sm">
-                            <span>Pajak</span>
-                            <span className="font-semibold">
-                                {formatCurrency(totals.taxAmount)}
-                            </span>
-                        </div>
-                        <Separator />
-                        <div className="flex items-center justify-between text-base">
-                            <span>Total</span>
-                            <span className="font-bold">
-                                {formatCurrency(totals.total)}
-                            </span>
+                                <div className="grid gap-4 rounded-md border p-4 lg:col-span-2 lg:ml-auto lg:w-full lg:max-w-lg">
+                                    <div className="flex items-center justify-between text-sm">
+                                        <span>Total Produk</span>
+                                        <span className="font-semibold">
+                                            {formatCurrency(totals.amount)}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center justify-between text-sm">
+                                        <span>Diskon</span>
+                                        <span className="font-semibold">
+                                            {formatCurrency(
+                                                totals.discountAmount,
+                                            )}
+                                        </span>
+                                    </div>
+                                    <div className="flex items-center justify-between text-sm">
+                                        <span>Total Pajak</span>
+                                        <span className="font-semibold">
+                                            {formatCurrency(totals.taxAmount)}
+                                        </span>
+                                    </div>
+                                    <Separator />
+                                    <div className="flex items-center justify-between text-base">
+                                        <span>Total</span>
+                                        <span className="font-bold">
+                                            {formatCurrency(totals.total)}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
