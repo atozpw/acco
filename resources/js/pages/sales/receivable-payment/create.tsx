@@ -729,7 +729,7 @@ export default function ReceivablePaymentCreateScreen({
                                     </tbody>
                                 </table>
                             </div>
-                            <div className="flex justify-between">
+                            <div className="grid gap-6 lg:grid-cols-3 lg:items-baseline">
                                 <Button
                                     type="button"
                                     variant="outline"
@@ -738,23 +738,22 @@ export default function ReceivablePaymentCreateScreen({
                                     <PlusCircle className="mr-2 h-4 w-4" />
                                     Tambah Baris
                                 </Button>
+                                <div className="grid gap-4 rounded-md border p-4 lg:col-span-2 lg:ml-auto lg:w-full lg:max-w-lg">
+                                    <div className="flex items-center justify-between text-sm">
+                                        <span>Jumlah Faktur</span>
+                                        <span className="font-semibold">
+                                            {data.details.length}
+                                        </span>
+                                    </div>
+                                    <Separator />
+                                    <div className="flex items-center justify-between text-base">
+                                        <span>Total Pembayaran</span>
+                                        <span className="font-bold">
+                                            {formatCurrency(totalPayment)}
+                                        </span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div className="grid gap-4 rounded-md border p-4 md:ml-auto md:max-w-xl">
-                        <div className="flex items-center justify-between text-sm">
-                            <span>Jumlah Faktur</span>
-                            <span className="font-semibold">
-                                {data.details.length}
-                            </span>
-                        </div>
-                        <Separator />
-                        <div className="flex items-center justify-between text-base">
-                            <span>Total Pembayaran</span>
-                            <span className="font-bold">
-                                {formatCurrency(totalPayment)}
-                            </span>
                         </div>
                     </div>
 
