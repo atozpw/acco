@@ -82,7 +82,7 @@ class PurchaseReceiptController extends Controller
 
         $products = Product::query()
             ->active()
-            ->with(['purchaseTax:id,code,name,rate'])
+            ->with(['purchaseTax:id,code,name,rate', 'stocks:id,warehouse_id,product_id,qty'])
             ->orderBy('name')
             ->get(['id', 'code', 'name', 'purchase_price', 'purchase_tax_id']);
 
@@ -279,7 +279,7 @@ class PurchaseReceiptController extends Controller
 
         $products = Product::query()
             ->active()
-            ->with(['purchaseTax:id,code,name,rate'])
+            ->with(['purchaseTax:id,code,name,rate', 'stocks:id,warehouse_id,product_id,qty'])
             ->orderBy('name')
             ->get(['id', 'code', 'name', 'purchase_price', 'purchase_tax_id']);
 
