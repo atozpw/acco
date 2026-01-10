@@ -35,6 +35,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { useDebounceValue } from '@/hooks/use-debounce';
+import { usePermission } from '@/hooks/use-permission';
 import AppLayout from '@/layouts/app-layout';
 import cashBank from '@/routes/cash-bank';
 import cashTransfer from '@/routes/cash-transfer';
@@ -93,6 +94,7 @@ export default function CashTransferIndexScreen({
     cashTransfers: CursorPagination<CashTransferProps>;
     filters: { search: string; perPage: number };
 }) {
+    const { hasPermission } = usePermission();
     const [search, setSearch] = useState(filters.search || '');
     const searchBounce = useDebounceValue(search, 300);
     const [itemsPage, setItemsPage] = useState<string>(
@@ -156,11 +158,13 @@ export default function CashTransferIndexScreen({
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
-                        <Button asChild>
-                            <Link href={cashTransfer.create().url}>
-                                <CirclePlusIcon /> Buat Baru
-                            </Link>
-                        </Button>
+                        {hasPermission(['cash-transfers.store']) && (
+                            <Button asChild>
+                                <Link href={cashTransfer.create().url}>
+                                    <CirclePlusIcon /> Buat Baru
+                                </Link>
+                            </Button>
+                        )}
                     </div>
 
                     <div className="overflow-hidden rounded-md border">
@@ -261,31 +265,39 @@ export default function CashTransferIndexScreen({
                                                                     Voucher
                                                                 </Link>
                                                             </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                asChild
-                                                            >
-                                                                <Link
-                                                                    href={cashTransfer.edit(
-                                                                        item.id,
-                                                                    )}
+                                                            {hasPermission([
+                                                                'cash-transfers.update',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    asChild
                                                                 >
-                                                                    <Settings2 />
-                                                                    Perbarui
-                                                                </Link>
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                onSelect={(
-                                                                    event,
-                                                                ) => {
-                                                                    event.preventDefault();
-                                                                    setDeleteTarget(
-                                                                        item,
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Trash2 />
-                                                                Hapus
-                                                            </DropdownMenuItem>
+                                                                    <Link
+                                                                        href={cashTransfer.edit(
+                                                                            item.id,
+                                                                        )}
+                                                                    >
+                                                                        <Settings2 />
+                                                                        Perbarui
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                            {hasPermission([
+                                                                'cash-transfers.destroy',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    onSelect={(
+                                                                        event,
+                                                                    ) => {
+                                                                        event.preventDefault();
+                                                                        setDeleteTarget(
+                                                                            item,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Trash2 />
+                                                                    Hapus
+                                                                </DropdownMenuItem>
+                                                            )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
