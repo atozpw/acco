@@ -167,8 +167,8 @@ export default function LedgerIndexScreen({
             Number(itemsPage) !== filtersPerPage ||
             coaId !== filtersCoa ||
             departmentId !== filtersDepartment ||
-            selectedDateFrom !== filtersDateFrom ||
-            selectedDateTo !== filtersDateTo
+            (!!dateRange && selectedDateFrom !== filtersDateFrom) ||
+            (!!dateRange && selectedDateTo !== filtersDateTo)
         );
     }, [
         searchBounce,
@@ -179,6 +179,7 @@ export default function LedgerIndexScreen({
         filtersCoa,
         departmentId,
         filtersDepartment,
+        dateRange,
         selectedDateFrom,
         filtersDateFrom,
         selectedDateTo,
@@ -227,11 +228,21 @@ export default function LedgerIndexScreen({
     ]);
 
     const resetFilters = () => {
+        setFiltersDialogOpen(false);
         setSearch('');
         setItemsPage('25');
         setCoaId(filtersCoa);
         setDepartmentId('');
         setDateRange(undefined);
+
+        router.get(
+            ledgerData.index(),
+            {},
+            {
+                preserveScroll: true,
+                preserveState: true,
+            },
+        );
     };
 
     const formatCurrency = (value: string | number | null | undefined) => {
