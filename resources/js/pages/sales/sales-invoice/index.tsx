@@ -35,6 +35,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { useDebounceValue } from '@/hooks/use-debounce';
+import { usePermission } from '@/hooks/use-permission';
 import AppLayout from '@/layouts/app-layout';
 import sales from '@/routes/sales';
 import salesInvoice from '@/routes/sales-invoice';
@@ -100,6 +101,7 @@ export default function SalesInvoiceIndexScreen({
     invoices: CursorPagination<InvoiceProps>;
     filters: { search: string; perPage: number };
 }) {
+    const { hasPermission } = usePermission();
     const [search, setSearch] = useState(filters.search || '');
     const searchBounce = useDebounceValue(search, 300);
     const [itemsPage, setItemsPage] = useState<string>(
@@ -166,11 +168,13 @@ export default function SalesInvoiceIndexScreen({
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
-                        <Button asChild>
-                            <Link href={salesInvoice.create().url}>
-                                <CirclePlusIcon /> Buat Baru
-                            </Link>
-                        </Button>
+                        {hasPermission(['sales-invoices.store']) && (
+                            <Button asChild>
+                                <Link href={salesInvoice.create().url}>
+                                    <CirclePlusIcon /> Buat Baru
+                                </Link>
+                            </Button>
+                        )}
                     </div>
 
                     <div className="overflow-hidden rounded-md border">
@@ -274,33 +278,41 @@ export default function SalesInvoiceIndexScreen({
                                                                     Voucher
                                                                 </Link>
                                                             </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                asChild
-                                                            >
-                                                                <Link
-                                                                    href={
-                                                                        salesInvoice.edit(
-                                                                            item.id,
-                                                                        ).url
-                                                                    }
+                                                            {hasPermission([
+                                                                'sales-invoices.update',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    asChild
                                                                 >
-                                                                    <Settings2 />
-                                                                    Perbarui
-                                                                </Link>
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                onSelect={(
-                                                                    e,
-                                                                ) => {
-                                                                    e.preventDefault();
-                                                                    setDeleteTarget(
-                                                                        item,
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Trash2 />
-                                                                Hapus
-                                                            </DropdownMenuItem>
+                                                                    <Link
+                                                                        href={
+                                                                            salesInvoice.edit(
+                                                                                item.id,
+                                                                            ).url
+                                                                        }
+                                                                    >
+                                                                        <Settings2 />
+                                                                        Perbarui
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                            {hasPermission([
+                                                                'sales-invoices.destroy',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    onSelect={(
+                                                                        e,
+                                                                    ) => {
+                                                                        e.preventDefault();
+                                                                        setDeleteTarget(
+                                                                            item,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Trash2 />
+                                                                    Hapus
+                                                                </DropdownMenuItem>
+                                                            )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>

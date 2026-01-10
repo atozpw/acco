@@ -35,6 +35,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { useDebounceValue } from '@/hooks/use-debounce';
+import { usePermission } from '@/hooks/use-permission';
 import AppLayout from '@/layouts/app-layout';
 import sales from '@/routes/sales';
 import salesDelivery from '@/routes/sales-delivery';
@@ -92,6 +93,7 @@ export default function SalesDeliveryIndexScreen({
     deliveries: CursorPagination<DeliveryProps>;
     filters: { search: string; perPage: number };
 }) {
+    const { hasPermission } = usePermission();
     const [search, setSearch] = useState(filters.search || '');
     const searchBounce = useDebounceValue(search, 300);
     const [itemsPage, setItemsPage] = useState<string>(
@@ -155,11 +157,13 @@ export default function SalesDeliveryIndexScreen({
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
-                        <Button asChild>
-                            <Link href={salesDelivery.create().url}>
-                                <CirclePlusIcon /> Buat Baru
-                            </Link>
-                        </Button>
+                        {hasPermission(['sales-deliveries.store']) && (
+                            <Button asChild>
+                                <Link href={salesDelivery.create().url}>
+                                    <CirclePlusIcon /> Buat Baru
+                                </Link>
+                            </Button>
+                        )}
                     </div>
 
                     <div className="overflow-hidden rounded-md border">
@@ -259,31 +263,39 @@ export default function SalesDeliveryIndexScreen({
                                                                     Voucher
                                                                 </Link>
                                                             </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                asChild
-                                                            >
-                                                                <Link
-                                                                    href={salesDelivery.edit(
-                                                                        item.id,
-                                                                    )}
+                                                            {hasPermission([
+                                                                'sales-deliveries.update',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    asChild
                                                                 >
-                                                                    <Settings2 />
-                                                                    Perbarui
-                                                                </Link>
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                onSelect={(
-                                                                    event,
-                                                                ) => {
-                                                                    event.preventDefault();
-                                                                    setDeleteTarget(
-                                                                        item,
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Trash2 />
-                                                                Hapus
-                                                            </DropdownMenuItem>
+                                                                    <Link
+                                                                        href={salesDelivery.edit(
+                                                                            item.id,
+                                                                        )}
+                                                                    >
+                                                                        <Settings2 />
+                                                                        Perbarui
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                            {hasPermission([
+                                                                'sales-deliveries.destroy',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    onSelect={(
+                                                                        event,
+                                                                    ) => {
+                                                                        event.preventDefault();
+                                                                        setDeleteTarget(
+                                                                            item,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Trash2 />
+                                                                    Hapus
+                                                                </DropdownMenuItem>
+                                                            )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>

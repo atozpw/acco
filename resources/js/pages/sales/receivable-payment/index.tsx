@@ -35,6 +35,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { useDebounceValue } from '@/hooks/use-debounce';
+import { usePermission } from '@/hooks/use-permission';
 import AppLayout from '@/layouts/app-layout';
 import receivablePayment from '@/routes/receivable-payment';
 import sales from '@/routes/sales';
@@ -100,6 +101,7 @@ export default function ReceivablePaymentIndexScreen({
     payments: CursorPagination<ReceivablePaymentProps>;
     filters: { search: string; perPage: number };
 }) {
+    const { hasPermission } = usePermission();
     const [search, setSearch] = useState(filters.search || '');
     const searchBounce = useDebounceValue(search, 300);
     const [itemsPage, setItemsPage] = useState<string>(
@@ -167,11 +169,13 @@ export default function ReceivablePaymentIndexScreen({
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
-                        <Button asChild>
-                            <Link href={receivablePayment.create().url}>
-                                <CirclePlusIcon /> Buat Baru
-                            </Link>
-                        </Button>
+                        {hasPermission(['receivable-payments.store']) && (
+                            <Button asChild>
+                                <Link href={receivablePayment.create().url}>
+                                    <CirclePlusIcon /> Buat Baru
+                                </Link>
+                            </Button>
+                        )}
                     </div>
 
                     <div className="overflow-hidden rounded-md border">
@@ -275,33 +279,41 @@ export default function ReceivablePaymentIndexScreen({
                                                                     Voucher
                                                                 </Link>
                                                             </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                asChild
-                                                            >
-                                                                <Link
-                                                                    href={
-                                                                        receivablePayment.edit(
-                                                                            item.id,
-                                                                        ).url
-                                                                    }
+                                                            {hasPermission([
+                                                                'receivable-payments.update',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    asChild
                                                                 >
-                                                                    <Settings2 />
-                                                                    Perbarui
-                                                                </Link>
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                onSelect={(
-                                                                    e,
-                                                                ) => {
-                                                                    e.preventDefault();
-                                                                    setDeleteTarget(
-                                                                        item,
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Trash2 />
-                                                                Hapus
-                                                            </DropdownMenuItem>
+                                                                    <Link
+                                                                        href={
+                                                                            receivablePayment.edit(
+                                                                                item.id,
+                                                                            ).url
+                                                                        }
+                                                                    >
+                                                                        <Settings2 />
+                                                                        Perbarui
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                            {hasPermission([
+                                                                'receivable-payments.destroy',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    onSelect={(
+                                                                        e,
+                                                                    ) => {
+                                                                        e.preventDefault();
+                                                                        setDeleteTarget(
+                                                                            item,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Trash2 />
+                                                                    Hapus
+                                                                </DropdownMenuItem>
+                                                            )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
