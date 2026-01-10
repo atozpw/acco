@@ -251,6 +251,7 @@ class PurchaseInvoiceController extends Controller
                 'id' => $invoice->id,
                 'reference_no' => $invoice->reference_no,
                 'formatted_date' => $invoice->formatted_date,
+                'description' => $invoice->description,
                 'contact' => $invoice->contact
                     ? [
                         'id' => $invoice->contact->id,

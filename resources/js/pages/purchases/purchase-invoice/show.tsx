@@ -53,6 +53,7 @@ interface InvoicePayload {
     id: number;
     reference_no: string;
     formatted_date: string | null;
+    description: string | null;
     contact: InvoiceContact | null;
     details: InvoiceDetailPayload[];
     amount: number | string;
@@ -124,6 +125,7 @@ export default function PurchaseInvoiceShowScreen({
     const generalInfo = [
         { label: 'Nomor Invoice', value: invoice.reference_no },
         { label: 'Tanggal Invoice', value: invoice.formatted_date ?? '-' },
+        { label: 'Deskripsi', value: invoice.description ?? '-' },
     ];
 
     const metaInfo = [{ label: 'Alamat', value: contactAddress }];
