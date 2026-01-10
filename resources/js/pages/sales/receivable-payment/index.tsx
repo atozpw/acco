@@ -186,7 +186,7 @@ export default function ReceivablePaymentIndexScreen({
                                         Tanggal
                                     </TableHead>
                                     <TableHead className="min-w-[160px]">
-                                        No. Pesanan
+                                        No. Bayar
                                     </TableHead>
                                     <TableHead className="min-w-[200px]">
                                         Nama Pelanggan

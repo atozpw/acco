@@ -432,7 +432,7 @@ export default function ReceivablePaymentCreateScreen({
                         <aside className="w-full">
                             <HeadingSmall
                                 title="Detail Pembayaran"
-                                description="Hubungkan faktur dan alokasikan nominalnya"
+                                description="Hubungkan invoice dan alokasikan nominalnya"
                             />
                         </aside>
                         <Separator className="lg:hidden" />
@@ -445,7 +445,7 @@ export default function ReceivablePaymentCreateScreen({
                                                 #
                                             </th>
                                             <th className="min-w-[170px] px-4 py-2 text-left">
-                                                No. Faktur
+                                                No. Invoice
                                             </th>
                                             <th className="w-[150px] px-4 py-2 text-left">
                                                 Tanggal
@@ -509,7 +509,7 @@ export default function ReceivablePaymentCreateScreen({
                                                                 }
                                                                 placeholder={
                                                                     data.contact_id
-                                                                        ? 'Pilih faktur'
+                                                                        ? 'Pilih invoice'
                                                                         : 'Pilih pelanggan...'
                                                                 }
                                                                 value={
@@ -560,7 +560,7 @@ export default function ReceivablePaymentCreateScreen({
                                                                 <div className="mt-1 text-xs text-muted-foreground">
                                                                     <p>
                                                                         Nilai
-                                                                        faktur:{' '}
+                                                                        invoice:{' '}
                                                                     </p>
                                                                     <p className="font-semibold text-foreground">
                                                                         {formatCurrency(
@@ -740,7 +740,7 @@ export default function ReceivablePaymentCreateScreen({
                                 </Button>
                                 <div className="grid gap-4 rounded-md border p-4 lg:col-span-2 lg:ml-auto lg:w-full lg:max-w-lg">
                                     <div className="flex items-center justify-between text-sm">
-                                        <span>Jumlah Faktur</span>
+                                        <span>Jumlah Invoice</span>
                                         <span className="font-semibold">
                                             {data.details.length}
                                         </span>
