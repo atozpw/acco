@@ -25,6 +25,7 @@ class UserController extends Controller
 
         /** @var Paginator $users */
         $users = User::query()
+            ->where('id', '>', 1)
             ->with('roles:id,name')
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {

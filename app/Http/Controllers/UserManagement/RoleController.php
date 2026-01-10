@@ -24,6 +24,7 @@ class RoleController extends Controller
         $guard = (string) $request->input('guard', config('auth.defaults.guard', 'web'));
 
         $roles = Role::query()
+            ->where('id', '>', 1)
             ->when($guard, fn ($query) => $query->where('guard_name', $guard))
             ->when($search, function ($query, $search) {
                 $query->where('name', 'like', '%' . $search . '%');
