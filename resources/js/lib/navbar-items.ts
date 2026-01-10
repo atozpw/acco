@@ -20,6 +20,7 @@ import salesInvoice from '@/routes/sales-invoice';
 import taxData from '@/routes/tax-data';
 import unitMeasurement from '@/routes/unit-measurement';
 import users from '@/routes/users';
+import warehouseData from '@/routes/warehouse-data';
 import type { NavItem } from '@/types';
 import {
     Airplay,
@@ -86,6 +87,11 @@ export const mainNavItems: NavItem[] = [
                 title: 'Data Departemen',
                 href: departmentData.index(),
                 permissions: ['departments.index'],
+            },
+            {
+                title: 'Data Gudang',
+                href: warehouseData.index(),
+                permissions: ['warehouses.index'],
             },
         ],
     },

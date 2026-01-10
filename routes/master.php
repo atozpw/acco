@@ -7,6 +7,7 @@ use App\Http\Controllers\Master\ProductCategoryController;
 use App\Http\Controllers\Master\ProductController;
 use App\Http\Controllers\Master\TaxController;
 use App\Http\Controllers\Master\UnitMeasurementController;
+use App\Http\Controllers\Master\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->prefix('data-store')->group(function () {
@@ -144,4 +145,23 @@ Route::middleware('auth')->prefix('data-store')->group(function () {
     Route::delete('department-data/{id}', [DepartmentController::class, 'destroy'])
         ->name('department-data.destroy')
         ->middleware(['permission:departments.destroy']);
+
+    Route::get('warehouse-data', [WarehouseController::class, 'index'])
+        ->name('warehouse-data.index')
+        ->middleware(['permission:warehouses.index']);
+    Route::get('warehouse-data/create', [WarehouseController::class, 'create'])
+        ->name('warehouse-data.create')
+        ->middleware(['permission:warehouses.store']);
+    Route::post('warehouse-data', [WarehouseController::class, 'store'])
+        ->name('warehouse-data.store')
+        ->middleware(['permission:warehouses.store']);
+    Route::get('warehouse-data/{id}/edit', [WarehouseController::class, 'edit'])
+        ->name('warehouse-data.edit')
+        ->middleware(['permission:warehouses.update']);
+    Route::put('warehouse-data/{id}', [WarehouseController::class, 'update'])
+        ->name('warehouse-data.update')
+        ->middleware(['permission:warehouses.update']);
+    Route::delete('warehouse-data/{id}', [WarehouseController::class, 'destroy'])
+        ->name('warehouse-data.destroy')
+        ->middleware(['permission:warehouses.destroy']);
 });

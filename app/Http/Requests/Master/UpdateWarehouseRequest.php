@@ -27,7 +27,7 @@ class UpdateWarehouseRequest extends FormRequest
                 'required',
                 'string',
                 'max:6',
-                Rule::unique('warehouses', 'code')->ignore($this->warehouse->id),
+                Rule::unique('warehouses', 'code')->ignore($this->route('id')),
             ],
 
             'name' => [
