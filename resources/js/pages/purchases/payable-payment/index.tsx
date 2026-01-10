@@ -187,7 +187,7 @@ export default function PayablePaymentIndexScreen({
                                         Tanggal
                                     </TableHead>
                                     <TableHead className="min-w-[160px]">
-                                        No. Pesanan
+                                        No. Bayar
                                     </TableHead>
                                     <TableHead className="min-w-[200px]">
                                         Nama Pemasok
