@@ -42,34 +42,50 @@ export const mainNavItems: NavItem[] = [
         title: 'Data Master',
         href: '#',
         icon: HardDrive,
+        permissions: [
+            'contacts.index',
+            'coas.index',
+            'products.index',
+            'product-categories.index',
+            'unit-measurements.index',
+            'taxes.index',
+            'departments.index',
+        ],
         children: [
             {
                 title: 'Data Kontak',
                 href: contactData.index(),
+                permissions: ['contacts.index'],
             },
             {
                 title: 'Daftar Akun',
                 href: coa.index(),
+                permissions: ['coas.index'],
             },
             {
                 title: 'Data Produk',
                 href: productData.index(),
+                permissions: ['products.index'],
             },
             {
                 title: 'Kategori Produk',
                 href: productCategory.index(),
+                permissions: ['product-categories.index'],
             },
             {
                 title: 'Satuan Pengukuran',
                 href: unitMeasurement.index(),
+                permissions: ['unit-measurements.index'],
             },
             {
                 title: 'Data Pajak',
                 href: taxData.index(),
+                permissions: ['taxes.index'],
             },
             {
                 title: 'Data Departemen',
                 href: departmentData.index(),
+                permissions: ['departments.index'],
             },
         ],
     },
@@ -77,14 +93,17 @@ export const mainNavItems: NavItem[] = [
         title: 'Akuntansi',
         href: '#',
         icon: NotebookText,
+        permissions: ['ledgers.index', 'general-journal.index'],
         children: [
             {
                 title: 'Buku Besar',
                 href: ledgerData.index(),
+                permissions: ['ledgers.index'],
             },
             {
                 title: 'Jurnal Umum',
                 href: generalJournal.index(),
+                permissions: ['general-journal.index'],
             },
         ],
     },
@@ -92,18 +111,26 @@ export const mainNavItems: NavItem[] = [
         title: 'Penjualan',
         href: '#',
         icon: ShoppingBag,
+        permissions: [
+            'sales-deliveries.index',
+            'sales-invoices.index',
+            'receivable-payments.index',
+        ],
         children: [
             {
                 title: 'Pengiriman Barang',
                 href: salesDelivery.index(),
+                permissions: ['sales-deliveries.index'],
             },
             {
                 title: 'Invoice Penjualan',
                 href: salesInvoice.index(),
+                permissions: ['sales-invoices.index'],
             },
             {
                 title: 'Pembayaran Piutang',
                 href: receivablePayment.index(),
+                permissions: ['receivable-payments.index'],
             },
         ],
     },
@@ -111,18 +138,26 @@ export const mainNavItems: NavItem[] = [
         title: 'Pembelian',
         href: '#',
         icon: ShoppingCart,
+        permissions: [
+            'purchase-receipts.index',
+            'purchase-invoices.index',
+            'payable-payments.index',
+        ],
         children: [
             {
                 title: 'Penerimaan Barang',
                 href: purchaseReceipt.index(),
+                permissions: ['purchase-receipts.index'],
             },
             {
                 title: 'Invoice Pembelian',
                 href: purchaseInvoice.index(),
+                permissions: ['purchase-invoices.index'],
             },
             {
                 title: 'Pembayaran Utang',
                 href: payablePayment.index(),
+                permissions: ['payable-payments.index'],
             },
         ],
     },
@@ -130,18 +165,26 @@ export const mainNavItems: NavItem[] = [
         title: 'Kas & Bank',
         href: '#',
         icon: Landmark,
+        permissions: [
+            'expenses.index',
+            'incomes.index',
+            'cash-transfers.index',
+        ],
         children: [
             {
                 title: 'Pengeluaran',
                 href: expense.index(),
+                permissions: ['expenses.index'],
             },
             {
                 title: 'Penerimaan',
                 href: income.index(),
+                permissions: ['incomes.index'],
             },
             {
                 title: 'Transfer Kas',
                 href: cashTransfer.index(),
+                permissions: ['cash-transfers.index'],
             },
         ],
     },
@@ -149,18 +192,22 @@ export const mainNavItems: NavItem[] = [
         title: 'User Management',
         href: '#',
         icon: Settings2,
+        permissions: ['users.index', 'roles.index', 'permissions.index'],
         children: [
             {
                 title: 'Daftar User',
                 href: users.index(),
+                permissions: ['users.index'],
             },
             {
                 title: 'Role',
                 href: roles.index(),
+                permissions: ['roles.index'],
             },
             {
                 title: 'Permission',
                 href: permissions.index(),
+                permissions: ['permissions.index'],
             },
         ],
     },

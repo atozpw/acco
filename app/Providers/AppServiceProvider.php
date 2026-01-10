@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Observers\RoleObserver;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Permission\Models\Role;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -20,6 +22,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Role::observe(RoleObserver::class);
+
         Gate::before(function ($user, $ability) {
             return $user->hasRole('superadmin') ? true : null;
         });
