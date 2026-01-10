@@ -42,6 +42,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { useDebounceValue } from '@/hooks/use-debounce';
+import { usePermission } from '@/hooks/use-permission';
 import AppLayout from '@/layouts/app-layout';
 import dataStore from '@/routes/data-store';
 import taxRoute from '@/routes/tax-data';
@@ -106,6 +107,8 @@ export default function TaxIndexScreen({
     taxes: CursorPagination<TaxProps>;
     filters: { search: string; perPage: number };
 }) {
+    const { hasPermission } = usePermission();
+
     const [search, setSearch] = useState(filters.search || '');
     const searchBounce = useDebounceValue(search, 300);
     const [itemsPage, setItemsPage] = useState<string>(
@@ -146,20 +149,22 @@ export default function TaxIndexScreen({
 
                 <div className="space-y-6">
                     <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
-                        <div className="flex items-center gap-2">
-                            <Input
-                                className="text-sm lg:w-[250px]"
-                                placeholder="Cari kode atau nama..."
-                                autoComplete="off"
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
+                        <Input
+                            className="text-sm lg:w-[250px]"
+                            placeholder="Cari kode atau nama..."
+                            autoComplete="off"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                        <div className="flex items-center gap-3">
+                            {hasPermission(['taxes.store']) && (
+                                <Button asChild>
+                                    <Link href={taxRoute.create().url}>
+                                        <CirclePlusIcon /> Buat Baru
+                                    </Link>
+                                </Button>
+                            )}
                         </div>
-                        <Button asChild>
-                            <Link href={taxRoute.create().url}>
-                                <CirclePlusIcon /> Buat Baru
-                            </Link>
-                        </Button>
                     </div>
                     <div className="overflow-hidden rounded-md border">
                         <Table>
@@ -255,31 +260,39 @@ export default function TaxIndexScreen({
                                                                 <Search />
                                                                 Detail
                                                             </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                asChild
-                                                            >
-                                                                <Link
-                                                                    href={taxRoute.edit(
-                                                                        item.id,
-                                                                    )}
+                                                            {hasPermission([
+                                                                'taxes.update',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    asChild
                                                                 >
-                                                                    <Settings2Icon />
-                                                                    Perbarui
-                                                                </Link>
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                onSelect={(
-                                                                    event,
-                                                                ) => {
-                                                                    event.preventDefault();
-                                                                    setDeleteTarget(
-                                                                        item,
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Trash2 />
-                                                                Hapus
-                                                            </DropdownMenuItem>
+                                                                    <Link
+                                                                        href={taxRoute.edit(
+                                                                            item.id,
+                                                                        )}
+                                                                    >
+                                                                        <Settings2Icon />
+                                                                        Perbarui
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                            {hasPermission([
+                                                                'taxes.destroy',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    onSelect={(
+                                                                        event,
+                                                                    ) => {
+                                                                        event.preventDefault();
+                                                                        setDeleteTarget(
+                                                                            item,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Trash2 />
+                                                                    Hapus
+                                                                </DropdownMenuItem>
+                                                            )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>

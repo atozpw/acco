@@ -43,6 +43,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { useDebounceValue } from '@/hooks/use-debounce';
+import { usePermission } from '@/hooks/use-permission';
 import AppLayout from '@/layouts/app-layout';
 import contactData from '@/routes/contact-data';
 import dataStore from '@/routes/data-store';
@@ -97,6 +98,8 @@ export default function KontakIndexScreen({
     contacts: CursorPagination<ContactProps>;
     filters: { search: string; perPage: number };
 }) {
+    const { hasPermission } = usePermission();
+
     const [search, setSearch] = useState(filters.search || '');
     const searchBounce = useDebounceValue(search, 300);
     const [itemsPage, setItemsPage] = useState<string>(String(filters.perPage));
@@ -137,20 +140,22 @@ export default function KontakIndexScreen({
 
                 <div className="space-y-6">
                     <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
-                        <div className="flex items-center gap-2">
-                            <Input
-                                className="text-sm lg:w-[250px]"
-                                placeholder="Cari..."
-                                autoComplete="off"
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                            />
+                        <Input
+                            className="text-sm lg:w-[250px]"
+                            placeholder="Cari kode atau nama..."
+                            autoComplete="off"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                        <div className="flex items-center gap-3">
+                            {hasPermission(['contacts.store']) && (
+                                <Button asChild>
+                                    <Link href={contactData.create().url}>
+                                        <CirclePlusIcon /> Buat Baru
+                                    </Link>
+                                </Button>
+                            )}
                         </div>
-                        <Button asChild>
-                            <Link href={contactData.create().url}>
-                                <CirclePlusIcon /> Buat Baru
-                            </Link>
-                        </Button>
                     </div>
                     <div className="overflow-hidden rounded-md border">
                         <Table>
@@ -257,31 +262,39 @@ export default function KontakIndexScreen({
                                                                 <Search />
                                                                 Detail
                                                             </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                asChild
-                                                            >
-                                                                <Link
-                                                                    href={contactData.edit(
-                                                                        item.id,
-                                                                    )}
+                                                            {hasPermission([
+                                                                'contacts.update',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    asChild
                                                                 >
-                                                                    <Settings2Icon />
-                                                                    Perbarui
-                                                                </Link>
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                onSelect={(
-                                                                    event,
-                                                                ) => {
-                                                                    event.preventDefault();
-                                                                    setDeleteTarget(
-                                                                        item,
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Trash2 />
-                                                                Hapus
-                                                            </DropdownMenuItem>
+                                                                    <Link
+                                                                        href={contactData.edit(
+                                                                            item.id,
+                                                                        )}
+                                                                    >
+                                                                        <Settings2Icon />
+                                                                        Perbarui
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                            {hasPermission([
+                                                                'contacts.destroy',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    onSelect={(
+                                                                        event,
+                                                                    ) => {
+                                                                        event.preventDefault();
+                                                                        setDeleteTarget(
+                                                                            item,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Trash2 />
+                                                                    Hapus
+                                                                </DropdownMenuItem>
+                                                            )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
@@ -303,12 +316,12 @@ export default function KontakIndexScreen({
                         <AlertDialogContent>
                             <AlertDialogHeader>
                                 <AlertDialogTitle>
-                                    Hapus kontak?
+                                    Hapus Kontak
                                 </AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    Tindakan ini akan menghapus data kontak
-                                    secara soft delete. Anda masih dapat
-                                    mengembalikannya dari data yang terhapus.
+                                    Apakah Anda yakin ingin menghapus kontak{' '}
+                                    <strong>{deleteTarget?.name ?? ''}</strong>?
+                                    Tindakan ini tidak dapat dibatalkan.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>

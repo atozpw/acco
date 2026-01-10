@@ -36,6 +36,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { useDebounceValue } from '@/hooks/use-debounce';
+import { usePermission } from '@/hooks/use-permission';
 import AppLayout from '@/layouts/app-layout';
 import dataStore from '@/routes/data-store';
 import productData from '@/routes/product-data';
@@ -124,6 +125,8 @@ export default function ProductIndexScreen({
     products: CursorPagination<ProductProps>;
     filters: { search: string; perPage: number; warehouse_id: number };
 }) {
+    const { hasPermission } = usePermission();
+
     const warehouseItems: ComboboxItem[] = [
         { label: 'Semua', value: '' },
         ...warehouses.map((warehouse) => ({
@@ -209,11 +212,13 @@ export default function ProductIndexScreen({
                             onChange={(e) => setSearch(e.target.value)}
                         />
                         <div className="flex items-center gap-3">
-                            <Button asChild>
-                                <Link href={productData.create().url}>
-                                    <CirclePlusIcon /> Buat Baru
-                                </Link>
-                            </Button>
+                            {hasPermission(['products.store']) && (
+                                <Button asChild>
+                                    <Link href={productData.create().url}>
+                                        <CirclePlusIcon /> Buat Baru
+                                    </Link>
+                                </Button>
+                            )}
                             <ProductFilterDialog
                                 open={filtersDialogOpen}
                                 onOpenChange={setFiltersDialogOpen}
@@ -346,31 +351,39 @@ export default function ProductIndexScreen({
                                                                 <Search />
                                                                 Detail
                                                             </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                asChild
-                                                            >
-                                                                <Link
-                                                                    href={productData.edit(
-                                                                        item.id,
-                                                                    )}
+                                                            {hasPermission([
+                                                                'products.update',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    asChild
                                                                 >
-                                                                    <Settings2Icon />
-                                                                    Perbarui
-                                                                </Link>
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                onSelect={(
-                                                                    event,
-                                                                ) => {
-                                                                    event.preventDefault();
-                                                                    setDeleteTarget(
-                                                                        item,
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Trash2 />
-                                                                Hapus
-                                                            </DropdownMenuItem>
+                                                                    <Link
+                                                                        href={productData.edit(
+                                                                            item.id,
+                                                                        )}
+                                                                    >
+                                                                        <Settings2Icon />
+                                                                        Perbarui
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                            {hasPermission([
+                                                                'products.destroy',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    onSelect={(
+                                                                        event,
+                                                                    ) => {
+                                                                        event.preventDefault();
+                                                                        setDeleteTarget(
+                                                                            item,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Trash2 />
+                                                                    Hapus
+                                                                </DropdownMenuItem>
+                                                            )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
@@ -393,12 +406,12 @@ export default function ProductIndexScreen({
                         <AlertDialogContent>
                             <AlertDialogHeader>
                                 <AlertDialogTitle>
-                                    Hapus produk?
+                                    Hapus Produk
                                 </AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    Tindakan ini akan menghapus data produk
-                                    secara soft delete. Anda masih dapat
-                                    mengembalikannya dari data yang terhapus.
+                                    Apakah Anda yakin ingin menghapus produk{' '}
+                                    <strong>{deleteTarget?.name ?? ''}</strong>?
+                                    Tindakan ini tidak dapat dibatalkan.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
