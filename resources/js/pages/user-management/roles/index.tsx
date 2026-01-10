@@ -35,6 +35,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { useDebounceValue } from '@/hooks/use-debounce';
+import { usePermission } from '@/hooks/use-permission';
 import AppLayout from '@/layouts/app-layout';
 import roleRoute from '@/routes/roles';
 import userManagementRoute from '@/routes/user-management';
@@ -89,6 +90,7 @@ export default function RoleIndexScreen({
     filters: Filters;
     availableGuards: string[];
 }) {
+    const { hasPermission } = usePermission();
     const [search, setSearch] = useState(filters.search || '');
     const debouncedSearch = useDebounceValue(search, 300);
     const [itemsPage, setItemsPage] = useState<string>(
@@ -163,11 +165,13 @@ export default function RoleIndexScreen({
                                 </SelectContent>
                             </Select>
                         </div>
-                        <Button asChild>
-                            <Link href={roleRoute.create().url}>
-                                <CirclePlusIcon /> Tambah Role
-                            </Link>
-                        </Button>
+                        {hasPermission(['roles.store']) && (
+                            <Button asChild>
+                                <Link href={roleRoute.create().url}>
+                                    <CirclePlusIcon /> Tambah Role
+                                </Link>
+                            </Button>
+                        )}
                     </div>
 
                     <div className="overflow-hidden rounded-md border">
@@ -226,31 +230,39 @@ export default function RoleIndexScreen({
                                                         align="end"
                                                     >
                                                         <DropdownMenuGroup>
-                                                            <DropdownMenuItem
-                                                                asChild
-                                                            >
-                                                                <Link
-                                                                    href={roleRoute.edit(
-                                                                        item.id,
-                                                                    )}
+                                                            {hasPermission([
+                                                                'roles.update',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    asChild
                                                                 >
-                                                                    <Settings2Icon />
-                                                                    Perbarui
-                                                                </Link>
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                onSelect={(
-                                                                    event,
-                                                                ) => {
-                                                                    event.preventDefault();
-                                                                    setDeleteTarget(
-                                                                        item,
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Trash2 />
-                                                                Hapus
-                                                            </DropdownMenuItem>
+                                                                    <Link
+                                                                        href={roleRoute.edit(
+                                                                            item.id,
+                                                                        )}
+                                                                    >
+                                                                        <Settings2Icon />
+                                                                        Perbarui
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                            {hasPermission([
+                                                                'roles.destroy',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    onSelect={(
+                                                                        event,
+                                                                    ) => {
+                                                                        event.preventDefault();
+                                                                        setDeleteTarget(
+                                                                            item,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Trash2 />
+                                                                    Hapus
+                                                                </DropdownMenuItem>
+                                                            )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>

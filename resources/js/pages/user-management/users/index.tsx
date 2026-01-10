@@ -36,6 +36,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { useDebounceValue } from '@/hooks/use-debounce';
+import { usePermission } from '@/hooks/use-permission';
 import AppLayout from '@/layouts/app-layout';
 import userManagementRoute from '@/routes/user-management';
 import userRoute from '@/routes/users';
@@ -89,6 +90,7 @@ export default function UserIndexScreen({
     users: CursorPagination<UserItem>;
     filters: Filters;
 }) {
+    const { hasPermission } = usePermission();
     const [search, setSearch] = useState(filters.search || '');
     const debouncedSearch = useDebounceValue(search, 300);
     const [itemsPage, setItemsPage] = useState<string>(
@@ -136,11 +138,13 @@ export default function UserIndexScreen({
                                 onChange={(e) => setSearch(e.target.value)}
                             />
                         </div>
-                        <Button asChild>
-                            <Link href={userRoute.create().url}>
-                                <CirclePlusIcon /> Tambah User
-                            </Link>
-                        </Button>
+                        {hasPermission(['users.store']) && (
+                            <Button asChild>
+                                <Link href={userRoute.create().url}>
+                                    <CirclePlusIcon /> Tambah User
+                                </Link>
+                            </Button>
+                        )}
                     </div>
 
                     <div className="overflow-hidden rounded-md border">
@@ -237,31 +241,39 @@ export default function UserIndexScreen({
                                                         align="end"
                                                     >
                                                         <DropdownMenuGroup>
-                                                            <DropdownMenuItem
-                                                                asChild
-                                                            >
-                                                                <Link
-                                                                    href={userRoute.edit(
-                                                                        item.id,
-                                                                    )}
+                                                            {hasPermission([
+                                                                'users.update',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    asChild
                                                                 >
-                                                                    <Settings2Icon />
-                                                                    Perbarui
-                                                                </Link>
-                                                            </DropdownMenuItem>
-                                                            <DropdownMenuItem
-                                                                onSelect={(
-                                                                    event,
-                                                                ) => {
-                                                                    event.preventDefault();
-                                                                    setDeleteTarget(
-                                                                        item,
-                                                                    );
-                                                                }}
-                                                            >
-                                                                <Trash2 />
-                                                                Hapus
-                                                            </DropdownMenuItem>
+                                                                    <Link
+                                                                        href={userRoute.edit(
+                                                                            item.id,
+                                                                        )}
+                                                                    >
+                                                                        <Settings2Icon />
+                                                                        Perbarui
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                            )}
+                                                            {hasPermission([
+                                                                'users.destroy',
+                                                            ]) && (
+                                                                <DropdownMenuItem
+                                                                    onSelect={(
+                                                                        event,
+                                                                    ) => {
+                                                                        event.preventDefault();
+                                                                        setDeleteTarget(
+                                                                            item,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Trash2 />
+                                                                    Hapus
+                                                                </DropdownMenuItem>
+                                                            )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
