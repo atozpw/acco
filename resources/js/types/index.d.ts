@@ -6,6 +6,12 @@ export interface Auth {
     can: string[];
 }
 
+export interface Role {
+    id: number;
+    name: string;
+    [key: string]: unknown;
+}
+
 export interface BreadcrumbItem {
     title: string;
     href: string;
@@ -42,6 +48,7 @@ export interface User {
     two_factor_enabled?: boolean;
     created_at: string;
     updated_at: string;
+    roles?: Role[];
     [key: string]: unknown; // This allows for additional properties...
 }
 

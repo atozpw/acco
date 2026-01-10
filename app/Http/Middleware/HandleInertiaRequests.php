@@ -44,12 +44,12 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
-                'user' => $request->user(),
-                'can' => fn () => $request->user()
+                'user' => fn() => $request->user()?->loadMissing('roles:id,name'),
+                'can' => fn() => $request->user()
                     ? Cache::remember(
                         "user_permissions:{$request->user()->id}",
                         now()->addMinutes(15),
-                        fn () => $request->user()
+                        fn() => $request->user()
                             ->getPermissionsViaRoles()
                             ->pluck('name')
                             ->toArray()
