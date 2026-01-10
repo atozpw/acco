@@ -1,3 +1,4 @@
+import type { ComboboxItem } from '@/components/form/input-combobox';
 import Heading from '@/components/heading';
 import SimplePaginate from '@/components/simple-pagination';
 import {
@@ -42,6 +43,7 @@ import { BreadcrumbItem, CursorPagination } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
     CirclePlusIcon,
+    ListFilterPlus,
     MoreHorizontalIcon,
     Search,
     Settings2Icon,
@@ -49,6 +51,9 @@ import {
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import ProductDetailDialog from './partials/product-detail-dialog';
+import ProductFilterDialog, {
+    type ProductFilterValues,
+} from './partials/product-filter-dialog';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -60,6 +65,11 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '',
     },
 ];
+
+type WarehouseProps = {
+    id: number;
+    name: string;
+};
 
 type ProductCategoryProps = {
     id: number;
@@ -106,12 +116,22 @@ const listPerPage: { item: string; value: string }[] = [
 ];
 
 export default function ProductIndexScreen({
+    warehouses,
     products,
     filters,
 }: {
+    warehouses: WarehouseProps[];
     products: CursorPagination<ProductProps>;
-    filters: { search: string; perPage: number };
+    filters: { search: string; perPage: number; warehouse_id: number };
 }) {
+    const warehouseItems: ComboboxItem[] = [
+        { label: 'Semua', value: '' },
+        ...warehouses.map((warehouse) => ({
+            label: warehouse.name,
+            value: String(warehouse.id),
+        })),
+    ];
+
     const [search, setSearch] = useState(filters.search || '');
     const searchBounce = useDebounceValue(search, 300);
     const [itemsPage, setItemsPage] = useState<string>(
@@ -123,16 +143,26 @@ export default function ProductIndexScreen({
     );
     const [deleteTarget, setDeleteTarget] = useState<ProductProps | null>(null);
 
+    const [filtersDialogOpen, setFiltersDialogOpen] = useState<boolean>(false);
+    const [warehouseId, setWarehouseId] = useState<string>(
+        filters.warehouse_id ? String(filters.warehouse_id) : '',
+    );
+
     useEffect(() => {
+        const filtersWarehouseId = filters.warehouse_id
+            ? String(filters.warehouse_id)
+            : '';
         if (
             searchBounce !== filters.search ||
-            Number(itemsPage) !== filters.perPage
+            Number(itemsPage) !== filters.perPage ||
+            warehouseId !== filtersWarehouseId
         ) {
             router.get(
                 productData.index(),
                 {
                     search: searchBounce,
                     perPage: Number(itemsPage),
+                    warehouse_id: warehouseId || undefined,
                 },
                 {
                     preserveState: true,
@@ -140,7 +170,14 @@ export default function ProductIndexScreen({
                 },
             );
         }
-    }, [searchBounce, filters.search, itemsPage, filters.perPage]);
+    }, [
+        searchBounce,
+        filters.search,
+        itemsPage,
+        filters.perPage,
+        warehouseId,
+        filters.warehouse_id,
+    ]);
 
     const formatNumber = (value: string | number | null | undefined) => {
         if (value === null || value === undefined) return '0';
@@ -164,20 +201,41 @@ export default function ProductIndexScreen({
 
                 <div className="space-y-6">
                     <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
-                        <div className="flex items-center gap-2">
-                            <Input
-                                className="text-sm lg:w-[250px]"
-                                placeholder="Cari kode atau nama..."
-                                autoComplete="off"
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
+                        <Input
+                            className="text-sm lg:w-[250px]"
+                            placeholder="Cari kode atau nama..."
+                            autoComplete="off"
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
+                        <div className="flex items-center gap-3">
+                            <Button asChild>
+                                <Link href={productData.create().url}>
+                                    <CirclePlusIcon /> Buat Baru
+                                </Link>
+                            </Button>
+                            <ProductFilterDialog
+                                open={filtersDialogOpen}
+                                onOpenChange={setFiltersDialogOpen}
+                                trigger={
+                                    <Button
+                                        aria-label="Filters"
+                                        variant={
+                                            filtersDialogOpen
+                                                ? 'default'
+                                                : 'outline'
+                                        }
+                                    >
+                                        <ListFilterPlus />
+                                    </Button>
+                                }
+                                warehouseItems={warehouseItems}
+                                values={{ warehouseId }}
+                                onApply={(value: ProductFilterValues) => {
+                                    setWarehouseId(value.warehouseId);
+                                }}
                             />
                         </div>
-                        <Button asChild>
-                            <Link href={productData.create().url}>
-                                <CirclePlusIcon /> Buat Baru
-                            </Link>
-                        </Button>
                     </div>
                     <div className="overflow-hidden rounded-md border">
                         <Table>
@@ -234,7 +292,8 @@ export default function ProductIndexScreen({
                                                 {formatNumber(item.sales_price)}
                                             </TableCell>
                                             <TableCell className="text-right align-baseline">
-                                                {item.available_qty ?? '0'}
+                                                {item.available_qty ??
+                                                    'Tidak Terlacak'}
                                             </TableCell>
                                             <TableCell className="align-baseline">
                                                 <div className="flex items-center gap-2">

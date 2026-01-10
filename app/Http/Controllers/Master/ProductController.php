@@ -10,6 +10,7 @@ use App\Models\ProductCategory;
 use App\Models\Stock;
 use App\Models\Tax;
 use App\Models\UnitMeasurement;
+use App\Models\Warehouse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
@@ -23,9 +24,20 @@ class ProductController extends Controller
     {
         $search = (string) $request->input('search');
         $perPage = (int) $request->input('perPage', 15);
+        $warehouse_id = (int) $request->input('warehouse_id');
+
+        $warehouses = Warehouse::query()
+            ->active()
+            ->orderBy('name')
+            ->get(['id', 'name']);
 
         $products = Product::query()
             ->with(['category', 'unitMeasurement', 'salesTax', 'purchaseTax'])
+            ->when($warehouse_id, function ($query, $warehouse_id) {
+                $query->whereHas('stocks', function ($q) use ($warehouse_id) {
+                    $q->where('warehouse_id', $warehouse_id);
+                });
+            })
             ->withSum('stocks as available_qty', 'qty')
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
@@ -38,10 +50,12 @@ class ProductController extends Controller
             ->withQueryString();
 
         return inertia('master/product/index', [
+            'warehouses' => $warehouses,
             'products' => $products,
             'filters' => [
                 'search' => $search,
                 'perPage' => $perPage,
+                'warehouse_id' => $warehouse_id,
             ],
         ]);
     }

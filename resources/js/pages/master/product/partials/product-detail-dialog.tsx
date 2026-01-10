@@ -121,7 +121,7 @@ export default function ProductDetailDialog({
                                 <div className="text-xs text-muted-foreground">
                                     Available Qty
                                 </div>
-                                <div>{product.available_qty ?? 0}</div>
+                                <div>{product.available_qty ?? 'Tidak Terlacak'}</div>
                             </div>
                             <div className="grid gap-1">
                                 <div className="text-xs text-muted-foreground">
