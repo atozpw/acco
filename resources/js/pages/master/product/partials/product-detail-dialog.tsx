@@ -119,7 +119,7 @@ export default function ProductDetailDialog({
                         <div className="grid gap-4 md:grid-cols-3">
                             <div className="grid gap-1">
                                 <div className="text-xs text-muted-foreground">
-                                    Available Qty
+                                    Stok
                                 </div>
                                 <div>{product.available_qty ?? 'Tidak Terlacak'}</div>
                             </div>

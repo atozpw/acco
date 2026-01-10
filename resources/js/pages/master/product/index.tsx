@@ -259,7 +259,7 @@ export default function ProductIndexScreen({
                                         Harga Jual
                                     </TableHead>
                                     <TableHead className="min-w-[125px] text-right">
-                                        Available Qty
+                                        Stok
                                     </TableHead>
                                     <TableHead className="min-w-[100px]">
                                         Status
