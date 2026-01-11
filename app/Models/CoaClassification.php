@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CoaClassification extends Model
@@ -21,5 +22,10 @@ class CoaClassification extends Model
     protected function active(Builder $query): void
     {
         $query->where('is_active', 1);
+    }
+
+    public function coas(): HasMany
+    {
+        return $this->hasMany(Coa::class);
     }
 }
