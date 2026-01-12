@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 
 class ProfitLossService
 {
-    private const CLASSIFICATION_TYPE = 'profit-loss';
+    public const CLASSIFICATION_TYPE = 'profit-loss';
 
     public function __construct(
         private readonly JournalDetail $journalDetail,

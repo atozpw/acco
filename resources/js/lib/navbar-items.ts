@@ -4,6 +4,7 @@ import coa from '@/routes/coa';
 import contactData from '@/routes/contact-data';
 import departmentData from '@/routes/department-data';
 import expense from '@/routes/expense';
+import financialStatement from '@/routes/financial-statement';
 import generalJournal from '@/routes/general-journal';
 import income from '@/routes/income';
 import ledgerData from '@/routes/ledger-data';
@@ -24,6 +25,7 @@ import warehouseData from '@/routes/warehouse-data';
 import type { NavItem } from '@/types';
 import {
     Airplay,
+    Files,
     HardDrive,
     Landmark,
     LayoutGrid,
@@ -191,6 +193,17 @@ export const mainNavItems: NavItem[] = [
                 title: 'Transfer Kas',
                 href: cashTransfer.index(),
                 permissions: ['cash-transfers.index'],
+            },
+        ],
+    },
+    {
+        title: 'Laporan',
+        href: '#',
+        icon: Files,
+        children: [
+            {
+                title: 'Laporan Keuangan',
+                href: financialStatement.index(),
             },
         ],
     },

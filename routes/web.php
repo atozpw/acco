@@ -23,3 +23,4 @@ require __DIR__ . '/user-management.php';
 require __DIR__ . '/cashbank.php';
 require __DIR__ . '/sales.php';
 require __DIR__ . '/purchase.php';
+require __DIR__ . '/report.php';
