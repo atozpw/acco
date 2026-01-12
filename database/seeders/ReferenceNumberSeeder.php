@@ -23,6 +23,27 @@ class ReferenceNumberSeeder extends Seeder
         ]);
 
         ReferenceNumber::create([
+            'name' => 'Saldo Awal Piutang',
+            'module' => 'receivable-beginning-balance',
+            'code' => 'RB',
+            'value' => '000001',
+        ]);
+
+        ReferenceNumber::create([
+            'name' => 'Saldo Awal Utang',
+            'module' => 'payable-beginning-balance',
+            'code' => 'PB',
+            'value' => '000001',
+        ]);
+
+        ReferenceNumber::create([
+            'name' => 'Saldo Awal Persediaan',
+            'module' => 'receivable-beginning-balance',
+            'code' => 'IB',
+            'value' => '000001',
+        ]);
+
+        ReferenceNumber::create([
             'name' => 'Jurnal Umum',
             'module' => 'general-journal',
             'code' => 'GJ',
