@@ -28,6 +28,7 @@ class SalesInvoice extends Model
         'total',
         'is_paid',
         'is_delivery',
+        'is_beginning',
         'created_by',
     ];
 

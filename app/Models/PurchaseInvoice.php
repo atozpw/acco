@@ -28,6 +28,7 @@ class PurchaseInvoice extends Model
         'total',
         'is_paid',
         'is_receipt',
+        'is_beginning',
         'created_by',
     ];
 
