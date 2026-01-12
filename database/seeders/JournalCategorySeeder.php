@@ -17,7 +17,7 @@ class JournalCategorySeeder extends Seeder
     {
         JournalCategory::create([
             'code' => 'AB',
-            'name' => 'Beginning Balance',
+            'name' => 'Account Beginning Balance',
         ]);
 
         JournalCategory::create([
