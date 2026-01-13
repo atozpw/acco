@@ -27,7 +27,7 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->foreign('cash_advance_expense_id')->references('id')->on('cash_advance_expenses')->onUpdate('cascade');
-            $table->foreign('cash_advance_classification_id')->references('id')->on('cash_advance_classifications')->onUpdate('cascade');
+            $table->foreign('cash_advance_classification_id', 'cash_advance_expense_details_classification_id')->references('id')->on('cash_advance_classifications')->onUpdate('cascade');
             $table->foreign('tax_id')->references('id')->on('taxes')->onUpdate('cascade');
             $table->foreign('department_id')->references('id')->on('departments')->onUpdate('cascade');
             $table->foreign('project_id')->references('id')->on('projects')->onUpdate('cascade');
