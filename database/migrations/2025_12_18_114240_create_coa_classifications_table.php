@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('coa_classifications', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name', 50);
             $table->enum('type', ['balance-sheet', 'profit-loss']);
             $table->boolean('is_active')->default(1);
             $table->timestamps();
