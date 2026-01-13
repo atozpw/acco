@@ -4,8 +4,6 @@ namespace App\Services\Report\Finance;
 
 use App\Models\Coa;
 use App\Models\CoaClassification;
-use App\Models\ExpenseDetail;
-use App\Models\IncomeDetail;
 use App\Models\JournalDetail;
 use Illuminate\Support\Collection;
 
@@ -15,8 +13,6 @@ class ProfitLossService
 
     public function __construct(
         private readonly JournalDetail $journalDetail,
-        private readonly IncomeDetail $incomeDetail,
-        private readonly ExpenseDetail $expenseDetail,
     ) {}
 
     /**
@@ -32,6 +28,7 @@ class ProfitLossService
             ->where('type', self::CLASSIFICATION_TYPE)
             ->active()
             ->when($classificationId, fn($query) => $query->where('id', $classificationId))
+            ->whereHas('coas', fn($query) => $query->where('is_active', 1))
             ->with(['coas' => fn($query) => $query->where('is_active', 1)])
             ->get();
 
@@ -64,10 +61,6 @@ class ProfitLossService
     private function collectAmounts(array $filters, ?int $classificationId): Collection
     {
         $rows = $this->journalRows($filters, $classificationId);
-
-        if ($rows->isEmpty()) {
-            $rows = $this->fallbackRows($filters, $classificationId);
-        }
 
         return $rows->mapWithKeys(function ($row) {
             $coaId = (int) $row->coa_id;
@@ -123,84 +116,6 @@ class ProfitLossService
 
             return $row;
         });
-    }
-
-    private function fallbackRows(array $filters, ?int $classificationId): Collection
-    {
-        $dateFrom = $filters['date_from'] ?? null;
-        $dateTo = $filters['date_to'] ?? null;
-        $departmentId = $filters['department_id'] ?? null;
-        $projectId = $filters['project_id'] ?? null;
-
-        $incomeRows = $this->incomeDetail
-            ->newQuery()
-            ->selectRaw('coa_id, 0 as total_debit, SUM(amount) as total_credit')
-            ->whereHas('coa.classification', function ($classification) use ($classificationId) {
-                $classification->where('type', self::CLASSIFICATION_TYPE);
-
-                if ($classificationId) {
-                    $classification->where('id', $classificationId);
-                }
-            })
-            ->when($dateFrom || $dateTo, function ($builder) use ($dateFrom, $dateTo) {
-                $builder->whereHas('income', function ($income) use ($dateFrom, $dateTo) {
-                    if ($dateFrom) {
-                        $income->whereDate('date', '>=', $dateFrom);
-                    }
-
-                    if ($dateTo) {
-                        $income->whereDate('date', '<=', $dateTo);
-                    }
-                });
-            })
-            ->when($departmentId, fn($builder) => $builder->where('department_id', $departmentId))
-            ->when($projectId, fn($builder) => $builder->where('project_id', $projectId))
-            ->groupBy('coa_id')
-            ->get();
-
-        $expenseRows = $this->expenseDetail
-            ->newQuery()
-            ->selectRaw('coa_id, SUM(amount) as total_debit, 0 as total_credit')
-            ->whereHas('coa.classification', function ($classification) use ($classificationId) {
-                $classification->where('type', self::CLASSIFICATION_TYPE);
-
-                if ($classificationId) {
-                    $classification->where('id', $classificationId);
-                }
-            })
-            ->when($dateFrom || $dateTo, function ($builder) use ($dateFrom, $dateTo) {
-                $builder->whereHas('expense', function ($expense) use ($dateFrom, $dateTo) {
-                    if ($dateFrom) {
-                        $expense->whereDate('date', '>=', $dateFrom);
-                    }
-
-                    if ($dateTo) {
-                        $expense->whereDate('date', '<=', $dateTo);
-                    }
-                });
-            })
-            ->when($departmentId, fn($builder) => $builder->where('department_id', $departmentId))
-            ->when($projectId, fn($builder) => $builder->where('project_id', $projectId))
-            ->groupBy('coa_id')
-            ->get();
-
-        $rows = $incomeRows->concat($expenseRows);
-
-        $coaMap = $this->fetchCoaDebitFlags($rows->pluck('coa_id'));
-
-        return $rows
-            ->groupBy('coa_id')
-            ->map(function (Collection $items) use ($coaMap) {
-                $first = $items->first();
-
-                return (object) [
-                    'coa_id' => $first->coa_id,
-                    'is_debit' => $coaMap[$first->coa_id] ?? false,
-                    'total_debit' => $items->sum('total_debit'),
-                    'total_credit' => $items->sum('total_credit'),
-                ];
-            })
-            ->values();
     }
 
     private function calculateAmount(bool $isDebitAccount, float $debit, float $credit): float

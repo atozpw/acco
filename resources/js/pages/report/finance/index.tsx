@@ -51,7 +51,10 @@ export default function FinancialStatementPage() {
                                 >
                                     Laba Rugi
                                 </Link>
-                                <Link href={'#'} className="hover:underline">
+                                <Link
+                                    href={financialStatement.balanceSheet.url()}
+                                    className="hover:underline"
+                                >
                                     Neraca
                                 </Link>
                             </AccordionContent>

@@ -11,5 +11,7 @@ Route::middleware('auth')->prefix('report')->group(function () {
             ->name('financial-statement.index');
         Route::get('profit-loss', [FinancialStatementController::class, 'profitLoss'])
             ->name('financial-statement.profit-loss');
+        Route::get('balance-sheet', [FinancialStatementController::class, 'balanceSheet'])
+            ->name('financial-statement.balance-sheet');
     });
 });

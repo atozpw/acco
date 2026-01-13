@@ -19,9 +19,9 @@ import { Head, Link, router } from '@inertiajs/react';
 import { ListFilterPlus, Printer, Share2, Undo2 } from 'lucide-react';
 import { Fragment, useMemo, useState } from 'react';
 import { type DateRange } from 'react-day-picker';
-import ProfitLossFilterDialog, {
-    type ProfitLossFilterValues,
-} from './partials/profit-loss-filter-dialog';
+import BalanceSheetFilterDialog, {
+    type BalanceSheetFilterValues,
+} from './partials/balance-sheet-filter-dialog';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -33,7 +33,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: financialStatement.index.url(),
     },
     {
-        title: 'Laba Rugi',
+        title: 'Neraca',
         href: '',
     },
 ];
@@ -53,7 +53,7 @@ type ClassificationReport = {
     total: number;
 };
 
-type ProfitLossReport = {
+type BalanceSheetReport = {
     classifications: ClassificationReport[];
     totals: {
         income: number;
@@ -62,12 +62,13 @@ type ProfitLossReport = {
     };
 };
 
-type ProfitLossFilters = {
+type BalanceSheetFilters = {
     date_from: string | null;
     date_to: string | null;
     classification_id: number | null;
     department_id: number | null;
     project_id: number | null;
+    customer_id: number | null;
 };
 
 type OptionItem = {
@@ -106,12 +107,13 @@ const deriveDateRange = (
 };
 
 type PageProps = {
-    report: ProfitLossReport;
-    filters: ProfitLossFilters;
+    report: BalanceSheetReport;
+    filters: BalanceSheetFilters;
     options: {
         classifications: OptionItem[];
         departments: OptionItem[];
         projects: OptionItem[];
+        customers: OptionItem[];
     };
 };
 
@@ -165,7 +167,7 @@ const renderAccounts = (accounts: AccountNode[], depth = 0) => {
     ));
 };
 
-export default function ProfitLossReportPage({
+export default function BalanceSheetReportPage({
     report,
     filters,
     options,
@@ -193,6 +195,15 @@ export default function ProfitLossReportPage({
             label: item.name,
         })),
     ];
+
+    const customerItems: ComboboxItem[] = [
+        { label: 'Semua', value: '' },
+        ...options.customers.map((item) => ({
+            value: String(item.id),
+            label: item.name,
+        })),
+    ];
+
     const [filtersDialogOpen, setFiltersDialogOpen] = useState(false);
 
     const selectedDateRange = useMemo(
@@ -200,7 +211,7 @@ export default function ProfitLossReportPage({
         [filters.date_from, filters.date_to],
     );
 
-    const filterValues = useMemo<ProfitLossFilterValues>(
+    const filterValues = useMemo<BalanceSheetFilterValues>(
         () => ({
             dateRange: selectedDateRange,
             classificationId: filters.classification_id
@@ -210,16 +221,18 @@ export default function ProfitLossReportPage({
                 ? String(filters.department_id)
                 : '',
             projectId: filters.project_id ? String(filters.project_id) : '',
+            customerId: filters.customer_id ? String(filters.customer_id) : '',
         }),
         [
             selectedDateRange,
             filters.classification_id,
             filters.department_id,
             filters.project_id,
+            filters.customer_id,
         ],
     );
 
-    const handleApplyFilters = (values: ProfitLossFilterValues) => {
+    const handleApplyFilters = (values: BalanceSheetFilterValues) => {
         const query: Record<string, string | number> = {};
         const dateFromValue = formatDateForQuery(
             values.dateRange?.from ?? null,
@@ -233,8 +246,9 @@ export default function ProfitLossReportPage({
         if (values.departmentId)
             query.department_id = Number(values.departmentId);
         if (values.projectId) query.project_id = Number(values.projectId);
+        if (values.customerId) query.customer_id = Number(values.customerId);
 
-        router.get(financialStatement.profitLoss.url(), query, {
+        router.get(financialStatement.balanceSheet.url(), query, {
             preserveScroll: true,
             preserveState: true,
         });
@@ -242,7 +256,7 @@ export default function ProfitLossReportPage({
 
     const handleResetFilters = () => {
         router.get(
-            financialStatement.profitLoss.url(),
+            financialStatement.balanceSheet.url(),
             {},
             {
                 preserveScroll: true,
@@ -260,13 +274,13 @@ export default function ProfitLossReportPage({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Laporan Laba Rugi" />
+            <Head title="Laporan Neraca" />
 
             <div className="px-5 py-6">
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <Heading
-                        title="Laporan Laba Rugi"
-                        description="Ringkasan laba rugi untuk periode terpilih"
+                        title="Laporan Neraca"
+                        description="Ringkasan posisi keuangan untuk periode terpilih"
                     />
                     <div className="flex gap-3">
                         <Button variant="outline" asChild>
@@ -274,7 +288,7 @@ export default function ProfitLossReportPage({
                                 <Undo2 /> Kembali
                             </Link>
                         </Button>
-                        <ProfitLossFilterDialog
+                        <BalanceSheetFilterDialog
                             open={filtersDialogOpen}
                             onOpenChange={setFiltersDialogOpen}
                             trigger={
@@ -286,6 +300,7 @@ export default function ProfitLossReportPage({
                             classificationItems={classificationItems}
                             departmentItems={departmentItems}
                             projectItems={projectItems}
+                            customerItems={customerItems}
                             values={filterValues}
                             onApply={handleApplyFilters}
                             onReset={handleResetFilters}
@@ -311,7 +326,7 @@ export default function ProfitLossReportPage({
                 <Separator className="-mt-2 mb-6" />
 
                 <div className="text-center">
-                    <HeadingSmall title="LABA RUGI" description={periodLabel} />
+                    <HeadingSmall title="NERACA" description={periodLabel} />
                 </div>
 
                 <div className="mt-6 overflow-hidden rounded-md border">
@@ -345,19 +360,6 @@ export default function ProfitLossReportPage({
                                             : null}
                                     </Fragment>
                                 ))}
-                                <TableRow className="bg-muted/50 font-medium">
-                                    <TableCell className="w-full ps-4">
-                                        Laba Rugi
-                                    </TableCell>
-                                    <TableCell className="w-[50px]">
-                                        Rp
-                                    </TableCell>
-                                    <TableCell className="min-w-[175px] pe-4 text-right">
-                                        {formatCurrency(
-                                            report.totals.net_profit,
-                                        )}
-                                    </TableCell>
-                                </TableRow>
                             </TableBody>
                         </Table>
                     ) : (
