@@ -7,6 +7,90 @@ use Illuminate\Support\Str;
 
 class ReferenceNumber
 {
+    public static function getCustomer(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('customer')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updateCustomer(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('customer')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 4, '0');
+
+        $referenceNumber->save();
+    }
+
+    public static function getVendor(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('vendor')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updateVendor(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('vendor')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 4, '0');
+
+        $referenceNumber->save();
+    }
+
+    public static function getEmployee(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('employee')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updateEmployee(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('employee')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 4, '0');
+
+        $referenceNumber->save();
+    }
+
+    public static function getProduct(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('product')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updateProduct(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('product')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 4, '0');
+
+        $referenceNumber->save();
+    }
+
     public static function getAccountBeginningBalance(): string
     {
         $referenceNumber = ReferenceNumberModel::query()
@@ -21,6 +105,69 @@ class ReferenceNumber
     {
         $referenceNumber = ReferenceNumberModel::query()
             ->ofModule('account-beginning-balance')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
+
+        $referenceNumber->save();
+    }
+
+    public static function getReceivableBeginningBalance(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('receivable-beginning-balance')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updateReceivableBeginningBalance(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('receivable-beginning-balance')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
+
+        $referenceNumber->save();
+    }
+
+    public static function getPayableBeginningBalance(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('payable-beginning-balance')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updatePayableBeginningBalance(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('payable-beginning-balance')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
+
+        $referenceNumber->save();
+    }
+
+    public static function getInventoryBeginningBalance(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('inventory-beginning-balance')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updateInventoryBeginningBalance(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('inventory-beginning-balance')
             ->first();
 
         $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
