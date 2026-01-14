@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\Product;
 use App\Models\PurchaseReceiptDetail;
 use App\Models\Stock;
 use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
@@ -13,9 +14,29 @@ class PurchaseReceiptDetailObserver implements ShouldHandleEventsAfterCommit
      */
     public function created(PurchaseReceiptDetail $purchaseReceiptDetail): void
     {
-        Stock::where('warehouse_id', $purchaseReceiptDetail->purchaseReceipt->warehouse_id)
-            ->where('product_id', $purchaseReceiptDetail->product_id)
-            ->increment('qty', $purchaseReceiptDetail->qty);
+        $warehouseId = $purchaseReceiptDetail->purchaseReceipt->warehouse_id;
+        $productId = $purchaseReceiptDetail->product_id;
+        $qtyIn = $purchaseReceiptDetail->qty;
+        $priceIn = $purchaseReceiptDetail->price;
+
+        $oldStock = Stock::where('product_id', $productId)->sum('qty');
+
+        Stock::where('warehouse_id', $warehouseId)
+            ->where('product_id', $productId)
+            ->increment('qty', $qtyIn);
+
+        $product = Product::lockForUpdate()->findOrFail($productId);
+
+        $newStock = $oldStock + $qtyIn;
+
+        $newCogs = $oldStock == 0
+            ? $priceIn
+            : (($oldStock * $product->cogs) + ($qtyIn * $priceIn)) / $newStock;
+
+        $product->updateQuietly([
+            'purchase_price' => $priceIn,
+            'cogs' => $newCogs,
+        ]);
     }
 
     /**
