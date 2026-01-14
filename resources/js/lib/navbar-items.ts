@@ -1,4 +1,5 @@
 import { dashboard } from '@/routes';
+import { edit as editAppearance } from '@/routes/appearance';
 import cashTransfer from '@/routes/cash-transfer';
 import coa from '@/routes/coa';
 import contactData from '@/routes/contact-data';
@@ -24,7 +25,6 @@ import users from '@/routes/users';
 import warehouseData from '@/routes/warehouse-data';
 import type { NavItem } from '@/types';
 import {
-    Airplay,
     Files,
     HardDrive,
     Landmark,
@@ -33,6 +33,7 @@ import {
     Settings2,
     ShoppingBag,
     ShoppingCart,
+    UserCog2,
 } from 'lucide-react';
 
 export const mainNavItems: NavItem[] = [
@@ -207,10 +208,13 @@ export const mainNavItems: NavItem[] = [
             },
         ],
     },
+];
+
+export const footerNavItems: NavItem[] = [
     {
         title: 'User Management',
         href: '#',
-        icon: Settings2,
+        icon: UserCog2,
         permissions: ['users.index', 'roles.index', 'permissions.index'],
         children: [
             {
@@ -230,29 +234,18 @@ export const mainNavItems: NavItem[] = [
             },
         ],
     },
-];
-
-export const footerNavItems: NavItem[] = [
     {
-        title: 'Saldo Awal',
+        title: 'Pengaturan',
         href: '#',
-        icon: Airplay,
+        icon: Settings2,
         children: [
             {
-                title: 'Akun',
+                title: 'Saldo Awal',
                 href: '#',
             },
             {
-                title: 'Piutang',
-                href: '#',
-            },
-            {
-                title: 'Utang',
-                href: '#',
-            },
-            {
-                title: 'Persediaan',
-                href: '#',
+                title: 'Appearance',
+                href: editAppearance(),
             },
         ],
     },
