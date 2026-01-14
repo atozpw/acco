@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\BeginningBalance\AccountBeginningBalanceController;
+use App\Http\Controllers\BeginningBalance\PayableBeginningBalanceController;
+use App\Http\Controllers\BeginningBalance\ReceivableBeginningBalanceController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -21,4 +24,25 @@ Route::middleware('auth')->group(function () {
     Route::get('settings/appearance', function () {
         return Inertia::render('settings/appearance');
     })->name('appearance.edit');
+
+    Route::prefix('settings/beginning-balance')->group(function () {
+        Route::redirect('', '/settings/beginning-balance/account')->name('beginning-balance.index');
+
+        Route::get('account', [AccountBeginningBalanceController::class, 'index'])
+            ->name('beginning-balance.account.index');
+
+        Route::get('receivable', [ReceivableBeginningBalanceController::class, 'index'])
+            ->name('beginning-balance.receivable.index');
+        Route::get('receivable/create', [ReceivableBeginningBalanceController::class, 'create'])
+            ->name('beginning-balance.receivable.create');
+        Route::post('receivable', [ReceivableBeginningBalanceController::class, 'store'])
+            ->name('beginning-balance.receivable.store');
+
+        Route::get('payable', [PayableBeginningBalanceController::class, 'index'])
+            ->name('beginning-balance.payable.index');
+        Route::get('payable/create', [PayableBeginningBalanceController::class, 'create'])
+            ->name('beginning-balance.payable.create');
+        Route::post('payable', [PayableBeginningBalanceController::class, 'store'])
+            ->name('beginning-balance.payable.store');
+    });
 });

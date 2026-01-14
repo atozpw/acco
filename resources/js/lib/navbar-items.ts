@@ -1,5 +1,6 @@
 import { dashboard } from '@/routes';
 import { edit as editAppearance } from '@/routes/appearance';
+import beginningBalance from '@/routes/beginning-balance';
 import cashTransfer from '@/routes/cash-transfer';
 import coa from '@/routes/coa';
 import contactData from '@/routes/contact-data';
@@ -241,7 +242,7 @@ export const footerNavItems: NavItem[] = [
         children: [
             {
                 title: 'Saldo Awal',
-                href: '#',
+                href: beginningBalance.index(),
             },
             {
                 title: 'Appearance',
