@@ -35,6 +35,7 @@ class PurchaseInvoiceController extends Controller
 
         $invoices = PurchaseInvoice::query()
             ->with(['contact:id,name'])
+            ->where('is_beginning', 0)
             ->when($search, function ($query, $keyword) {
                 $query->where(function ($q) use ($keyword) {
                     $q->where('reference_no', 'like', '%' . $keyword . '%')
