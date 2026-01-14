@@ -66,7 +66,7 @@ class SalesInvoiceObserver implements ShouldHandleEventsAfterCommit
                 ];
             }
 
-            if ($salesInvoiceDetail->product->category->inventory_coa_id) {
+            if ($salesInvoiceDetail->product->category->inventory_coa_id && $salesInvoiceDetail->product->is_stock_tracking) {
                 $journalDetails[] = [
                     'journal_id' => $journal->id,
                     'coa_id' => $salesInvoiceDetail->product->category->inventory_coa_id,
@@ -143,7 +143,7 @@ class SalesInvoiceObserver implements ShouldHandleEventsAfterCommit
                 ];
             }
 
-            if ($salesInvoiceDetail->product->category->inventory_coa_id) {
+            if ($salesInvoiceDetail->product->category->inventory_coa_id && $salesInvoiceDetail->product->is_stock_tracking) {
                 $journalDetails[] = [
                     'journal_id' => $journal->id,
                     'coa_id' => $salesInvoiceDetail->product->category->inventory_coa_id,

@@ -30,7 +30,20 @@ class ProductObserver
      */
     public function updated(Product $product): void
     {
-        //
+        if (! $product->getOriginal('is_stock_tracking') && $product->is_stock_tracking) {
+            $warehouses = Warehouse::select('id')->get();
+
+            foreach ($warehouses as $warehouse) {
+                Stock::create([
+                    'warehouse_id' => $warehouse->id,
+                    'product_id' => $product->id,
+                ]);
+            }
+        }
+
+        if (! $product->is_stock_tracking && $product->getOriginal('is_stock_tracking')) {
+            Stock::where('product_id', $product->id)->delete();
+        }
     }
 
     /**
