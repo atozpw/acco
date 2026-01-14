@@ -38,7 +38,7 @@ class ReferenceNumberSeeder extends Seeder
 
         ReferenceNumber::create([
             'name' => 'Saldo Awal Persediaan',
-            'module' => 'receivable-beginning-balance',
+            'module' => 'inventory-beginning-balance',
             'code' => 'IB',
             'value' => '000001',
         ]);
