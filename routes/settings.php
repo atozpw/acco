@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
 
         Route::get('account', [AccountBeginningBalanceController::class, 'index'])
             ->name('beginning-balance.account.index');
+        Route::put('account', [AccountBeginningBalanceController::class, 'update'])
+            ->name('beginning-balance.account.update');
 
         Route::get('receivable', [ReceivableBeginningBalanceController::class, 'index'])
             ->name('beginning-balance.receivable.index');
