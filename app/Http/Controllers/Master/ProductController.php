@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\Helpers\ReferenceNumber;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Master\StoreProductRequest;
 use App\Http\Requests\Master\UpdateProductRequest;
@@ -65,6 +66,8 @@ class ProductController extends Controller
      */
     public function create(): Response
     {
+        $referenceNumber = ReferenceNumber::getProduct();
+
         $categories = ProductCategory::query()
             ->orderBy('name')
             ->where('is_active', true)
@@ -81,6 +84,7 @@ class ProductController extends Controller
             ->get(['id', 'code', 'name']);
 
         return inertia('master/product/create', [
+            'referenceNumber' => $referenceNumber,
             'categories' => $categories,
             'units' => $units,
             'taxes' => $taxes,
@@ -102,6 +106,8 @@ class ProductController extends Controller
         }
 
         $product->save();
+
+        ReferenceNumber::updateProduct();
 
         return redirect()->route('product-data.index');
     }

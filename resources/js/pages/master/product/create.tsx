@@ -70,10 +70,12 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function ProductCreateScreen({
+    referenceNumber,
     categories,
     units,
     taxes,
 }: {
+    referenceNumber: string,
     categories: ProductCategoryProps[];
     units: UnitProps[];
     taxes: TaxProps[];
@@ -103,7 +105,7 @@ export default function ProductCreateScreen({
     const { data, setData, post, processing, errors } =
         useForm<ProductFormData>({
             product_category_id: '',
-            code: '',
+            code: referenceNumber,
             name: '',
             unit_measurement_id: '',
             sales_price: '',
