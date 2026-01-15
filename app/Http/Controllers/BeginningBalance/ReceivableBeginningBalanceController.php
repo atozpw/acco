@@ -30,7 +30,7 @@ class ReceivableBeginningBalanceController extends Controller
 
     public function create(): Response
     {
-        $referenceNumber = ReferenceNumber::getSalesInvoice();
+        $referenceNumber = ReferenceNumber::getReceivableBeginningBalance();
         $referenceCoa = ReferenceCoa::getAccountReceivable();
 
         $contacts = Contact::query()
@@ -66,6 +66,8 @@ class ReceivableBeginningBalanceController extends Controller
                 'is_beginning' => 1,
                 'created_by' => $request->user()?->id,
             ]);
+
+            ReferenceNumber::updateReceivableBeginningBalance();
         });
 
         return redirect()

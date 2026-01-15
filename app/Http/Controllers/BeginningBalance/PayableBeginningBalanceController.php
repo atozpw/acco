@@ -29,7 +29,7 @@ class PayableBeginningBalanceController extends Controller
 
     public function create(): Response
     {
-        $referenceNumber = ReferenceNumber::getPurchaseInvoice();
+        $referenceNumber = ReferenceNumber::getPayableBeginningBalance();
         $referenceCoa = ReferenceCoa::getAccountPayable();
 
         $contacts = Contact::query()
@@ -65,6 +65,8 @@ class PayableBeginningBalanceController extends Controller
                 'is_beginning' => 1,
                 'created_by' => $request->user()?->id,
             ]);
+
+            ReferenceNumber::updatePayableBeginningBalance();
         });
 
         return redirect()
