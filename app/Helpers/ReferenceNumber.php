@@ -7,20 +7,20 @@ use Illuminate\Support\Str;
 
 class ReferenceNumber
 {
-    public static function getCustomer(): string
+    public static function getContactCustomer(): string
     {
         $referenceNumber = ReferenceNumberModel::query()
-            ->ofModule('customer')
+            ->ofModule('contact-customer')
             ->select('code', 'value')
             ->first();
 
         return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
     }
 
-    public static function updateCustomer(): void
+    public static function updateContactCustomer(): void
     {
         $referenceNumber = ReferenceNumberModel::query()
-            ->ofModule('customer')
+            ->ofModule('contact-customer')
             ->first();
 
         $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 4, '0');
@@ -28,20 +28,20 @@ class ReferenceNumber
         $referenceNumber->save();
     }
 
-    public static function getVendor(): string
+    public static function getContactVendor(): string
     {
         $referenceNumber = ReferenceNumberModel::query()
-            ->ofModule('vendor')
+            ->ofModule('contact-vendor')
             ->select('code', 'value')
             ->first();
 
         return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
     }
 
-    public static function updateVendor(): void
+    public static function updateContactVendor(): void
     {
         $referenceNumber = ReferenceNumberModel::query()
-            ->ofModule('vendor')
+            ->ofModule('contact-vendor')
             ->first();
 
         $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 4, '0');
@@ -49,20 +49,41 @@ class ReferenceNumber
         $referenceNumber->save();
     }
 
-    public static function getEmployee(): string
+    public static function getContactEmployee(): string
     {
         $referenceNumber = ReferenceNumberModel::query()
-            ->ofModule('employee')
+            ->ofModule('contact-employee')
             ->select('code', 'value')
             ->first();
 
         return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
     }
 
-    public static function updateEmployee(): void
+    public static function updateContactEmployee(): void
     {
         $referenceNumber = ReferenceNumberModel::query()
-            ->ofModule('employee')
+            ->ofModule('contact-employee')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 4, '0');
+
+        $referenceNumber->save();
+    }
+
+    public static function getContactOther(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('contact-other')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updateContactOther(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('contact-other')
             ->first();
 
         $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 4, '0');

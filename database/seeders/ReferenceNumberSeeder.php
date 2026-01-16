@@ -16,23 +16,30 @@ class ReferenceNumberSeeder extends Seeder
     public function run(): void
     {
         ReferenceNumber::create([
-            'name' => 'Pelanggan',
-            'module' => 'customer',
+            'name' => 'Kontak Pelanggan',
+            'module' => 'contact-customer',
             'code' => 'CU',
-            'value' => '0001',
+            'value' => '0002',
         ]);
 
         ReferenceNumber::create([
-            'name' => 'Vendor',
-            'module' => 'vendor',
+            'name' => 'Kontak Vendor',
+            'module' => 'contact-vendor',
             'code' => 'VN',
-            'value' => '0001',
+            'value' => '0002',
         ]);
 
         ReferenceNumber::create([
-            'name' => 'Karyawan',
-            'module' => 'employee',
+            'name' => 'Kontak Karyawan',
+            'module' => 'contact-employee',
             'code' => 'EM',
+            'value' => '0002',
+        ]);
+
+        ReferenceNumber::create([
+            'name' => 'Kontak Lainnya',
+            'module' => 'contact-other',
+            'code' => 'OT',
             'value' => '0001',
         ]);
 

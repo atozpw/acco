@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Master;
 
+use App\Helpers\ReferenceNumber;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use Illuminate\Http\RedirectResponse;
@@ -40,7 +41,17 @@ class ContactController extends Controller
      */
     public function create(): Response
     {
-        return inertia('master/contact/create');
+        $referenceNumberCustomer = ReferenceNumber::getContactCustomer();
+        $referenceNumberVendor = ReferenceNumber::getContactVendor();
+        $referenceNumberEmployee = ReferenceNumber::getContactEmployee();
+        $referenceNumberOther = ReferenceNumber::getContactOther();
+
+        return inertia('master/contact/create', [
+            'referenceNumberCustomer' => $referenceNumberCustomer,
+            'referenceNumberVendor' => $referenceNumberVendor,
+            'referenceNumberEmployee' => $referenceNumberEmployee,
+            'referenceNumberOther' => $referenceNumberOther,
+        ]);
     }
 
     /**
@@ -69,6 +80,16 @@ class ContactController extends Controller
         }
 
         $contact->save();
+
+        if ($request->is_customer && !$request->is_vendor && !$request->is_employee) {
+            ReferenceNumber::updateContactCustomer();
+        } elseif (!$request->is_customer && $request->is_vendor && !$request->is_employee) {
+            ReferenceNumber::updateContactVendor();
+        } elseif (!$request->is_customer && !$request->is_vendor && $request->is_employee) {
+            ReferenceNumber::updateContactEmployee();
+        } else {
+            ReferenceNumber::updateContactOther();
+        }
 
         return redirect()->route('contact-data.index');
     }
