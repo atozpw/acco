@@ -7,6 +7,7 @@ import purchaseInvoice from '@/routes/purchase-invoice';
 import purchases from '@/routes/purchases';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Pembelian', href: purchases.index().url },
@@ -19,6 +20,15 @@ export default function PurchaseInvoiceVoucherScreen({
 }: {
     journal: JournalPayload;
 }) {
+    const [hasHistory, setHasHistory] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setHasHistory(window.history.length > 1);
+        }
+    }, []);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Jurnal Voucher" />
@@ -26,6 +36,7 @@ export default function PurchaseInvoiceVoucherScreen({
                 journal={journal}
                 backUrl={purchaseInvoice.index().url}
                 showUpdateAction={false}
+                hasHistory={hasHistory}
             />
         </AppLayout>
     );

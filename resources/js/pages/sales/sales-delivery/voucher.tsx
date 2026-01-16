@@ -7,6 +7,7 @@ import sales from '@/routes/sales';
 import salesDelivery from '@/routes/sales-delivery';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     { title: 'Penjualan', href: sales.index().url },
@@ -19,6 +20,15 @@ export default function SalesDeliveryVoucherScreen({
 }: {
     journal: JournalPayload;
 }) {
+    const [hasHistory, setHasHistory] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setHasHistory(window.history.length > 1);
+        }
+    }, []);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Jurnal Voucher" />
@@ -26,6 +36,7 @@ export default function SalesDeliveryVoucherScreen({
                 journal={journal}
                 backUrl={salesDelivery.index().url}
                 showUpdateAction={false}
+                hasHistory={hasHistory}
             />
         </AppLayout>
     );

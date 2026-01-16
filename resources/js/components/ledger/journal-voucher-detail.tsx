@@ -55,6 +55,7 @@ export interface JournalVoucherDetailProps {
     backUrl: string;
     updateUrl?: string;
     showUpdateAction?: boolean;
+    hasHistory?: boolean;
 }
 
 const parseAmount = (value: string | number | null | undefined): number => {
@@ -86,6 +87,7 @@ export function JournalVoucherDetail({
     backUrl,
     updateUrl,
     showUpdateAction = false,
+    hasHistory = false,
 }: JournalVoucherDetailProps) {
     const details = journal.details ?? [];
 
@@ -133,11 +135,22 @@ export function JournalVoucherDetail({
             <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                 <Heading title="Jurnal Voucher" description="" />
                 <div className="flex gap-3">
-                    <Button asChild variant="outline">
-                        <Link href={backUrl}>
-                            <Undo2 /> Kembali
-                        </Link>
-                    </Button>
+                    {hasHistory ? (
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => window.history.back()}
+                        >
+                            <Undo2 />
+                            Kembali
+                        </Button>
+                    ) : (
+                        <Button asChild variant="outline">
+                            <Link href={backUrl}>
+                                <Undo2 /> Kembali
+                            </Link>
+                        </Button>
+                    )}
                     {showUpdateAction && updateUrl && (
                         <Button asChild>
                             <Link href={updateUrl}>
