@@ -19,6 +19,13 @@ import type { FormEventHandler } from 'react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
+type ContactPageProps = {
+    referenceNumberCustomer: string;
+    referenceNumberVendor: string;
+    referenceNumberEmployee: string;
+    referenceNumberOther: string;
+};
+
 type ContactFormData = {
     code: string;
     name: string;
@@ -47,7 +54,12 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function KontakCreateScreen() {
+export default function KontakCreateScreen({
+    referenceNumberCustomer,
+    referenceNumberVendor,
+    referenceNumberEmployee,
+    referenceNumberOther,
+}: ContactPageProps) {
     const { data, setData, post, processing, errors, reset } =
         useForm<ContactFormData>({
             code: '',
@@ -78,6 +90,28 @@ export default function KontakCreateScreen() {
             URL.revokeObjectURL(url);
         };
     }, [data.avatar]);
+
+    useEffect(() => {
+        if (data.is_customer && !data.is_employee && !data.is_vendor) {
+            setData('code', referenceNumberCustomer);
+        } else if (data.is_vendor && !data.is_employee && !data.is_customer) {
+            setData('code', referenceNumberVendor);
+        } else if (data.is_employee && !data.is_customer && !data.is_vendor) {
+            setData('code', referenceNumberEmployee);
+        } else {
+            setData('code', referenceNumberOther);
+        }
+    }, [
+        data.is_customer,
+        data.is_vendor,
+        data.is_employee,
+        data.is_active,
+        referenceNumberCustomer,
+        referenceNumberVendor,
+        referenceNumberEmployee,
+        referenceNumberOther,
+        setData,
+    ]);
 
     const submit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();

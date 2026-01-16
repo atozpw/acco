@@ -126,12 +126,14 @@ class ContactController extends Controller
             'is_active' => ['boolean'],
         ]);
 
-        $contact->fill($validated);
-
         if ($request->hasFile('avatar')) {
             $path = $request->file('avatar')->store('avatars', 'public');
             $contact->avatar = '/storage/' . $path;
         }
+
+        unset($validated['avatar']);
+
+        $contact->fill($validated);
 
         $contact->save();
 
