@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Sales\ReceivableController;
 use App\Http\Controllers\Sales\ReceivablePaymentController;
 use App\Http\Controllers\Sales\SalesDeliveryController;
 use App\Http\Controllers\Sales\SalesInvoiceController;
@@ -57,6 +58,11 @@ Route::middleware('auth')->prefix('sales')->group(function () {
     Route::get('sales-invoice/journal-voucher/{nomor}', [SalesInvoiceController::class, 'voucher'])
         ->name('sales-invoice.voucher')
         ->middleware(['permission:sales-invoices.index']);
+
+    Route::get('account-receivable-list', [ReceivableController::class, 'index'])
+        ->name('account-receivable.index');
+    Route::get('account-receivable-list/detail-account-receivable/{id}', [ReceivableController::class, 'show'])
+        ->name('account-receivable.show');
 
     Route::get('account-receivable-payment', [ReceivablePaymentController::class, 'index'])
         ->name('receivable-payment.index')

@@ -1,4 +1,5 @@
 import { dashboard } from '@/routes';
+import accountReceivable from '@/routes/account-receivable';
 import { edit as editAppearance } from '@/routes/appearance';
 import beginningBalance from '@/routes/beginning-balance';
 import cashTransfer from '@/routes/cash-transfer';
@@ -136,6 +137,10 @@ export const mainNavItems: NavItem[] = [
                 title: 'Invoice Penjualan',
                 href: salesInvoice.index(),
                 permissions: ['sales-invoices.index'],
+            },
+            {
+                title: 'Daftar Piutang Usaha',
+                href: accountReceivable.index(),
             },
             {
                 title: 'Pembayaran Piutang',
