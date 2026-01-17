@@ -505,7 +505,7 @@ export default function AccountReceivableShowPage({
                         <div className="space-y-4">
                             <HeadingSmall
                                 title="Rincian Piutang"
-                                description="Linimasa piutang usaha"
+                                description="Linimasa pergerakan piutang"
                             />
                             <div className="overflow-hidden rounded-md border">
                                 <Table>

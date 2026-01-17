@@ -222,7 +222,7 @@ export default function AccountReceivableIndexPage({
             <div className="px-5 py-6">
                 <Heading
                     title="Daftar Piutang Usaha"
-                    description="Menampilkan dafatar perinci piutang usaha"
+                    description="Menampilkan daftar perinci piutang usaha"
                 />
 
                 <div className="space-y-6">

@@ -84,8 +84,7 @@ export default function AccountReceivableFilterDialog({
                 <DialogHeader>
                     <DialogTitle>Filter Daftar Piutang Usaha</DialogTitle>
                     <DialogDescription>
-                        Sesuaikan daftar piutang berdasarkan akun, periode, dan
-                        pajak.
+                        Sesuaikan daftar piutang berdasarkan periode dan pajak.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="my-4 space-y-4">
