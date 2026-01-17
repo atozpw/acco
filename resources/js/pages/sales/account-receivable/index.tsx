@@ -2,6 +2,7 @@ import type { ComboboxItem } from '@/components/form/input-combobox';
 import Heading from '@/components/heading';
 import SimplePaginate from '@/components/simple-pagination';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
     Select,
     SelectContent,
@@ -17,6 +18,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import { useDebounceValue } from '@/hooks/use-debounce';
 import AppLayout from '@/layouts/app-layout';
 import accountReceivable from '@/routes/account-receivable';
 import sales from '@/routes/sales';
@@ -44,8 +46,6 @@ const listPerPage: { item: string; value: string }[] = [
 
 type ReceivableRow = {
     id: number;
-    reference_no: string;
-    contact_id: number;
     contact_name: string;
     total: number;
     paid: number;
@@ -57,6 +57,7 @@ type ReceivableFilters = {
     date_from: string | null;
     date_to: string | null;
     perPage: number;
+    search: string | null;
 };
 
 const formatCurrency = (value: number | string) => {
@@ -117,6 +118,9 @@ export default function AccountReceivableIndexPage({
     const [itemsPage, setItemsPage] = useState<string>(
         String(filters.perPage ?? 25),
     );
+    const [search, setSearch] = useState(filters.search || '');
+    const searchBounce = useDebounceValue(search, 300);
+
     const [filtersDialogOpen, setFiltersDialogOpen] = useState(false);
 
     const baseFilterQuery = useMemo(() => {
@@ -130,12 +134,16 @@ export default function AccountReceivableIndexPage({
     }, [filters.tax_amount, filters.date_from, filters.date_to]);
 
     useEffect(() => {
-        if (Number(itemsPage) !== filters.perPage) {
+        if (
+            searchBounce !== filters.search ||
+            Number(itemsPage) !== filters.perPage
+        ) {
             router.get(
                 accountReceivable.index(),
                 {
                     ...baseFilterQuery,
                     perPage: Number(itemsPage),
+                    search: searchBounce || undefined,
                 },
                 {
                     preserveState: true,
@@ -143,7 +151,13 @@ export default function AccountReceivableIndexPage({
                 },
             );
         }
-    }, [itemsPage, filters.perPage, baseFilterQuery]);
+    }, [
+        searchBounce,
+        itemsPage,
+        filters.search,
+        filters.perPage,
+        baseFilterQuery,
+    ]);
 
     const taxItems = useMemo<ComboboxItem[]>(
         () => [
@@ -206,12 +220,22 @@ export default function AccountReceivableIndexPage({
             <Head title="Daftar Piutang Usaha" />
 
             <div className="px-5 py-6">
-                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                    <Heading
-                        title="Daftar Piutang Usaha"
-                        description="Menampilkan dafatar perinci piutang usaha"
-                    />
-                    <div className="flex gap-3">
+                <Heading
+                    title="Daftar Piutang Usaha"
+                    description="Menampilkan dafatar perinci piutang usaha"
+                />
+
+                <div className="space-y-6">
+                    <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+                        <div className="flex items-center gap-2">
+                            <Input
+                                className="text-sm lg:w-[250px]"
+                                placeholder="Cari ..."
+                                autoComplete="off"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                        </div>
                         <AccountReceivableFilterDialog
                             open={filtersDialogOpen}
                             onOpenChange={setFiltersDialogOpen}
@@ -226,9 +250,7 @@ export default function AccountReceivableIndexPage({
                             onReset={handleResetFilters}
                         />
                     </div>
-                </div>
 
-                <div className="space-y-6">
                     <div className="overflow-hidden rounded-md border">
                         <Table>
                             <TableHeader>
