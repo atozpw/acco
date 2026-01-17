@@ -297,6 +297,15 @@ class CoaSeeder extends Seeder
         Coa::create([
             'parent_id' => null,
             'code' => '320',
+            'name' => 'Laba Berjalan',
+            'coa_classification_id' => 3,
+            'is_debit' => 0,
+            'is_cash_bank' => 0,
+        ]);
+
+        Coa::create([
+            'parent_id' => null,
+            'code' => '330',
             'name' => 'Prive / Dividen',
             'coa_classification_id' => 3,
             'is_debit' => 0,
