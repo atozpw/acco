@@ -40,7 +40,7 @@ export function AppSidebar() {
                     <NavMain
                         items={platformNavItems}
                         showLabel={true}
-                        labelGroup="Platform"
+                        labelGroup="Konfigurasi"
                     />
                 )}
             </SidebarContent>

@@ -223,13 +223,13 @@ export const mainNavItems: NavItem[] = [
 
 export const platformNavItems: NavItem[] = [
     {
-        title: 'User Management',
+        title: 'Manajemen Akses',
         href: '#',
         icon: UserCog2,
         permissions: ['users.index', 'roles.index', 'permissions.index'],
         children: [
             {
-                title: 'Daftar User',
+                title: 'Pengguna',
                 href: users.index(),
                 permissions: ['users.index'],
             },
