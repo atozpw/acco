@@ -54,7 +54,6 @@ class LedgerController extends Controller
                 'department:id,code,name',
                 'project:id,code,name',
             ])
-            ->whereHas('journal', fn($query) => $query->where('journal_category_id', '>', 1))
             ->when($coa_id, fn($query) => $query->where('coa_id', $coa_id))
             ->when($department_id, fn($query) => $query->where('department_id', $department_id))
             ->when($search, function ($query) use ($search) {
