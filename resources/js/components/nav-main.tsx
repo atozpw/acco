@@ -1,5 +1,6 @@
 import {
     SidebarGroup,
+    SidebarGroupLabel,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
@@ -47,12 +48,23 @@ const filterNavItemsByPermission = (
         })
         .filter((item): item is NavItem => Boolean(item));
 
-export function NavMain({ items = [] }: { items: NavItem[] }) {
+export function NavMain({
+    items = [],
+    showLabel = false,
+    labelGroup,
+}: {
+    items: NavItem[];
+    showLabel?: boolean;
+    labelGroup?: string;
+}) {
     const page = usePage<SharedData>();
     const { hasPermission } = usePermission();
     const filteredItems = filterNavItemsByPermission(items, hasPermission);
     return (
         <SidebarGroup className="px-2 py-0">
+            {showLabel && labelGroup && (
+                <SidebarGroupLabel>{labelGroup}</SidebarGroupLabel>
+            )}
             <SidebarMenu>
                 {filteredItems.map((item) => {
                     const isParentActive = page.url.startsWith(

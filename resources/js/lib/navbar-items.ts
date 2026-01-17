@@ -216,7 +216,7 @@ export const mainNavItems: NavItem[] = [
     },
 ];
 
-export const footerNavItems: NavItem[] = [
+export const platformNavItems: NavItem[] = [
     {
         title: 'User Management',
         href: '#',
@@ -256,3 +256,5 @@ export const footerNavItems: NavItem[] = [
         ],
     },
 ];
+
+export const footerNavItems: NavItem[] = [];

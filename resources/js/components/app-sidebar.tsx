@@ -10,7 +10,11 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { footerNavItems, mainNavItems } from '@/lib/navbar-items';
+import {
+    footerNavItems,
+    mainNavItems,
+    platformNavItems,
+} from '@/lib/navbar-items';
 import { dashboard } from '@/routes';
 import { Link } from '@inertiajs/react';
 import AppLogo from './app-logo';
@@ -31,11 +35,20 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                {mainNavItems.length > 0 && <NavMain items={mainNavItems} />}
+                {platformNavItems.length > 0 && (
+                    <NavMain
+                        items={platformNavItems}
+                        showLabel={true}
+                        labelGroup="Platform"
+                    />
+                )}
             </SidebarContent>
 
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
+                {footerNavItems.length > 0 && (
+                    <NavFooter items={footerNavItems} className="mt-auto" />
+                )}
                 <NavUser />
             </SidebarFooter>
         </Sidebar>
