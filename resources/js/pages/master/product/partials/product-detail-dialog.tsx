@@ -12,6 +12,9 @@ type ProductDetailDialogProps = {
     onOpenChange: (open: boolean) => void;
     product: ProductProps | null;
     formatNumber: (value: string | number | null | undefined) => string;
+    formatStock: (
+        value: string | number | null | undefined,
+    ) => string | undefined;
 };
 
 export default function ProductDetailDialog({
@@ -19,6 +22,7 @@ export default function ProductDetailDialog({
     onOpenChange,
     product,
     formatNumber,
+    formatStock,
 }: ProductDetailDialogProps) {
     return (
         <Dialog
@@ -60,7 +64,9 @@ export default function ProductDetailDialog({
                                     <div className="text-xs text-muted-foreground">
                                         Satuan
                                     </div>
-                                    <div>{product.unit_measurement?.name ?? '-'}</div>
+                                    <div>
+                                        {product.unit_measurement?.name ?? '-'}
+                                    </div>
                                 </div>
                             </div>
                             <div className="flex justify-center md:w-32">
@@ -69,7 +75,7 @@ export default function ProductDetailDialog({
                                         <img
                                             src={product.image}
                                             alt={product.name}
-                                            className="h-full w-full object-cover"
+                                            className="h-auto w-full object-cover"
                                         />
                                     ) : (
                                         <div className="p-2 text-center">
@@ -121,19 +127,28 @@ export default function ProductDetailDialog({
                                 <div className="text-xs text-muted-foreground">
                                     Stok
                                 </div>
-                                <div>{product.available_qty ?? 'Tidak Terlacak'}</div>
+                                <div>
+                                    {formatStock(product.available_qty) ??
+                                        'Tidak Terlacak'}
+                                </div>
                             </div>
                             <div className="grid gap-1">
                                 <div className="text-xs text-muted-foreground">
                                     Minimum Stok
                                 </div>
-                                <div>{product.minimum_stock ?? '-'}</div>
+                                <div>
+                                    {formatStock(product.minimum_stock) ?? '-'}
+                                </div>
                             </div>
                             <div className="grid gap-1">
                                 <div className="text-xs text-muted-foreground">
                                     Lacak persediaan/ kontrol stok
                                 </div>
-                                <div>{product.is_stock_tracking ? 'Aktif' : 'Tidak Aktif'}</div>
+                                <div>
+                                    {product.is_stock_tracking
+                                        ? 'Aktif'
+                                        : 'Tidak Aktif'}
+                                </div>
                             </div>
                         </div>
 

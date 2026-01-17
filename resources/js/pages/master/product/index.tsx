@@ -186,9 +186,25 @@ export default function ProductIndexScreen({
         if (value === null || value === undefined) return '0';
         const num = typeof value === 'number' ? value : Number(value);
         if (Number.isNaN(num)) return String(value);
+
+        const hasFraction = !Number.isInteger(num);
         return new Intl.NumberFormat('id-ID', {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
+            currency: 'IDR',
+            style: 'currency',
+            minimumFractionDigits: hasFraction ? 2 : 0,
+            maximumFractionDigits: hasFraction ? 2 : 0,
+        }).format(num);
+    };
+
+    const formatStock = (value: string | number | null | undefined) => {
+        if (value === null || value === undefined) return;
+        const num = typeof value === 'number' ? value : Number(value);
+        if (Number.isNaN(num)) return String(value);
+
+        const hasFraction = !Number.isInteger(num);
+        return new Intl.NumberFormat('id-ID', {
+            minimumFractionDigits: hasFraction ? 2 : 0,
+            maximumFractionDigits: hasFraction ? 2 : 0,
         }).format(num);
     };
 
@@ -296,9 +312,19 @@ export default function ProductIndexScreen({
                                             <TableCell className="text-right align-baseline">
                                                 {formatNumber(item.sales_price)}
                                             </TableCell>
-                                            <TableCell className="text-right align-baseline">
-                                                {item.available_qty ??
-                                                    'Tidak Terlacak'}
+                                            <TableCell
+                                                className={
+                                                    Number(item.available_qty) <
+                                                    Number(
+                                                        item.minimum_stock || 0,
+                                                    )
+                                                        ? 'text-right align-baseline text-destructive'
+                                                        : 'text-right align-baseline'
+                                                }
+                                            >
+                                                {formatStock(
+                                                    item.available_qty,
+                                                ) ?? 'Tidak Terlacak'}
                                             </TableCell>
                                             <TableCell className="align-baseline">
                                                 <div className="flex items-center gap-2">
@@ -449,6 +475,7 @@ export default function ProductIndexScreen({
                         }}
                         product={selectedProduct}
                         formatNumber={formatNumber}
+                        formatStock={formatStock}
                     />
 
                     <div className="flex items-center justify-end px-2">
