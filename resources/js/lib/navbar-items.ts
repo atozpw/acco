@@ -1,4 +1,5 @@
 import { dashboard } from '@/routes';
+import accountPayable from '@/routes/account-payable';
 import accountReceivable from '@/routes/account-receivable';
 import { edit as editAppearance } from '@/routes/appearance';
 import beginningBalance from '@/routes/beginning-balance';
@@ -168,6 +169,10 @@ export const mainNavItems: NavItem[] = [
                 title: 'Invoice Pembelian',
                 href: purchaseInvoice.index(),
                 permissions: ['purchase-invoices.index'],
+            },
+            {
+                title: 'Daftar Utang Usaha',
+                href: accountPayable.index(),
             },
             {
                 title: 'Pembayaran Utang',

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Purchase\PayableController;
 use App\Http\Controllers\Purchase\PayablePaymentController;
 use App\Http\Controllers\Purchase\PurchaseInvoiceController;
 use App\Http\Controllers\Purchase\PurchaseReceiptController;
@@ -57,6 +58,11 @@ Route::middleware('auth')->prefix('purchases')->group(function () {
     Route::get('purchase-invoice/journal-voucher/{nomor}', [PurchaseInvoiceController::class, 'voucher'])
         ->name('purchase-invoice.voucher')
         ->middleware(['permission:purchase-invoices.index']);
+
+    Route::get('account-payable', [PayableController::class, 'index'])
+        ->name('account-payable.index');
+    Route::get('account-payable/detail-account-payable/{id}', [PayableController::class, 'show'])
+        ->name('account-payable.show');
 
     Route::get('payable-payment', [PayablePaymentController::class, 'index'])
         ->name('payable-payment.index')
