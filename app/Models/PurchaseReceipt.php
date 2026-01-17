@@ -26,6 +26,7 @@ class PurchaseReceipt extends Model
         'discount_amount',
         'total',
         'is_closed',
+        'is_beginning',
         'created_by',
     ];
 
