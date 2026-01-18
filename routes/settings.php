@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BeginningBalance\AccountBeginningBalanceController;
+use App\Http\Controllers\BeginningBalance\InventoryBeginningBalanceController;
 use App\Http\Controllers\BeginningBalance\PayableBeginningBalanceController;
 use App\Http\Controllers\BeginningBalance\ReceivableBeginningBalanceController;
 use App\Http\Controllers\Settings\PasswordController;
@@ -46,5 +47,12 @@ Route::middleware('auth')->group(function () {
             ->name('beginning-balance.payable.create');
         Route::post('payable', [PayableBeginningBalanceController::class, 'store'])
             ->name('beginning-balance.payable.store');
+
+        Route::get('inventory', [InventoryBeginningBalanceController::class, 'index'])
+            ->name('beginning-balance.inventory.index');
+        Route::get('inventory/create', [InventoryBeginningBalanceController::class, 'create'])
+            ->name('beginning-balance.inventory.create');
+        Route::post('inventory', [InventoryBeginningBalanceController::class, 'store'])
+            ->name('beginning-balance.inventory.store');
     });
 });

@@ -23,6 +23,11 @@ const sidebarNavItems: NavItem[] = [
         href: beginningBalance.payable.index.url(),
         icon: null,
     },
+    {
+        title: 'Persediaan',
+        href: beginningBalance.inventory.index.url(),
+        icon: null,
+    },
 ];
 
 export default function BeginningBalanceLayout({
