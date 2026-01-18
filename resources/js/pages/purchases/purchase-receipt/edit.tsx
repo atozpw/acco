@@ -260,7 +260,7 @@ export default function PurchaseReceiptEditScreen({
 
     const getProductStockLabel = useCallback(
         (productId: string, warehouseId: string) => {
-            if (!warehouseId) return '-';
+            if (!warehouseId) return 'Pilih gudang';
             if (!productId) return 'N/A';
 
             const product = productMap[productId];
