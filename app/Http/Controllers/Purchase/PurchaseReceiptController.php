@@ -31,6 +31,7 @@ class PurchaseReceiptController extends Controller
         $perPage = (int) $request->input('perPage', 25);
 
         $receipts = PurchaseReceipt::query()
+            ->where('is_beginning', 0)
             ->with(['contact:id,name'])
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
