@@ -4,7 +4,6 @@ import InputError from '@/components/input-error';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import {
     Table,
@@ -257,8 +256,6 @@ export default function BeginningBalanceAccountIndex({
                         title="Saldo Awal Akun"
                         description="Mengisi saldo awal akun"
                     />
-
-                    <Separator />
 
                     <div className="space-y-3">
                         <div className="overflow-x-auto rounded-md border">

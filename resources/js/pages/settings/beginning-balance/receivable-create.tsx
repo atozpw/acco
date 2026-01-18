@@ -8,7 +8,6 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import AppLayout from '@/layouts/app-layout';
 import BeginningBalanceLayout from '@/layouts/settings/beginning-balance-layout';
@@ -105,8 +104,6 @@ export default function BeginningBalanceReceivableCreate({
                         title="Tambah Saldo Awal Piutang"
                         description="Buat baru saldo awal piutang usaha"
                     />
-
-                    <Separator />
 
                     <div className="items-baseline space-y-6 lg:flex lg:space-y-0 lg:space-x-6">
                         <div className="grid gap-2 lg:basis-1/2">
