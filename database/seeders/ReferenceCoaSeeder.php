@@ -18,11 +18,13 @@ class ReferenceCoaSeeder extends Seeder
         ReferenceCoa::create([
             'code' => 'account-receivable',
             'name' => 'Akun Piutang Usaha',
+            'coa_id' => 5,
         ]);
 
         ReferenceCoa::create([
             'code' => 'account-payable',
             'name' => 'Akun Utang Usaha',
+            'coa_id' => 19,
         ]);
 
         ReferenceCoa::create([
@@ -48,11 +50,13 @@ class ReferenceCoaSeeder extends Seeder
         ReferenceCoa::create([
             'code' => 'current-year-earnings',
             'name' => 'Akun Laba Tahun Berjalan',
+            'coa_id' => 32,
         ]);
 
         ReferenceCoa::create([
             'code' => 'retained-earnings',
             'name' => 'Akun Laba Ditahan',
+            'coa_id' => 31,
         ]);
     }
 }

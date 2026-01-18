@@ -2,6 +2,7 @@
 
 namespace App\Services\Report\Finance;
 
+use App\Helpers\ReferenceCoa;
 use App\Models\Coa;
 use App\Models\CoaClassification;
 use App\Models\JournalDetail;
@@ -11,7 +12,10 @@ class BalanceSheetService
 {
     public const CLASSIFICATION_TYPE = 'balance-sheet';
 
-    public function __construct(private readonly JournalDetail $journalDetail) {}
+    public function __construct(
+        private readonly JournalDetail $journalDetail,
+        private readonly ProfitLossService $profitLossService
+    ) {}
 
     public function get(array $filters = []): array
     {
@@ -27,8 +31,13 @@ class BalanceSheetService
 
         $amounts = $this->collectAmounts($filters, $classificationId);
 
-        $classificationPayload = $classifications->map(function (CoaClassification $classification) use ($amounts) {
-            $accounts = $this->buildCoaTreeWithAmount($classification->coas, $amounts);
+        $referenceCoa = ReferenceCoa::getCurrentYearEarnings();
+
+        $profitLoss = $this->profitLossService->generate($filters);
+        $currentYearEarning = $profitLoss['totals']['net_profit'];
+
+        $classificationPayload = $classifications->map(function (CoaClassification $classification) use ($amounts, $referenceCoa, $currentYearEarning) {
+            $accounts = $this->buildCoaTreeWithAmount($classification->coas, $amounts, $referenceCoa, $currentYearEarning);
 
             return [
                 'classification_id' => $classification->id,
@@ -38,16 +47,8 @@ class BalanceSheetService
             ];
         })->all();
 
-        $creditTotal = $this->sumByDebitFlag($amounts, false);
-        $debitTotal = $this->sumByDebitFlag($amounts, true);
-
         return [
             'classifications' => $classificationPayload,
-            'totals' => [
-                'income' => round($creditTotal, 2),
-                'expense' => round($debitTotal, 2),
-                'net_profit' => round($creditTotal - $debitTotal, 2),
-            ],
         ];
     }
 
@@ -122,13 +123,6 @@ class BalanceSheetService
             : $credit - $debit;
     }
 
-    private function sumByDebitFlag(Collection $amounts, bool $isDebit): float
-    {
-        return $amounts
-            ->filter(fn(array $row) => $row['is_debit'] === $isDebit)
-            ->sum(fn(array $row) => $row['amount']);
-    }
-
     private function normalizeId(int|string|null $id): ?int
     {
         if ($id === null || $id === '') {
@@ -138,15 +132,18 @@ class BalanceSheetService
         return (int) $id;
     }
 
-    private function buildCoaTreeWithAmount($coas, Collection $amounts): Collection
+    private function buildCoaTreeWithAmount($coas, Collection $amounts, ?int $referenceCoa, float $currentYearEarning): Collection
     {
         $grouped = $coas->groupBy('parent_id');
 
-        $build = function ($parentId) use (&$build, $grouped, $amounts) {
-            return ($grouped[$parentId] ?? collect())->map(function ($coa) use ($build, $amounts) {
+        $build = function ($parentId) use (&$build, $grouped, $amounts, $referenceCoa, $currentYearEarning) {
+            return ($grouped[$parentId] ?? collect())->map(function ($coa) use ($build, $amounts, $referenceCoa, $currentYearEarning) {
                 $children = $build($coa->id);
                 $childrenTotal = $children->sum('amount');
-                $selfAmount = $amounts->get($coa->id)['amount'] ?? 0;
+
+                $selfAmount = $coa->id === $referenceCoa
+                    ? $currentYearEarning
+                    : ($amounts->get($coa->id)['amount'] ?? 0);
 
                 return [
                     'id' => $coa->id,
