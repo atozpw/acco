@@ -66,18 +66,26 @@ class SalesInvoiceObserver implements ShouldHandleEventsAfterCommit
                 ];
             }
 
-            if ($salesInvoiceDetail->product->category->inventory_coa_id && $salesInvoiceDetail->product->is_stock_tracking) {
-                $journalDetails[] = [
-                    'journal_id' => $journal->id,
-                    'coa_id' => $salesInvoiceDetail->product->category->inventory_coa_id,
-                    'debit' => 0,
-                    'credit' => $salesInvoiceDetail->amount,
-                    'department_id' => $salesInvoiceDetail->department_id,
-                    'created_by' => $salesInvoiceDetail->created_by,
-                    'created_at' => $salesInvoiceDetail->created_at,
-                    'updated_at' => $salesInvoiceDetail->updated_at,
-                ];
+            if (!$salesInvoiceDetail->product->is_stock_tracking) {
+                continue;
             }
+
+            $coaId = $salesInvoice->is_delivery
+                ? $salesInvoiceDetail->product->category->sales_delivery_coa_id
+                : $salesInvoiceDetail->product->category->inventory_coa_id;
+
+            if (!$coaId) continue;
+
+            $journalDetails[] = [
+                'journal_id' => $journal->id,
+                'coa_id' => $coaId,
+                'debit' => 0,
+                'credit' => $salesInvoiceDetail->amount,
+                'department_id' => $salesInvoiceDetail->department_id,
+                'created_by' => $salesInvoiceDetail->created_by,
+                'created_at' => $salesInvoiceDetail->created_at,
+                'updated_at' => $salesInvoiceDetail->updated_at,
+            ];
         }
 
         JournalDetail::insert($journalDetails);
@@ -143,18 +151,26 @@ class SalesInvoiceObserver implements ShouldHandleEventsAfterCommit
                 ];
             }
 
-            if ($salesInvoiceDetail->product->category->inventory_coa_id && $salesInvoiceDetail->product->is_stock_tracking) {
-                $journalDetails[] = [
-                    'journal_id' => $journal->id,
-                    'coa_id' => $salesInvoiceDetail->product->category->inventory_coa_id,
-                    'debit' => 0,
-                    'credit' => $salesInvoiceDetail->amount,
-                    'department_id' => $salesInvoiceDetail->department_id,
-                    'created_by' => $salesInvoiceDetail->created_by,
-                    'created_at' => $salesInvoiceDetail->created_at,
-                    'updated_at' => $salesInvoiceDetail->updated_at,
-                ];
+            if (!$salesInvoiceDetail->product->is_stock_tracking) {
+                continue;
             }
+
+            $coaId = $salesInvoice->is_delivery
+                ? $salesInvoiceDetail->product->category->sales_delivery_coa_id
+                : $salesInvoiceDetail->product->category->inventory_coa_id;
+
+            if (!$coaId) continue;
+
+            $journalDetails[] = [
+                'journal_id' => $journal->id,
+                'coa_id' => $coaId,
+                'debit' => 0,
+                'credit' => $salesInvoiceDetail->amount,
+                'department_id' => $salesInvoiceDetail->department_id,
+                'created_by' => $salesInvoiceDetail->created_by,
+                'created_at' => $salesInvoiceDetail->created_at,
+                'updated_at' => $salesInvoiceDetail->updated_at,
+            ];
         }
 
         JournalDetail::insert($journalDetails);
