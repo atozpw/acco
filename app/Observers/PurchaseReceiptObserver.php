@@ -14,45 +14,47 @@ class PurchaseReceiptObserver implements ShouldHandleEventsAfterCommit
      */
     public function created(PurchaseReceipt $purchaseReceipt): void
     {
-        $journal = Journal::create([
-            'journal_category_id' => 9,
-            'reference_no' => $purchaseReceipt->reference_no,
-            'date' => $purchaseReceipt->date,
-            'description' => $purchaseReceipt->description,
-            'created_by' => $purchaseReceipt->created_by,
-        ]);
+        if (!$purchaseReceipt->is_beginning) {
+            $journal = Journal::create([
+                'journal_category_id' => 9,
+                'reference_no' => $purchaseReceipt->reference_no,
+                'date' => $purchaseReceipt->date,
+                'description' => $purchaseReceipt->description,
+                'created_by' => $purchaseReceipt->created_by,
+            ]);
 
-        $purchaseReceiptDetails = $purchaseReceipt->details()
-            ->with('product.category')
-            ->get();
+            $purchaseReceiptDetails = $purchaseReceipt->details()
+                ->with('product.category')
+                ->get();
 
-        $journalDetails = [];
+            $journalDetails = [];
 
-        foreach ($purchaseReceiptDetails as $purchaseReceiptDetail) {
-            $journalDetails[] = [
-                'journal_id' => $journal->id,
-                'coa_id' => $purchaseReceiptDetail->product->category->purchase_receipt_coa_id,
-                'debit' => 0,
-                'credit' => $purchaseReceiptDetail->amount,
-                'department_id' => $purchaseReceiptDetail->department_id,
-                'created_by' => $purchaseReceiptDetail->created_by,
-                'created_at' => $purchaseReceiptDetail->created_at,
-                'updated_at' => $purchaseReceiptDetail->updated_at,
-            ];
+            foreach ($purchaseReceiptDetails as $purchaseReceiptDetail) {
+                $journalDetails[] = [
+                    'journal_id' => $journal->id,
+                    'coa_id' => $purchaseReceiptDetail->product->category->purchase_receipt_coa_id,
+                    'debit' => 0,
+                    'credit' => $purchaseReceiptDetail->amount,
+                    'department_id' => $purchaseReceiptDetail->department_id,
+                    'created_by' => $purchaseReceiptDetail->created_by,
+                    'created_at' => $purchaseReceiptDetail->created_at,
+                    'updated_at' => $purchaseReceiptDetail->updated_at,
+                ];
 
-            $journalDetails[] = [
-                'journal_id' => $journal->id,
-                'coa_id' => $purchaseReceiptDetail->product->category->inventory_coa_id,
-                'debit' => $purchaseReceiptDetail->amount,
-                'credit' => 0,
-                'department_id' => $purchaseReceiptDetail->department_id,
-                'created_by' => $purchaseReceiptDetail->created_by,
-                'created_at' => $purchaseReceiptDetail->created_at,
-                'updated_at' => $purchaseReceiptDetail->updated_at,
-            ];
+                $journalDetails[] = [
+                    'journal_id' => $journal->id,
+                    'coa_id' => $purchaseReceiptDetail->product->category->inventory_coa_id,
+                    'debit' => $purchaseReceiptDetail->amount,
+                    'credit' => 0,
+                    'department_id' => $purchaseReceiptDetail->department_id,
+                    'created_by' => $purchaseReceiptDetail->created_by,
+                    'created_at' => $purchaseReceiptDetail->created_at,
+                    'updated_at' => $purchaseReceiptDetail->updated_at,
+                ];
+            }
+
+            JournalDetail::insert($journalDetails);
         }
-
-        JournalDetail::insert($journalDetails);
     }
 
     /**
