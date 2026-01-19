@@ -29,27 +29,31 @@ class SalesDeliveryObserver implements ShouldHandleEventsAfterCommit
         $journalDetails = [];
 
         foreach ($salesDeliveryDetails as $salesDeliveryDetail) {
-            $journalDetails[] = [
-                'journal_id' => $journal->id,
-                'coa_id' => $salesDeliveryDetail->product->category->sales_delivery_coa_id,
-                'debit' => $salesDeliveryDetail->amount,
-                'credit' => 0,
-                'department_id' => $salesDeliveryDetail->department_id,
-                'created_by' => $salesDeliveryDetail->created_by,
-                'created_at' => $salesDeliveryDetail->created_at,
-                'updated_at' => $salesDeliveryDetail->updated_at,
-            ];
+            if ($salesDeliveryDetail->product->category->sales_delivery_coa_id) {
+                $journalDetails[] = [
+                    'journal_id' => $journal->id,
+                    'coa_id' => $salesDeliveryDetail->product->category->sales_delivery_coa_id,
+                    'debit' => $salesDeliveryDetail->amount,
+                    'credit' => 0,
+                    'department_id' => $salesDeliveryDetail->department_id,
+                    'created_by' => $salesDeliveryDetail->created_by,
+                    'created_at' => $salesDeliveryDetail->created_at,
+                    'updated_at' => $salesDeliveryDetail->updated_at,
+                ];
+            }
 
-            $journalDetails[] = [
-                'journal_id' => $journal->id,
-                'coa_id' => $salesDeliveryDetail->product->category->inventory_coa_id,
-                'debit' => 0,
-                'credit' => $salesDeliveryDetail->amount,
-                'department_id' => $salesDeliveryDetail->department_id,
-                'created_by' => $salesDeliveryDetail->created_by,
-                'created_at' => $salesDeliveryDetail->created_at,
-                'updated_at' => $salesDeliveryDetail->updated_at,
-            ];
+            if ($salesDeliveryDetail->product->category->inventory_coa_id && $salesDeliveryDetail->product->is_stock_tracking) {
+                $journalDetails[] = [
+                    'journal_id' => $journal->id,
+                    'coa_id' => $salesDeliveryDetail->product->category->inventory_coa_id,
+                    'debit' => 0,
+                    'credit' => $salesDeliveryDetail->amount,
+                    'department_id' => $salesDeliveryDetail->department_id,
+                    'created_by' => $salesDeliveryDetail->created_by,
+                    'created_at' => $salesDeliveryDetail->created_at,
+                    'updated_at' => $salesDeliveryDetail->updated_at,
+                ];
+            }
         }
 
         JournalDetail::insert($journalDetails);
@@ -78,27 +82,31 @@ class SalesDeliveryObserver implements ShouldHandleEventsAfterCommit
         $journalDetails = [];
 
         foreach ($salesDeliveryDetails as $salesDeliveryDetail) {
-            $journalDetails[] = [
-                'journal_id' => $journal->id,
-                'coa_id' => $salesDeliveryDetail->product->category->sales_delivery_coa_id,
-                'debit' => $salesDeliveryDetail->amount,
-                'credit' => 0,
-                'department_id' => $salesDeliveryDetail->department_id,
-                'created_by' => $salesDeliveryDetail->created_by,
-                'created_at' => $salesDeliveryDetail->created_at,
-                'updated_at' => $salesDeliveryDetail->updated_at,
-            ];
+            if ($salesDeliveryDetail->product->category->sales_delivery_coa_id) {
+                $journalDetails[] = [
+                    'journal_id' => $journal->id,
+                    'coa_id' => $salesDeliveryDetail->product->category->sales_delivery_coa_id,
+                    'debit' => $salesDeliveryDetail->amount,
+                    'credit' => 0,
+                    'department_id' => $salesDeliveryDetail->department_id,
+                    'created_by' => $salesDeliveryDetail->created_by,
+                    'created_at' => $salesDeliveryDetail->created_at,
+                    'updated_at' => $salesDeliveryDetail->updated_at,
+                ];
+            }
 
-            $journalDetails[] = [
-                'journal_id' => $journal->id,
-                'coa_id' => $salesDeliveryDetail->product->category->inventory_coa_id,
-                'debit' => 0,
-                'credit' => $salesDeliveryDetail->amount,
-                'department_id' => $salesDeliveryDetail->department_id,
-                'created_by' => $salesDeliveryDetail->created_by,
-                'created_at' => $salesDeliveryDetail->created_at,
-                'updated_at' => $salesDeliveryDetail->updated_at,
-            ];
+            if ($salesDeliveryDetail->product->category->inventory_coa_id && $salesDeliveryDetail->product->is_stock_tracking) {
+                $journalDetails[] = [
+                    'journal_id' => $journal->id,
+                    'coa_id' => $salesDeliveryDetail->product->category->inventory_coa_id,
+                    'debit' => 0,
+                    'credit' => $salesDeliveryDetail->amount,
+                    'department_id' => $salesDeliveryDetail->department_id,
+                    'created_by' => $salesDeliveryDetail->created_by,
+                    'created_at' => $salesDeliveryDetail->created_at,
+                    'updated_at' => $salesDeliveryDetail->updated_at,
+                ];
+            }
         }
 
         JournalDetail::insert($journalDetails);
