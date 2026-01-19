@@ -14,7 +14,7 @@ const sidebarNavItems: NavItem[] = [
         icon: null,
     },
     {
-        title: 'Piutang',
+        title: 'Piutang Usaha',
         href: beginningBalance.receivable.index.url(),
         icon: null,
     },
