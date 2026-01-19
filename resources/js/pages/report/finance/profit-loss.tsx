@@ -17,7 +17,7 @@ import report from '@/routes/report';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { ListFilterPlus, Printer, Share2, Undo2 } from 'lucide-react';
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { type DateRange } from 'react-day-picker';
 import ProfitLossFilterDialog, {
     type ProfitLossFilterValues,
@@ -170,6 +170,15 @@ export default function ProfitLossReportPage({
     filters,
     options,
 }: PageProps) {
+    const [hasHistory, setHasHistory] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setHasHistory(window.history.length > 1);
+        }
+    }, []);
+
     const classificationItems: ComboboxItem[] = [
         { label: 'Semua', value: '' },
         ...options.classifications.map((item) => ({
@@ -269,11 +278,22 @@ export default function ProfitLossReportPage({
                         description="Ringkasan laba rugi untuk periode terpilih"
                     />
                     <div className="flex gap-3">
-                        <Button variant="outline" asChild>
-                            <Link href={financialStatement.index.url()}>
-                                <Undo2 /> Kembali
-                            </Link>
-                        </Button>
+                        {hasHistory ? (
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => window.history.back()}
+                            >
+                                <Undo2 />
+                                Kembali
+                            </Button>
+                        ) : (
+                            <Button variant="outline" asChild>
+                                <Link href={financialStatement.index.url()}>
+                                    <Undo2 /> Kembali
+                                </Link>
+                            </Button>
+                        )}
                         <ProfitLossFilterDialog
                             open={filtersDialogOpen}
                             onOpenChange={setFiltersDialogOpen}
