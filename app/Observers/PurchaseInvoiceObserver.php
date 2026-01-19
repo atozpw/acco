@@ -29,18 +29,26 @@ class PurchaseInvoiceObserver implements ShouldHandleEventsAfterCommit
         $journalDetails = [];
 
         foreach ($purchaseInvoiceDetails as $purchaseInvoiceDetail) {
-            if ($purchaseInvoiceDetail->product->category->inventory_coa_id) {
-                $journalDetails[] = [
-                    'journal_id' => $journal->id,
-                    'coa_id' => $purchaseInvoiceDetail->product->category->inventory_coa_id,
-                    'debit' => $purchaseInvoiceDetail->amount,
-                    'credit' => 0,
-                    'department_id' => $purchaseInvoiceDetail->department_id,
-                    'created_by' => $purchaseInvoiceDetail->created_by,
-                    'created_at' => $purchaseInvoiceDetail->created_at,
-                    'updated_at' => $purchaseInvoiceDetail->updated_at,
-                ];
+            if (!$purchaseInvoiceDetail->product->is_stock_tracking) {
+                continue;
             }
+
+            $coaId = $purchaseInvoice->is_receipt
+                ? $purchaseInvoiceDetail->product->category->purchase_receipt_coa_id
+                : $purchaseInvoiceDetail->product->category->inventory_coa_id;
+
+            if (!$coaId) continue;
+
+            $journalDetails[] = [
+                'journal_id' => $journal->id,
+                'coa_id' => $coaId,
+                'debit' => $purchaseInvoiceDetail->amount,
+                'credit' => 0,
+                'department_id' => $purchaseInvoiceDetail->department_id,
+                'created_by' => $purchaseInvoiceDetail->created_by,
+                'created_at' => $purchaseInvoiceDetail->created_at,
+                'updated_at' => $purchaseInvoiceDetail->updated_at,
+            ];
         }
 
         $journalDetails[] = [
@@ -80,18 +88,26 @@ class PurchaseInvoiceObserver implements ShouldHandleEventsAfterCommit
         $journalDetails = [];
 
         foreach ($purchaseInvoiceDetails as $purchaseInvoiceDetail) {
-            if ($purchaseInvoiceDetail->product->category->inventory_coa_id) {
-                $journalDetails[] = [
-                    'journal_id' => $journal->id,
-                    'coa_id' => $purchaseInvoiceDetail->product->category->inventory_coa_id,
-                    'debit' => $purchaseInvoiceDetail->amount,
-                    'credit' => 0,
-                    'department_id' => $purchaseInvoiceDetail->department_id,
-                    'created_by' => $purchaseInvoiceDetail->created_by,
-                    'created_at' => $purchaseInvoiceDetail->created_at,
-                    'updated_at' => $purchaseInvoiceDetail->updated_at,
-                ];
+            if (!$purchaseInvoiceDetail->product->is_stock_tracking) {
+                continue;
             }
+
+            $coaId = $purchaseInvoice->is_receipt
+                ? $purchaseInvoiceDetail->product->category->purchase_receipt_coa_id
+                : $purchaseInvoiceDetail->product->category->inventory_coa_id;
+
+            if (!$coaId) continue;
+
+            $journalDetails[] = [
+                'journal_id' => $journal->id,
+                'coa_id' => $coaId,
+                'debit' => $purchaseInvoiceDetail->amount,
+                'credit' => 0,
+                'department_id' => $purchaseInvoiceDetail->department_id,
+                'created_by' => $purchaseInvoiceDetail->created_by,
+                'created_at' => $purchaseInvoiceDetail->created_at,
+                'updated_at' => $purchaseInvoiceDetail->updated_at,
+            ];
         }
 
         $journalDetails[] = [
