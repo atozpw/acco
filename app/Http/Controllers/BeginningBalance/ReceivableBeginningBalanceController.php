@@ -60,7 +60,7 @@ class ReceivableBeginningBalanceController extends Controller
                 'warehouse_id' => 1, // Default warehouse
                 'reference_no' => $validated['reference_no'],
                 'date' => $validated['date'],
-                'description' => 'Saldo awal piutang #' . $validated['reference_no'],
+                'description' => 'Saldo Awal Piutang Usaha',
                 'amount' => $amount,
                 'total' => $amount,
                 'is_beginning' => 1,

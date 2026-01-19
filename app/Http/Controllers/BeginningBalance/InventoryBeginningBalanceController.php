@@ -114,7 +114,7 @@ class InventoryBeginningBalanceController extends Controller
                 'warehouse_id' => $validated['warehouse_id'],
                 'reference_no' => $referenceNo,
                 'date' => $entryDate,
-                'description' => 'Saldo awal persediaan #' . $referenceNo,
+                'description' => 'Saldo Awal Persediaan',
                 'amount' => $amount,
                 'tax_amount' => 0,
                 'discount_percent' => 0,

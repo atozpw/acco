@@ -59,7 +59,7 @@ class PayableBeginningBalanceController extends Controller
                 'warehouse_id' => 1,
                 'reference_no' => $validated['reference_no'],
                 'date' => $validated['date'],
-                'description' => 'Saldo awal utang #' . $validated['reference_no'],
+                'description' => 'Saldo Awal Utang Usaha',
                 'amount' => $amount,
                 'total' => $amount,
                 'is_beginning' => 1,

@@ -80,7 +80,7 @@ class AccountBeginningBalanceController extends Controller
                     'journal_category_id' => 1,
                     'reference_no' => $referenceNo,
                     'date' => $journalDate,
-                    'description' => 'Saldo Awal Akun ' . $referenceNo,
+                    'description' => 'Saldo Awal Akun',
                     'created_by' => $request->user()?->id,
                 ]);
 
