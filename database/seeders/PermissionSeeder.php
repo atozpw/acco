@@ -113,6 +113,8 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'sales-invoices.update']);
         Permission::create(['name' => 'sales-invoices.destroy']);
 
+        Permission::create(['name' => 'account-receivables.index']);
+
         Permission::create(['name' => 'receivable-payments.index']);
         Permission::create(['name' => 'receivable-payments.store']);
         Permission::create(['name' => 'receivable-payments.update']);
@@ -128,6 +130,8 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'purchase-invoices.update']);
         Permission::create(['name' => 'purchase-invoices.destroy']);
 
+        Permission::create(['name' => 'account-payables.index']);
+
         Permission::create(['name' => 'payable-payments.index']);
         Permission::create(['name' => 'payable-payments.store']);
         Permission::create(['name' => 'payable-payments.update']);
@@ -137,5 +141,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'product-transfers.store']);
         Permission::create(['name' => 'product-transfers.update']);
         Permission::create(['name' => 'product-transfers.destroy']);
+
+        Permission::create(['name' => 'reports.index']);
     }
 }
