@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Project;
 use App\Services\Dashboard\DetailProfitLossService;
+use App\Services\Dashboard\DetailRevenueService;
 use App\Services\Report\Finance\ProfitLossService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -15,6 +16,7 @@ class DashboardController extends Controller
     public function __construct(
         private readonly ProfitLossService $profitLossService,
         private readonly DetailProfitLossService $detailProfitLossService,
+        private readonly DetailRevenueService $detailRevenueService,
     ) {}
 
     public function index(Request $request): Response
@@ -57,11 +59,18 @@ class DashboardController extends Controller
         ]);
     }
 
-    public function profitLoss(Request $request)
+    public function profitLoss(Request $request): Response
     {
         $payload = $this->detailProfitLossService->generate($request);
 
         return inertia('dashboard/detail-profit-loss', $payload);
+    }
+
+    public function revenue(Request $request): Response
+    {
+        $payload = $this->detailRevenueService->generate($request);
+
+        return inertia('dashboard/detail-revenue', $payload);
     }
 
     private function resolveFilters(Request $request): array

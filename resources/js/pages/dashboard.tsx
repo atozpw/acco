@@ -114,7 +114,7 @@ const deriveDateRange = (from?: string | null, to?: string | null) => {
 };
 
 const buildDetailUrl = (
-    type: 'profit_loss' | 'income' | 'expense',
+    type: 'profit_loss' | 'revenue' | 'expense',
     filters?: DashboardFilters,
 ) => {
     const query: Record<string, string> = {};
@@ -128,9 +128,15 @@ const buildDetailUrl = (
         return dashboardRoutes.profitLoss.url(
             Object.keys(query).length ? { query } : undefined,
         );
-    } else {
-        return '#';
     }
+
+    if (type === 'revenue') {
+        return dashboardRoutes.revenue.url(
+            Object.keys(query).length ? { query } : undefined,
+        );
+    }
+
+    return '#';
 };
 
 export default function Dashboard({ summary, filters, options }: PageProps) {
@@ -243,7 +249,7 @@ export default function Dashboard({ summary, filters, options }: PageProps) {
             info: 'Akumulasi penerimaan dan jumlah dari pendapatan selama periode terpilih',
             meta: 'Termasuk seluruh pendapatan operasional dan non-operasional.',
             accent: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100',
-            href: buildDetailUrl('income', activeFilters),
+            href: buildDetailUrl('revenue', activeFilters),
         },
         {
             key: 'expense',
