@@ -54,12 +54,12 @@ class StoreInventoryRequest extends FormRequest
             ],
             'qty' => [
                 'required',
-                'decimal:2',
+                'numeric',
                 'gt:0',
             ],
             'price' => [
                 'required',
-                'decimal:2',
+                'numeric',
                 'gt:0',
             ],
         ];

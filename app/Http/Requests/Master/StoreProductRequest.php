@@ -49,12 +49,12 @@ class StoreProductRequest extends FormRequest
 
             'sales_price' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'purchase_price' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'sales_tax_id' => [

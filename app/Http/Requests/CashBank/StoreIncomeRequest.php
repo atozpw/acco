@@ -54,7 +54,7 @@ class StoreIncomeRequest extends FormRequest
 
             'amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.coa_id' => [
@@ -65,7 +65,7 @@ class StoreIncomeRequest extends FormRequest
 
             'details.*.amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.note' => [

@@ -48,12 +48,12 @@ class StoreGeneralJournalRequest extends FormRequest
 
             'details.*.debit' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.credit' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.note' => [

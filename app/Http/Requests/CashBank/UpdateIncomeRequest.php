@@ -55,7 +55,7 @@ class UpdateIncomeRequest extends FormRequest
 
             'amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.coa_id' => [
@@ -66,7 +66,7 @@ class UpdateIncomeRequest extends FormRequest
 
             'details.*.amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.note' => [

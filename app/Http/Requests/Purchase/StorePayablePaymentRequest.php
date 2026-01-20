@@ -54,7 +54,7 @@ class StorePayablePaymentRequest extends FormRequest
 
             'amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.purchase_invoice_id' => [
@@ -65,7 +65,7 @@ class StorePayablePaymentRequest extends FormRequest
 
             'details.*.amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.note' => [
