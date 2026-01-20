@@ -54,7 +54,7 @@ class StoreCashTransferRequest extends FormRequest
 
             'amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'department_id' => [

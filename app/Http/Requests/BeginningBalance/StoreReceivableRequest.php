@@ -48,7 +48,7 @@ class StoreReceivableRequest extends FormRequest
 
             'amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
         ];
     }

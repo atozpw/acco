@@ -54,17 +54,17 @@ class StoreCashAdvanceIncomeRequest extends FormRequest
 
             'amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'tax_amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'total' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.cash_advance_classification_id' => [
@@ -75,17 +75,17 @@ class StoreCashAdvanceIncomeRequest extends FormRequest
 
             'details.*.amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.tax_amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.total' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.note' => [

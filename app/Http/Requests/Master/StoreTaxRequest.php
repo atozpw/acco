@@ -37,7 +37,7 @@ class StoreTaxRequest extends FormRequest
 
             'rate' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'sales_coa_id' => [

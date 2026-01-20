@@ -35,12 +35,12 @@ class UpdateAccountBeginningBalanceRequest extends FormRequest
 
             'entries.*.debit' => [
                 'nullable',
-                'decimal:2',
+                'numeric',
             ],
 
             'entries.*.credit' => [
                 'nullable',
-                'decimal:2',
+                'numeric',
             ],
         ];
     }

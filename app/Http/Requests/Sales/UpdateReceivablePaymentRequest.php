@@ -55,7 +55,7 @@ class UpdateReceivablePaymentRequest extends FormRequest
 
             'amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.sales_invoice_id' => [
@@ -66,7 +66,7 @@ class UpdateReceivablePaymentRequest extends FormRequest
 
             'details.*.amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.note' => [

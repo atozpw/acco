@@ -55,27 +55,27 @@ class UpdatePurchaseReceiptRequest extends FormRequest
 
             'amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'tax_amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'discount_percent' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'discount_amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'total' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'is_closed' => [
@@ -91,37 +91,37 @@ class UpdatePurchaseReceiptRequest extends FormRequest
 
             'details.*.qty' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.price' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.tax_amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.discount_percent' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.discount_amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.total' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.note' => [

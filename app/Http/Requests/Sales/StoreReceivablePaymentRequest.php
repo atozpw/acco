@@ -54,7 +54,7 @@ class StoreReceivablePaymentRequest extends FormRequest
 
             'amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.sales_invoice_id' => [
@@ -65,7 +65,7 @@ class StoreReceivablePaymentRequest extends FormRequest
 
             'details.*.amount' => [
                 'required',
-                'decimal:2',
+                'numeric',
             ],
 
             'details.*.note' => [
