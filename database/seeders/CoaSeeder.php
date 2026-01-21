@@ -87,6 +87,15 @@ class CoaSeeder extends Seeder
             'is_cash_bank' => 0,
         ]);
 
+        Coa::create([
+            'parent_id' => $coa->id,
+            'code' => '115',
+            'name' => 'Piutang Belum Dikwitansikan',
+            'coa_classification_id' => 1,
+            'is_debit' => 1,
+            'is_cash_bank' => 0,
+        ]);
+
         $coa = Coa::create([
             'parent_id' => null,
             'code' => '120',

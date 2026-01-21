@@ -22,11 +22,11 @@ class DatabaseSeeder extends Seeder
             UnitMeasurementSeeder::class,
             TaxSeeder::class,
             JournalCategorySeeder::class,
-            ProductCategorySeeder::class,
             ReferenceNumberSeeder::class,
             CoaClassificationSeeder::class,
             CoaSeeder::class,
             ReferenceCoaSeeder::class,
+            ProductCategorySeeder::class,
         ]);
     }
 }

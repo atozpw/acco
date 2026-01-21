@@ -17,7 +17,12 @@ class ProductCategorySeeder extends Seeder
     {
         ProductCategory::create([
             'code' => '01',
-            'name' => 'Barang',
+            'name' => 'Material',
+            'inventory_coa_id' => 11,
+            'purchase_coa_id' => 38,
+            'purchase_receipt_coa_id' => 23,
+            'sales_coa_id' => 36,
+            'sales_delivery_coa_id' => 9,
         ]);
 
         ProductCategory::create([

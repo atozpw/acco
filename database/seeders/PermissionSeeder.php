@@ -143,5 +143,10 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'product-transfers.destroy']);
 
         Permission::create(['name' => 'reports.index']);
+
+        Permission::create(['name' => 'account-beginning-balance.index']);
+        Permission::create(['name' => 'receivable-beginning-balance.index']);
+        Permission::create(['name' => 'payable-beginning-balance.index']);
+        Permission::create(['name' => 'inventory-beginning-balance.index']);
     }
 }
