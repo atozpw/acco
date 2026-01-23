@@ -29,10 +29,6 @@ class PurchaseInvoiceObserver implements ShouldHandleEventsAfterCommit
         $journalDetails = [];
 
         foreach ($purchaseInvoiceDetails as $purchaseInvoiceDetail) {
-//            if (!$purchaseInvoiceDetail->product->is_stock_tracking) {
-//                continue;
-//            }
-
             $coaId = $purchaseInvoice->is_receipt
                 ? $purchaseInvoiceDetail->product->category->purchase_receipt_coa_id
                 : $purchaseInvoiceDetail->product->category->inventory_coa_id;
@@ -88,10 +84,6 @@ class PurchaseInvoiceObserver implements ShouldHandleEventsAfterCommit
         $journalDetails = [];
 
         foreach ($purchaseInvoiceDetails as $purchaseInvoiceDetail) {
-//            if (!$purchaseInvoiceDetail->product->is_stock_tracking) {
-//                continue;
-//            }
-
             $coaId = $purchaseInvoice->is_receipt
                 ? $purchaseInvoiceDetail->product->category->purchase_receipt_coa_id
                 : $purchaseInvoiceDetail->product->category->inventory_coa_id;
