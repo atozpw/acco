@@ -26,4 +26,14 @@ Route::middleware('auth')->prefix('print')->group(function () {
     Route::get('payable-payment/{id}', [PrintController::class, 'payablePayment'])
         ->name('print.payable-payment')
         ->middleware(['permission:payable-payments.index']);
+
+    Route::get('disbursement/{id}', [PrintController::class, 'expense'])
+        ->name('print.expense')
+        ->middleware(['permission:expenses.index']);
+    Route::get('cash-in/{id}', [PrintController::class, 'income'])
+        ->name('print.income')
+        ->middleware(['permission:incomes.index']);
+    Route::get('cash-transfer/{id}', [PrintController::class, 'cashTransfer'])
+        ->name('print.cash-transfer')
+        ->middleware(['permission:cash-transfers.index']);
 });

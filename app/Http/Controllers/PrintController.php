@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CashTransfer;
+use App\Models\Expense;
+use App\Models\Income;
 use App\Models\Journal;
 use App\Models\PayablePayment;
 use App\Models\PurchaseInvoice;
@@ -443,5 +446,199 @@ class PrintController extends Controller
 
         return view('print.payable-payment', compact('payload'));
 
+    }
+
+    public function expense($id)
+    {
+        $expense = Expense::query()
+            ->with([
+                'contact:id,name',
+                'createdBy:id,name',
+                'details.coa:id,code,name',
+                'details.department:id,code,name',
+                'details.project:id,code,name',
+            ])
+            ->findOrFail($id);
+
+        $payload = [
+            'id' => $expense->id,
+            'reference_no' => $expense->reference_no,
+            'date' => $expense->date,
+            'formatted_date' => $expense->date
+                ? now()->parse($expense->date)->format('d/m/Y')
+                : null,
+            'description' => $expense->description,
+            'amount' => number_format((float) $expense->amount, 2, '.', ''),
+            'contact' => $expense->contact
+                ? [
+                    'id' => $expense->contact->id,
+                    'name' => $expense->contact->name,
+                ]
+                : null,
+            'created_by' => $expense->createdBy
+                ? [
+                    'id' => $expense->createdBy->id,
+                    'name' => $expense->createdBy->name,
+                ]
+                : null,
+            'details' => $expense->details
+                ->map(function ($detail) {
+                    return [
+                        'coa' => $detail->coa
+                            ? [
+                                'id' => $detail->coa->id,
+                                'code' => $detail->coa->code,
+                                'name' => $detail->coa->name,
+                            ]
+                            : null,
+                        'department' => $detail->department
+                            ? [
+                                'id' => $detail->department->id,
+                                'code' => $detail->department->code,
+                                'name' => $detail->department->name,
+                            ]
+                            : null,
+                        'project' => $detail->project
+                            ? [
+                                'id' => $detail->project->id,
+                                'code' => $detail->project->code,
+                                'name' => $detail->project->name,
+                            ]
+                            : null,
+                        'amount' => number_format((float) $detail->amount, 2, '.', ''),
+                        'note' => $detail->note,
+                    ];
+                })
+                ->values(),
+        ];
+
+        return view('print.expense', compact('payload'));
+    }
+
+    public function income($id)
+    {
+        $income = Income::query()
+            ->with([
+                'contact:id,name',
+                'createdBy:id,name',
+                'details.coa:id,code,name',
+                'details.department:id,code,name',
+                'details.project:id,code,name',
+            ])
+            ->findOrFail($id);
+
+        $payload = [
+            'id' => $income->id,
+            'reference_no' => $income->reference_no,
+            'date' => $income->date,
+            'formatted_date' => $income->date
+                ? now()->parse($income->date)->format('d/m/Y')
+                : null,
+            'description' => $income->description,
+            'amount' => number_format((float) $income->amount, 2, '.', ''),
+            'contact' => $income->contact
+                ? [
+                    'id' => $income->contact->id,
+                    'name' => $income->contact->name,
+                ]
+                : null,
+            'created_by' => $income->createdBy
+                ? [
+                    'id' => $income->createdBy->id,
+                    'name' => $income->createdBy->name,
+                ]
+                : null,
+            'details' => $income->details
+                ->map(function ($detail) {
+                    return [
+                        'coa' => $detail->coa
+                            ? [
+                                'id' => $detail->coa->id,
+                                'code' => $detail->coa->code,
+                                'name' => $detail->coa->name,
+                            ]
+                            : null,
+                        'department' => $detail->department
+                            ? [
+                                'id' => $detail->department->id,
+                                'code' => $detail->department->code,
+                                'name' => $detail->department->name,
+                            ]
+                            : null,
+                        'project' => $detail->project
+                            ? [
+                                'id' => $detail->project->id,
+                                'code' => $detail->project->code,
+                                'name' => $detail->project->name,
+                            ]
+                            : null,
+                        'amount' => number_format((float) $detail->amount, 2, '.', ''),
+                        'note' => $detail->note,
+                    ];
+                })
+                ->values(),
+        ];
+
+        return view('print.income', compact('payload'));
+    }
+
+    public function cashTransfer($id)
+    {
+        $cashTransfer = CashTransfer::query()
+            ->with([
+                'fromCoa:id,code,name',
+                'toCoa:id,code,name',
+                'department:id,code,name',
+                'project:id,code,name',
+                'createdBy:id,name',
+            ])
+            ->findOrFail($id);
+
+        $payload = [
+            'id' => $cashTransfer->id,
+            'reference_no' => $cashTransfer->reference_no,
+            'date' => $cashTransfer->date,
+            'formatted_date' => $cashTransfer->date
+                ? Carbon::parse($cashTransfer->date)->format('d/m/Y')
+                : null,
+            'description' => $cashTransfer->description,
+            'amount' => number_format((float) $cashTransfer->amount, 2, '.', ''),
+            'department' => $cashTransfer->department
+                ? [
+                    'id' => $cashTransfer->department->id,
+                    'code' => $cashTransfer->department->code,
+                    'name' => $cashTransfer->department->name,
+                ]
+                : null,
+            'project' => $cashTransfer->project
+                ? [
+                    'id' => $cashTransfer->project->id,
+                    'code' => $cashTransfer->project->code,
+                    'name' => $cashTransfer->project->name,
+                ]
+                : null,
+            'from_coa' => $cashTransfer->fromCoa
+                ? [
+                    'id' => $cashTransfer->fromCoa->id,
+                    'code' => $cashTransfer->fromCoa->code,
+                    'name' => $cashTransfer->fromCoa->name,
+                ]
+                : null,
+            'to_coa' => $cashTransfer->toCoa
+                ? [
+                    'id' => $cashTransfer->toCoa->id,
+                    'code' => $cashTransfer->toCoa->code,
+                    'name' => $cashTransfer->toCoa->name,
+                ]
+                : null,
+            'created_by' => $cashTransfer->createdBy
+                ? [
+                    'id' => $cashTransfer->createdBy->id,
+                    'name' => $cashTransfer->createdBy->name,
+                ]
+                : null,
+        ];
+
+        return view('print.cash-transfer', compact('payload'));
     }
 }

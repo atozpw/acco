@@ -20,6 +20,7 @@ import {
 import AppLayout from '@/layouts/app-layout';
 import cashBank from '@/routes/cash-bank';
 import income from '@/routes/income';
+import print from '@/routes/print';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
 import { Printer, Settings2, Share2, Undo2 } from 'lucide-react';
@@ -159,9 +160,15 @@ export default function IncomeShowScreen({
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem>
-                                        <Printer />
-                                        Cetak
+                                    <DropdownMenuItem asChild>
+                                        <a
+                                            href={print.income.url(data.id)}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            <Printer />
+                                            Cetak
+                                        </a>
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
                             </DropdownMenuContent>
