@@ -17,6 +17,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import print from '@/routes/print';
 import { Link } from '@inertiajs/react';
 import { Printer, Settings2, Share2, Undo2 } from 'lucide-react';
 
@@ -167,9 +168,15 @@ export function JournalVoucherDetail({
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuGroup>
-                                <DropdownMenuItem>
-                                    <Printer />
-                                    Cetak
+                                <DropdownMenuItem asChild>
+                                    <a
+                                        href={print.voucher.url(journal.id)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <Printer />
+                                        Cetak
+                                    </a>
                                 </DropdownMenuItem>
                             </DropdownMenuGroup>
                         </DropdownMenuContent>
