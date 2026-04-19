@@ -136,6 +136,12 @@ const buildDetailUrl = (
         );
     }
 
+    if (type === 'expense') {
+        return dashboardRoutes.expense.url(
+            Object.keys(query).length ? { query } : undefined,
+        );
+    }
+
     return '#';
 };
 

@@ -18,6 +18,8 @@ Route::prefix('dashboard')->middleware('auth')->group(function () {
         ->name('dashboard.profit-loss');
     Route::get('detail-revenue', [DashboardController::class, 'revenue'])
         ->name('dashboard.revenue');
+    Route::get('detail-expense', [DashboardController::class, 'expense'])
+        ->name('dashboard.expense');
 });
 
 require __DIR__ . '/settings.php';
