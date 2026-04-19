@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Journal;
+use App\Models\SalesDelivery;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PrintController extends Controller
@@ -23,7 +25,7 @@ class PrintController extends Controller
             'reference_no' => $journal->reference_no,
             'date' => $journal->date,
             'formatted_date' => $journal->date
-                ? \Carbon\Carbon::parse($journal->date)->format('d/m/Y')
+                ? Carbon::parse($journal->date)->format('d/m/Y')
                 : null,
             'description' => $journal->description,
             'details' => $journal->details->map(function ($detail) {
@@ -61,7 +63,53 @@ class PrintController extends Controller
                 ]
                 : null,
         ];
-        
+
         return view('print.voucher', compact('payload'));
+    }
+
+    public function salesDelivery($id)
+    {
+        $delivery = SalesDelivery::query()
+            ->with([
+                'contact:id,name,address',
+                'details' => function ($query) {
+                    $query->orderBy('id')->with(['product:id,code,name']);
+                },
+            ])
+            ->findOrFail($id);
+
+        $details = $delivery->details->map(function ($detail) {
+            return [
+                'id' => $detail->id,
+                'qty' => (float) $detail->qty,
+                'note' => $detail->note,
+                'product' => $detail->product
+                    ? [
+                        'id' => $detail->product->id,
+                        'code' => $detail->product->code,
+                        'name' => $detail->product->name,
+                    ]
+                    : null,
+            ];
+        });
+
+        $payload = [
+            'id' => $delivery->id,
+            'reference_no' => $delivery->reference_no,
+            'date' => $delivery->date,
+            'formatted_date' => $delivery->date
+                ? Carbon::parse($delivery->date)->format('d/m/Y')
+                : null,
+            'contact' => $delivery->contact
+                ? [
+                    'id' => $delivery->contact->id,
+                    'name' => $delivery->contact->name,
+                    'address' => $delivery->contact->address ?? null,
+                ]
+                : null,
+            'details' => $details,
+        ];
+
+        return view('print.sales-delivery', compact('payload'));
     }
 }
