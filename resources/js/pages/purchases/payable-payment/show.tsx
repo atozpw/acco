@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import payablePayment from '@/routes/payable-payment';
+import print from '@/routes/print';
 import purchases from '@/routes/purchases';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link } from '@inertiajs/react';
@@ -128,9 +129,18 @@ export default function PayablePaymentShowScreen({
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem>
-                                        <Printer />
-                                        Cetak
+                                    <DropdownMenuItem asChild>
+                                        <a
+                                            href={
+                                                print.payablePayment(payment.id)
+                                                    .url
+                                            }
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            <Printer />
+                                            Cetak
+                                        </a>
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
                             </DropdownMenuContent>

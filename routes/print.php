@@ -15,5 +15,15 @@ Route::middleware('auth')->prefix('print')->group(function () {
         ->middleware(['permission:sales-invoices.index']);
     Route::get('account-receivable-payment/{id}', [PrintController::class, 'accountReceivablePayment'])
         ->name('print.account-receivable-payment')
-        ->middleware(['permission:account-receivable-payments.index']);
+        ->middleware(['permission:receivable-payments.index']);
+    
+    Route::get('purchase-receipt/{id}', [PrintController::class, 'purchaseReceipt'])
+        ->name('print.purchase-receipt')
+        ->middleware(['permission:purchase-receipts.index']);
+    Route::get('purchase-invoice/{id}', [PrintController::class, 'purchaseInvoice'])
+        ->name('print.purchase-invoice')
+        ->middleware(['permission:purchase-invoices.index']);
+    Route::get('payable-payment/{id}', [PrintController::class, 'payablePayment'])
+        ->name('print.payable-payment')
+        ->middleware(['permission:payable-payments.index']);
 });

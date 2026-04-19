@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Pembayaran Piutang</title>
+    <title>Cetak Penerimaan Barang</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <style type="text/css">
@@ -68,10 +68,10 @@
         <div class="main-content d-flex flex-column mx-auto py-2 px-3">
             {{-- Header --}}
             <div class="text-center mb-4">
-                <h3 class="mb-0" style="font-weight: 600; font-size: 18px;">PEMBAYARAN PIUTANG</h3>
+                <h3 class="mb-0" style="font-weight: 600; font-size: 18px;">PENERIMAAN BARANG</h3>
             </div>
 
-            {{-- Recipient Info --}}
+            {{-- Supplier Info --}}
             <div class="mb-4">
                 <p class="mb-0" style="font-size: 14px;">Dari:</p>
                 <p class="mb-0" style="font-size: 14px; font-weight: 600;">{{ $payload['contact']['name'] ?? '-' }}</p>
@@ -83,10 +83,9 @@
                     <table class="table table-borderless table-sm"
                         style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 0;">
                         <tr>
-                            <td style="width: 150px;">Deskripsi</td>
+                            <td style="width: 150px;">Alamat</td>
                             <td style="width: 16px;">:</td>
-                            <td>{{ $payload['description'] && trim($payload['description']) ? $payload['description'] : '-' }}
-                            </td>
+                            <td>{{ $payload['contact']['address'] ?? '-' }}</td>
                         </tr>
                     </table>
                 </div>
@@ -94,12 +93,12 @@
                     <table class="table table-borderless table-sm"
                         style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 0;">
                         <tr>
-                            <td style="width: 150px;">Nomor Referensi</td>
+                            <td style="width: 150px;">Nomor Penerimaan</td>
                             <td style="width: 16px;">:</td>
                             <td>{{ $payload['reference_no'] }}</td>
                         </tr>
                         <tr>
-                            <td style="width: 150px;">Tanggal</td>
+                            <td style="width: 150px;">Tanggal Penerimaan</td>
                             <td style="width: 16px;">:</td>
                             <td>{{ $payload['formatted_date'] ?? '-' }}</td>
                         </tr>
@@ -112,39 +111,38 @@
                 <table class="table table-bordered table-sm" style="margin-bottom: 0;">
                     <thead class="table-light">
                         <tr>
-                            <th class="text-start" style="min-width: 150px">Nomor Invoice</th>
-                            <th class="text-start" style="min-width: 120px">Tanggal Invoice</th>
-                            <th class="text-end" style="min-width: 150px">Diskon</th>
-                            <th class="text-end" style="min-width: 150px">Nilai</th>
+                            <th class="text-start" style="width: 130px">Kode Produk</th>
+                            <th class="text-start" style="min-width: 220px">Nama Produk</th>
+                            <th class="text-end" style="width: 80px">Quantity</th>
+                            <th class="text-start" style="min-width: 150px">Catatan</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse($payload['details'] as $detail)
                             <tr>
-                                <td class="text-start">{{ $detail['sales_invoice']['reference_no'] ?? '-' }}</td>
-                                <td class="text-start">{{ $detail['sales_invoice']['formatted_date'] ?? '-' }}</td>
+                                <td class="text-start">{{ $detail['product']['code'] ?? '-' }}</td>
+                                <td class="text-start">{{ $detail['product']['name'] ?? '-' }}</td>
                                 <td class="text-end">
-                                    Rp {{ number_format($detail['sales_invoice']['discount_amount'], 0, ',', '.') }}
+                                    {{ number_format($detail['qty'], 0, ',', '.') }}
                                 </td>
-                                <td class="text-end">
-                                    Rp {{ number_format($detail['amount'], 0, ',', '.') }}
-                                </td>
+                                <td class="text-start">{{ $detail['note'] ?? '-' }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center text-muted">Tidak ada detail pembayaran.</td>
+                                <td colspan="4" class="text-center text-muted">Tidak ada detail penerimaan.</td>
                             </tr>
                         @endforelse
                     </tbody>
                     <tfoot class="table-light">
                         <tr class="fw-bold">
-                            <td colspan="3" class="text-end">Total Nilai</td>
+                            <td colspan="2" class="text-start">Total Quantity</td>
                             <td class="text-end">
                                 @php
-                                    $totalAmount = collect($payload['details'])->sum('amount');
+                                    $totalQty = collect($payload['details'])->sum('qty');
                                 @endphp
-                                Rp {{ number_format($totalAmount, 0, ',', '.') }}
+                                {{ number_format($totalQty, 0, ',', '.') }}
                             </td>
+                            <td></td>
                         </tr>
                     </tfoot>
                 </table>

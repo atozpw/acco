@@ -18,6 +18,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
+import print from '@/routes/print';
 import purchaseReceipt from '@/routes/purchase-receipt';
 import purchases from '@/routes/purchases';
 import { BreadcrumbItem } from '@/types';
@@ -125,9 +126,17 @@ export default function PurchaseReceiptShowScreen({
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem>
-                                        <Printer />
-                                        Cetak
+                                    <DropdownMenuItem asChild>
+                                        <a
+                                            href={print.purchaseReceipt.url(
+                                                receipt.id,
+                                            )}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            <Printer />
+                                            Cetak
+                                        </a>
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
                             </DropdownMenuContent>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Pembayaran Piutang</title>
+    <title>Cetak Pembayaran Utang Usaha</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <style type="text/css">
@@ -68,12 +68,12 @@
         <div class="main-content d-flex flex-column mx-auto py-2 px-3">
             {{-- Header --}}
             <div class="text-center mb-4">
-                <h3 class="mb-0" style="font-weight: 600; font-size: 18px;">PEMBAYARAN PIUTANG</h3>
+                <h3 class="mb-0" style="font-weight: 600; font-size: 18px;">PEMBAYARAN UTANG USAHA</h3>
             </div>
 
-            {{-- Recipient Info --}}
+            {{-- Supplier Info --}}
             <div class="mb-4">
-                <p class="mb-0" style="font-size: 14px;">Dari:</p>
+                <p class="mb-0" style="font-size: 14px;">Kepada:</p>
                 <p class="mb-0" style="font-size: 14px; font-weight: 600;">{{ $payload['contact']['name'] ?? '-' }}</p>
             </div>
 
@@ -121,10 +121,10 @@
                     <tbody>
                         @forelse($payload['details'] as $detail)
                             <tr>
-                                <td class="text-start">{{ $detail['sales_invoice']['reference_no'] ?? '-' }}</td>
-                                <td class="text-start">{{ $detail['sales_invoice']['formatted_date'] ?? '-' }}</td>
+                                <td class="text-start">{{ $detail['purchase_invoice']['reference_no'] ?? '-' }}</td>
+                                <td class="text-start">{{ $detail['purchase_invoice']['formatted_date'] ?? '-' }}</td>
                                 <td class="text-end">
-                                    Rp {{ number_format($detail['sales_invoice']['discount_amount'], 0, ',', '.') }}
+                                    Rp {{ number_format($detail['purchase_invoice']['discount_amount'], 0, ',', '.') }}
                                 </td>
                                 <td class="text-end">
                                     Rp {{ number_format($detail['amount'], 0, ',', '.') }}
