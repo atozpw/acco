@@ -2,6 +2,7 @@ import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { cn, resolveUrl } from '@/lib/utils';
+import { usePermission } from '@/hooks/use-permission';
 import beginningBalance from '@/routes/beginning-balance';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
@@ -12,28 +13,63 @@ const sidebarNavItems: NavItem[] = [
         title: 'Akun',
         href: beginningBalance.account.index.url(),
         icon: null,
+        permissions: ['account-beginning-balance.index'],
     },
     {
         title: 'Piutang Usaha',
         href: beginningBalance.receivable.index.url(),
         icon: null,
+        permissions: ['receivable-beginning-balance.index'],
     },
     {
         title: 'Utang Usaha',
         href: beginningBalance.payable.index.url(),
         icon: null,
+        permissions: ['payable-beginning-balance.index'],
     },
     {
         title: 'Persediaan',
         href: beginningBalance.inventory.index.url(),
         icon: null,
+        permissions: ['inventory-beginning-balance.index'],
     },
 ];
+
+const filterNavItemsByPermission = (
+    navItems: NavItem[],
+    hasPermission: (permissions?: string[]) => boolean,
+): NavItem[] =>
+    navItems
+        .map((item) => {
+            if (item.children?.length) {
+                const allowedChildren = filterNavItemsByPermission(
+                    item.children,
+                    hasPermission,
+                );
+
+                if (
+                    !allowedChildren.length &&
+                    !hasPermission(item.permissions)
+                ) {
+                    return null;
+                }
+
+                return {
+                    ...item,
+                    children: allowedChildren,
+                };
+            }
+
+            return hasPermission(item.permissions) ? item : null;
+        })
+        .filter((item): item is NavItem => Boolean(item));
 
 export default function BeginningBalanceLayout({
     children,
 }: PropsWithChildren) {
     const page = usePage();
+    const { hasPermission } = usePermission();
+    const filteredItems = filterNavItemsByPermission(sidebarNavItems, hasPermission);
 
     return (
         <div className="px-4 py-6">
@@ -42,7 +78,7 @@ export default function BeginningBalanceLayout({
             <div className="flex flex-col lg:flex-row lg:space-x-12">
                 <aside className="w-full max-w-xl lg:w-48">
                     <nav className="flex flex-col space-y-1 space-x-0">
-                        {sidebarNavItems.map((item, index) => (
+                        {filteredItems.map((item, index) => (
                             <Button
                                 key={`${resolveUrl(item.href)}-${index}`}
                                 size="sm"

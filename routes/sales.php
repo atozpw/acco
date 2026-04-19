@@ -60,9 +60,11 @@ Route::middleware('auth')->prefix('sales')->group(function () {
         ->middleware(['permission:sales-invoices.index']);
 
     Route::get('account-receivable-list', [ReceivableController::class, 'index'])
-        ->name('account-receivable.index');
+        ->name('account-receivable.index')
+        ->middleware(['permission:account-receivables.index']);
     Route::get('account-receivable-list/detail-account-receivable/{id}', [ReceivableController::class, 'show'])
-        ->name('account-receivable.show');
+        ->name('account-receivable.show')
+        ->middleware(['permission:account-receivables.show']);
 
     Route::get('account-receivable-payment', [ReceivablePaymentController::class, 'index'])
         ->name('receivable-payment.index')

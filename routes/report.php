@@ -8,10 +8,13 @@ Route::middleware('auth')->prefix('report')->group(function () {
 
     Route::prefix('financial-statement')->group(function () {
         Route::get('', [FinancialStatementController::class, 'index'])
-            ->name('financial-statement.index');
+            ->name('financial-statement.index')
+            ->middleware(['permission:financial-statement.index']);
         Route::get('profit-loss', [FinancialStatementController::class, 'profitLoss'])
-            ->name('financial-statement.profit-loss');
+            ->name('financial-statement.profit-loss')
+            ->middleware(['permission:financial-statement.profit-loss']);
         Route::get('balance-sheet', [FinancialStatementController::class, 'balanceSheet'])
-            ->name('financial-statement.balance-sheet');
+            ->name('financial-statement.balance-sheet')
+            ->middleware(['permission:financial-statement.balance-sheet']);
     });
 });

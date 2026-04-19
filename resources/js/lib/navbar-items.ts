@@ -126,6 +126,7 @@ export const mainNavItems: NavItem[] = [
         permissions: [
             'sales-deliveries.index',
             'sales-invoices.index',
+            'account-receivables.index',
             'receivable-payments.index',
         ],
         children: [
@@ -142,6 +143,7 @@ export const mainNavItems: NavItem[] = [
             {
                 title: 'Daftar Piutang Usaha',
                 href: accountReceivable.index(),
+                permissions: ['account-receivables.index'],
             },
             {
                 title: 'Pembayaran Piutang',
@@ -157,6 +159,7 @@ export const mainNavItems: NavItem[] = [
         permissions: [
             'purchase-receipts.index',
             'purchase-invoices.index',
+            'account-payables.index',
             'payable-payments.index',
         ],
         children: [
@@ -173,6 +176,7 @@ export const mainNavItems: NavItem[] = [
             {
                 title: 'Daftar Utang Usaha',
                 href: accountPayable.index(),
+                permissions: ['account-payables.index'],
             },
             {
                 title: 'Pembayaran Utang',
@@ -212,10 +216,12 @@ export const mainNavItems: NavItem[] = [
         title: 'Laporan',
         href: '#',
         icon: Files,
+        permissions: ['reports.index', 'financial-statement.index'],
         children: [
             {
                 title: 'Laporan Keuangan',
                 href: financialStatement.index(),
+                permissions: ['financial-statement.index'],
             },
         ],
     },
@@ -253,6 +259,12 @@ export const platformNavItems: NavItem[] = [
             {
                 title: 'Saldo Awal',
                 href: beginningBalance.index(),
+                permissions: [
+                    'receivable-beginning-balance.index',
+                    'account-beginning-balance.index',
+                    'payable-beginning-balance.index',
+                    'inventory-beginning-balance.index',
+                ],
             },
             {
                 title: 'Appearance',

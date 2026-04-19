@@ -30,29 +30,40 @@ Route::middleware('auth')->group(function () {
         Route::redirect('', '/settings/beginning-balance/account')->name('beginning-balance.index');
 
         Route::get('account', [AccountBeginningBalanceController::class, 'index'])
-            ->name('beginning-balance.account.index');
+            ->name('beginning-balance.account.index')
+            ->middleware(['permission:account-beginning-balance.index']);
         Route::put('account', [AccountBeginningBalanceController::class, 'update'])
-            ->name('beginning-balance.account.update');
+            ->name('beginning-balance.account.update')
+            ->middleware(['permission:account-beginning-balance.update']);
 
         Route::get('receivable', [ReceivableBeginningBalanceController::class, 'index'])
-            ->name('beginning-balance.receivable.index');
+            ->name('beginning-balance.receivable.index')
+            ->middleware(['permission:receivable-beginning-balance.index']);
         Route::get('receivable/create', [ReceivableBeginningBalanceController::class, 'create'])
-            ->name('beginning-balance.receivable.create');
+            ->name('beginning-balance.receivable.create')
+            ->middleware(['permission:receivable-beginning-balance.store']);
         Route::post('receivable', [ReceivableBeginningBalanceController::class, 'store'])
-            ->name('beginning-balance.receivable.store');
+            ->name('beginning-balance.receivable.store')
+            ->middleware(['permission:receivable-beginning-balance.store']);
 
         Route::get('payable', [PayableBeginningBalanceController::class, 'index'])
-            ->name('beginning-balance.payable.index');
+            ->name('beginning-balance.payable.index')
+            ->middleware(['permission:payable-beginning-balance.index']);
         Route::get('payable/create', [PayableBeginningBalanceController::class, 'create'])
-            ->name('beginning-balance.payable.create');
+            ->name('beginning-balance.payable.create')
+            ->middleware(['permission:payable-beginning-balance.store']);
         Route::post('payable', [PayableBeginningBalanceController::class, 'store'])
-            ->name('beginning-balance.payable.store');
+            ->name('beginning-balance.payable.store')
+            ->middleware(['permission:payable-beginning-balance.store']);
 
         Route::get('inventory', [InventoryBeginningBalanceController::class, 'index'])
-            ->name('beginning-balance.inventory.index');
+            ->name('beginning-balance.inventory.index')
+            ->middleware(['permission:inventory-beginning-balance.index']);
         Route::get('inventory/create', [InventoryBeginningBalanceController::class, 'create'])
-            ->name('beginning-balance.inventory.create');
+            ->name('beginning-balance.inventory.create')
+            ->middleware(['permission:inventory-beginning-balance.store']);
         Route::post('inventory', [InventoryBeginningBalanceController::class, 'store'])
-            ->name('beginning-balance.inventory.store');
+            ->name('beginning-balance.inventory.store')
+            ->middleware(['permission:inventory-beginning-balance.store']);
     });
 });

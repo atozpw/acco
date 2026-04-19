@@ -60,9 +60,11 @@ Route::middleware('auth')->prefix('purchases')->group(function () {
         ->middleware(['permission:purchase-invoices.index']);
 
     Route::get('account-payable', [PayableController::class, 'index'])
-        ->name('account-payable.index');
+        ->name('account-payable.index')
+        ->middleware(['permission:account-payables.index']);
     Route::get('account-payable/detail-account-payable/{id}', [PayableController::class, 'show'])
-        ->name('account-payable.show');
+        ->name('account-payable.show')
+        ->middleware(['permission:account-payables.show']);
 
     Route::get('payable-payment', [PayablePaymentController::class, 'index'])
         ->name('payable-payment.index')

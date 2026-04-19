@@ -114,6 +114,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'sales-invoices.destroy']);
 
         Permission::create(['name' => 'account-receivables.index']);
+        Permission::create(['name' => 'account-receivables.show']);
 
         Permission::create(['name' => 'receivable-payments.index']);
         Permission::create(['name' => 'receivable-payments.store']);
@@ -131,6 +132,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'purchase-invoices.destroy']);
 
         Permission::create(['name' => 'account-payables.index']);
+        Permission::create(['name' => 'account-payables.show']);
 
         Permission::create(['name' => 'payable-payments.index']);
         Permission::create(['name' => 'payable-payments.store']);
@@ -143,10 +145,17 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'product-transfers.destroy']);
 
         Permission::create(['name' => 'reports.index']);
+        Permission::create(['name' => 'financial-statement.index']);
+        Permission::create(['name' => 'financial-statement.profit-loss']);
+        Permission::create(['name' => 'financial-statement.balance-sheet']);
 
         Permission::create(['name' => 'account-beginning-balance.index']);
+        Permission::create(['name' => 'account-beginning-balance.update']);
         Permission::create(['name' => 'receivable-beginning-balance.index']);
+        Permission::create(['name' => 'receivable-beginning-balance.store']);
         Permission::create(['name' => 'payable-beginning-balance.index']);
+        Permission::create(['name' => 'payable-beginning-balance.store']);
         Permission::create(['name' => 'inventory-beginning-balance.index']);
+        Permission::create(['name' => 'inventory-beginning-balance.store']);
     }
 }
