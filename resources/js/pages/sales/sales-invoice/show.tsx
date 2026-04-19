@@ -18,6 +18,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
+import print from '@/routes/print';
 import sales from '@/routes/sales';
 import salesInvoice from '@/routes/sales-invoice';
 import { BreadcrumbItem } from '@/types';
@@ -153,9 +154,17 @@ export default function SalesInvoiceShowScreen({
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem>
-                                        <Printer />
-                                        Cetak
+                                    <DropdownMenuItem asChild>
+                                        <a
+                                            href={print.salesInvoice.url(
+                                                invoice.id,
+                                            )}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            <Printer />
+                                            Cetak
+                                        </a>
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
                             </DropdownMenuContent>

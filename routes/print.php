@@ -10,4 +10,7 @@ Route::middleware('auth')->prefix('print')->group(function () {
     Route::get('sales-delivery/{id}', [PrintController::class, 'salesDelivery'])
         ->name('print.sales-delivery')
         ->middleware(['permission:sales-deliveries.show']);
+    Route::get('sales-invoice/{id}', [PrintController::class, 'salesInvoice'])
+        ->name('print.sales-invoice')
+        ->middleware(['permission:sales-invoices.show']);
 });
