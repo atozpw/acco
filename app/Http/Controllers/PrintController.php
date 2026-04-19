@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Journal;
+use App\Models\ReceivablePayment;
 use App\Models\SalesDelivery;
 use App\Models\SalesInvoice;
 use Carbon\Carbon;
@@ -185,5 +186,73 @@ class PrintController extends Controller
 
         return view('print.sales-invoice', compact('payload'));
 
+    }
+
+    public function accountReceivablePayment($id)
+    {
+        $payment = ReceivablePayment::query()
+            ->with([
+                'contact:id,name',
+                'details' => function ($query) {
+                    $query
+                        ->with([
+                            'salesInvoice:id,reference_no,date,discount_amount',
+                        ])
+                        ->orderBy('id');
+                },
+            ])
+            ->findOrFail($id);
+
+        $payment->formatted_date = $payment->date
+            ? Carbon::parse($payment->date)->format('d/m/Y')
+            : null;
+
+        $details = $payment->details
+            ->map(function ($detail) {
+                $invoice = $detail->salesInvoice;
+
+                $discountAmount = (float) ($invoice->discount_amount ?? 0);
+                $discountPercent = (float) ($invoice->discount_percent ?? 0);
+
+                if ($discountAmount <= 0 && $discountPercent > 0) {
+                    $baseAmount = (float) ($invoice->amount ?? 0);
+                    if ($baseAmount > 0) {
+                        $discountAmount = round($baseAmount * ($discountPercent / 100), 2);
+                    }
+                }
+
+                return [
+                    'id' => $detail->id,
+                    'amount' => (float) $detail->amount,
+                    'sales_invoice' => $invoice
+                        ? [
+                            'id' => $invoice->id,
+                            'reference_no' => $invoice->reference_no,
+                            'formatted_date' => $invoice->date
+                                ? Carbon::parse($invoice->date)->format('d/m/Y')
+                                : null,
+                            'discount_amount' => $discountAmount,
+                        ]
+                        : null,
+                ];
+            })
+            ->values();
+
+        $payload = [
+            'id' => $payment->id,
+            'reference_no' => $payment->reference_no,
+            'formatted_date' => $payment->formatted_date,
+            'description' => $payment->description,
+            'amount' => (float) $payment->amount,
+            'contact' => $payment->contact
+                ? [
+                    'id' => $payment->contact->id,
+                    'name' => $payment->contact->name,
+                ]
+                : null,
+            'details' => $details,
+        ];
+
+        return view('print.account-receivable-payment', compact('payload'));
     }
 }
