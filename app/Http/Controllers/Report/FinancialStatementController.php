@@ -8,6 +8,7 @@ use App\Models\Contact;
 use App\Models\Department;
 use App\Models\Project;
 use App\Services\Report\Finance\BalanceSheetService;
+use App\Services\Report\Finance\CashFlowService;
 use App\Services\Report\Finance\ProfitLossService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,6 +19,7 @@ class FinancialStatementController extends Controller
     public function __construct(
         private readonly ProfitLossService $profitLossService,
         private readonly BalanceSheetService $balanceSheetService,
+        private readonly CashFlowService $cashFlowService,
     ) {}
 
     public function index(): Response
@@ -124,6 +126,42 @@ class FinancialStatementController extends Controller
                     ])
                     ->values(),
                 'customers' => $customers
+                    ->map(fn($item) => [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                    ])
+                    ->values(),
+            ],
+        ]);
+    }
+
+    public function cashFlow(Request $request): Response
+    {
+        $filters = $this->buildStatementFilters($request);
+
+        $report = $this->cashFlowService->generate($filters);
+
+        $departments = Department::query()
+            ->active()
+            ->orderBy('code')
+            ->get(['id', 'name']);
+
+        $projects = Project::query()
+            ->active()
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
+        return inertia('report/finance/cash-flow', [
+            'report' => $report,
+            'filters' => $filters,
+            'options' => [
+                'departments' => $departments
+                    ->map(fn($item) => [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                    ])
+                    ->values(),
+                'projects' => $projects
                     ->map(fn($item) => [
                         'id' => $item->id,
                         'name' => $item->name,

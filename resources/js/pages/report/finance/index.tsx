@@ -57,6 +57,12 @@ export default function FinancialStatementPage() {
                                 >
                                     Neraca
                                 </Link>
+                                <Link
+                                    href={financialStatement.cashFlow.url()}
+                                    className="hover:underline"
+                                >
+                                    Arus Kas
+                                </Link>
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>

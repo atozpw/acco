@@ -29,7 +29,7 @@ class Journal extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(JournalCategory::class);
+        return $this->belongsTo(JournalCategory::class, 'journal_category_id');
     }
 
     public function createdBy(): BelongsTo

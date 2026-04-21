@@ -148,6 +148,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'financial-statement.index']);
         Permission::create(['name' => 'financial-statement.profit-loss']);
         Permission::create(['name' => 'financial-statement.balance-sheet']);
+        Permission::create(['name' => 'financial-statement.cash-flow']);
 
         Permission::create(['name' => 'account-beginning-balance.index']);
         Permission::create(['name' => 'account-beginning-balance.update']);

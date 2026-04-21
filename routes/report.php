@@ -16,5 +16,8 @@ Route::middleware('auth')->prefix('report')->group(function () {
         Route::get('balance-sheet', [FinancialStatementController::class, 'balanceSheet'])
             ->name('financial-statement.balance-sheet')
             ->middleware(['permission:financial-statement.balance-sheet']);
+        Route::get('cash-flow', [FinancialStatementController::class, 'cashFlow'])
+            ->name('financial-statement.cash-flow')
+            ->middleware(['permission:financial-statement.cash-flow']);
     });
 });
