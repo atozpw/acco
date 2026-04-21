@@ -92,6 +92,7 @@ class PayablePaymentController extends Controller
             ->get(['id', 'code', 'name']);
 
         $invoices = PurchaseInvoice::query()
+            ->where('is_paid', 0)
             ->with(['contact:id,name'])
             ->withSum('payablePaymentDetails as paid_amount', 'amount')
             ->orderByDesc('date')
@@ -292,6 +293,7 @@ class PayablePaymentController extends Controller
             ->map(fn($details) => (float) $details->sum('amount'));
 
         $invoices = PurchaseInvoice::query()
+            ->where('is_paid', 0)
             ->with(['contact:id,name'])
             ->withSum('payablePaymentDetails as paid_amount', 'amount')
             ->orderByDesc('date')

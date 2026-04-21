@@ -28,7 +28,8 @@ class PayableController extends Controller
         }
 
         $applyInvoiceFilters = function ($query) use ($dateFrom, $dateTo, $taxAmount) {
-            $query->when($dateFrom, fn($query, $dateFrom) => $query->whereDate('date', '>=', $dateFrom))
+            $query->where('is_paid', 0)
+                ->when($dateFrom, fn($query, $dateFrom) => $query->whereDate('date', '>=', $dateFrom))
                 ->when($dateTo, fn($query, $dateTo) => $query->whereDate('date', '<=', $dateTo))
                 ->when($taxAmount, function ($query, $taxAmount) {
                     if ($taxAmount === 'with') {
@@ -116,7 +117,8 @@ class PayableController extends Controller
         }
 
         $applyInvoiceFilters = function ($query) use ($dateFrom, $dateTo, $taxAmount) {
-            $query->when($dateFrom, fn($query, $dateFrom) => $query->whereDate('date', '>=', $dateFrom))
+            $query->where('is_paid', 0)
+                ->when($dateFrom, fn($query, $dateFrom) => $query->whereDate('date', '>=', $dateFrom))
                 ->when($dateTo, fn($query, $dateTo) => $query->whereDate('date', '<=', $dateTo))
                 ->when($taxAmount, function ($query, $taxAmount) {
                     if ($taxAmount === 'with') {
