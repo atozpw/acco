@@ -1,7 +1,28 @@
 import type { ComboboxItem } from '@/components/form/input-combobox';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import {
+    Card,
+    CardAction,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from '@/components/ui/card';
+import {
+    ChartContainer,
+    ChartLegend,
+    ChartLegendContent,
+    ChartTooltip,
+    ChartTooltipContent,
+} from '@/components/ui/chart';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import {
     Tooltip,
     TooltipContent,
@@ -25,6 +46,15 @@ import {
     type LucideIcon,
 } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import {
+    Bar,
+    CartesianGrid,
+    ComposedChart,
+    Line,
+    XAxis,
+    YAxis,
+    type TooltipProps,
+} from 'recharts';
 
 type DashboardSummary = {
     income: number;
@@ -37,6 +67,8 @@ type DashboardFilters = {
     date_to: string | null;
     department_id: number | null;
     project_id: number | null;
+    sales_year: number;
+    purchase_year: number;
 };
 
 type OptionItem = {
@@ -47,12 +79,27 @@ type OptionItem = {
 type DashboardOptions = {
     departments: OptionItem[];
     projects: OptionItem[];
+    year_options: number[];
+};
+
+type SalesChartPoint = {
+    label: string;
+    receivable: number;
+    invoice: number;
+};
+
+type PurchaseChartPoint = {
+    label: string;
+    payable: number;
+    invoice: number;
 };
 
 type PageProps = {
     summary: DashboardSummary;
     filters: DashboardFilters;
     options: DashboardOptions;
+    sales_chart: SalesChartPoint[];
+    purchase_chart: PurchaseChartPoint[];
 };
 
 type StatCardConfig = {
@@ -65,6 +112,8 @@ type StatCardConfig = {
     accent: string;
     href: string;
 };
+
+type TooltipItem = NonNullable<TooltipProps<number, string>['payload']>[number];
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -145,7 +194,87 @@ const buildDetailUrl = (
     return '#';
 };
 
-export default function Dashboard({ summary, filters, options }: PageProps) {
+const formatAxisValue = (value: number) => {
+    const abs = Math.abs(value);
+    if (abs >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}m`;
+    if (abs >= 1_000) return `${(value / 1_000).toFixed(0)}k`;
+    return value.toLocaleString('id-ID');
+};
+
+const monthFullNameMap: Record<string, string> = {
+    Jan: 'Januari',
+    Feb: 'Februari',
+    Mar: 'Maret',
+    Apr: 'April',
+    Mei: 'Mei',
+    Jun: 'Juni',
+    Jul: 'Juli',
+    Agu: 'Agustus',
+    Sep: 'September',
+    Okt: 'Oktober',
+    Nov: 'November',
+    Des: 'Desember',
+};
+
+const buildMonthLabelFormatter = (year: number) => (label: unknown) => {
+    const abbr = String(label ?? '');
+    const fullName = monthFullNameMap[abbr] ?? abbr;
+    return `${fullName} ${year}`;
+};
+
+const renderTooltipValue = (rawValue: unknown, item?: TooltipItem) => {
+    const numericValue = Number(rawValue ?? 0) || 0;
+    const colorSource =
+        item?.color ??
+        (typeof item?.payload === 'object' && item?.payload !== null
+            ? (((item.payload as Record<string, unknown>).stroke as string) ??
+              ((item.payload as Record<string, unknown>).fill as string))
+            : undefined);
+
+    return (
+        <span className="flex items-center gap-2">
+            <span
+                className="inline-flex h-2.5 w-2.5 shrink-0 rounded-full"
+                style={{
+                    backgroundColor: colorSource || 'var(--color-border)',
+                }}
+            />
+            <span className="font-mono font-medium">
+                {formatCurrency(numericValue)}
+            </span>
+        </span>
+    );
+};
+
+const salesChartConfig = {
+    receivable: {
+        label: 'Pembayaran Piutang',
+        color: 'hsl(160 84% 39%)',
+    },
+    invoice: {
+        label: 'Invoice Penjualan',
+        color: 'hsl(199 89% 48%)',
+    },
+} as const;
+
+const purchaseChartConfig = {
+    payable: {
+        label: 'Pembayaran Utang',
+        color: 'hsl(346 77% 49%)',
+    },
+    invoice: {
+        label: 'Invoice Pembelian',
+        color: 'hsl(271 91% 65%)',
+    },
+} as const;
+
+export default function Dashboard({
+    summary,
+    filters,
+    options,
+    sales_chart,
+    purchase_chart,
+}: PageProps) {
     const { auth } = usePage<SharedData>().props;
     const totals: DashboardSummary = summary ?? {
         income: 0,
@@ -158,6 +287,8 @@ export default function Dashboard({ summary, filters, options }: PageProps) {
         date_to: filters?.date_to ?? null,
         department_id: filters?.department_id ?? null,
         project_id: filters?.project_id ?? null,
+        sales_year: filters?.sales_year ?? new Date().getFullYear(),
+        purchase_year: filters?.purchase_year ?? new Date().getFullYear(),
     };
 
     const departmentItems: ComboboxItem[] = useMemo(
@@ -218,6 +349,8 @@ export default function Dashboard({ summary, filters, options }: PageProps) {
         if (values.departmentId)
             query.department_id = Number(values.departmentId);
         if (values.projectId) query.project_id = Number(values.projectId);
+        query.sales_year = activeFilters.sales_year;
+        query.purchase_year = activeFilters.purchase_year;
 
         router.get(dashboardIndex().url, query, {
             preserveScroll: true,
@@ -228,9 +361,44 @@ export default function Dashboard({ summary, filters, options }: PageProps) {
     const handleResetFilters = () => {
         router.get(
             dashboardIndex().url,
-            {},
+            {
+                sales_year: activeFilters.sales_year,
+                purchase_year: activeFilters.purchase_year,
+            },
             { preserveScroll: true, preserveState: true },
         );
+    };
+
+    const handleSalesYearChange = (year: string) => {
+        const query: Record<string, string | number> = {};
+        if (activeFilters.date_from) query.date_from = activeFilters.date_from;
+        if (activeFilters.date_to) query.date_to = activeFilters.date_to;
+        if (activeFilters.department_id)
+            query.department_id = activeFilters.department_id;
+        if (activeFilters.project_id)
+            query.project_id = activeFilters.project_id;
+        query.sales_year = Number(year);
+        query.purchase_year = activeFilters.purchase_year;
+        router.get(dashboardIndex().url, query, {
+            preserveScroll: true,
+            preserveState: true,
+        });
+    };
+
+    const handlePurchaseYearChange = (year: string) => {
+        const query: Record<string, string | number> = {};
+        if (activeFilters.date_from) query.date_from = activeFilters.date_from;
+        if (activeFilters.date_to) query.date_to = activeFilters.date_to;
+        if (activeFilters.department_id)
+            query.department_id = activeFilters.department_id;
+        if (activeFilters.project_id)
+            query.project_id = activeFilters.project_id;
+        query.sales_year = activeFilters.sales_year;
+        query.purchase_year = Number(year);
+        router.get(dashboardIndex().url, query, {
+            preserveScroll: true,
+            preserveState: true,
+        });
     };
 
     const statCards: StatCardConfig[] = [
@@ -356,6 +524,200 @@ export default function Dashboard({ summary, filters, options }: PageProps) {
                                 </Card>
                             );
                         })}
+                    </div>
+
+                    <div className="grid gap-6 xl:grid-cols-2">
+                        {/* Sales Chart */}
+                        <Card className="dark:bg-sidebar/50">
+                            <CardHeader>
+                                <CardTitle>Penjualan</CardTitle>
+                                <CardDescription>
+                                    Data invoice dan piutang per bulan
+                                </CardDescription>
+                                <CardAction>
+                                    <Select
+                                        value={String(activeFilters.sales_year)}
+                                        onValueChange={handleSalesYearChange}
+                                    >
+                                        <SelectTrigger className="w-[90px]">
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent align="end">
+                                            {options.year_options.map((y) => (
+                                                <SelectItem
+                                                    key={y}
+                                                    value={String(y)}
+                                                >
+                                                    {y}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </CardAction>
+                            </CardHeader>
+                            <CardContent className="pe-6">
+                                <ChartContainer
+                                    config={salesChartConfig}
+                                    className="h-[320px] w-full"
+                                >
+                                    <ComposedChart data={sales_chart}>
+                                        <CartesianGrid
+                                            strokeDasharray="3 3"
+                                            stroke="rgba(148, 163, 184, 0.4)"
+                                        />
+                                        <XAxis
+                                            dataKey="label"
+                                            tickLine={false}
+                                            axisLine={false}
+                                            tickMargin={8}
+                                        />
+                                        <YAxis
+                                            tickLine={false}
+                                            axisLine={false}
+                                            tickFormatter={formatAxisValue}
+                                        />
+                                        <ChartTooltip
+                                            cursor={{
+                                                fill: 'var(--color-receivable)',
+                                                opacity: 0.08,
+                                            }}
+                                            content={
+                                                <ChartTooltipContent
+                                                    labelFormatter={buildMonthLabelFormatter(
+                                                        activeFilters.sales_year,
+                                                    )}
+                                                    formatter={(
+                                                        value,
+                                                        _name,
+                                                        item,
+                                                    ) =>
+                                                        renderTooltipValue(
+                                                            value,
+                                                            item as TooltipItem,
+                                                        )
+                                                    }
+                                                />
+                                            }
+                                        />
+                                        <ChartLegend
+                                            verticalAlign="bottom"
+                                            align="left"
+                                            content={<ChartLegendContent />}
+                                        />
+                                        <Bar
+                                            dataKey="receivable"
+                                            fill="var(--color-receivable)"
+                                            radius={[4, 4, 0, 0]}
+                                            barSize={16}
+                                        />
+                                        <Line
+                                            type="monotone"
+                                            dataKey="invoice"
+                                            stroke="var(--color-invoice)"
+                                            strokeWidth={2}
+                                            dot={{ r: 3 }}
+                                        />
+                                    </ComposedChart>
+                                </ChartContainer>
+                            </CardContent>
+                        </Card>
+
+                        {/* Purchase Chart */}
+                        <Card className="dark:bg-sidebar/50">
+                            <CardHeader>
+                                <CardTitle>Pembelian</CardTitle>
+                                <CardDescription>
+                                    Data invoice dan utang per bulan
+                                </CardDescription>
+                                <CardAction>
+                                    <Select
+                                        value={String(
+                                            activeFilters.purchase_year,
+                                        )}
+                                        onValueChange={handlePurchaseYearChange}
+                                    >
+                                        <SelectTrigger className="w-[90px]">
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent align="end">
+                                            {options.year_options.map((y) => (
+                                                <SelectItem
+                                                    key={y}
+                                                    value={String(y)}
+                                                >
+                                                    {y}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </CardAction>
+                            </CardHeader>
+                            <CardContent className="pe-6">
+                                <ChartContainer
+                                    config={purchaseChartConfig}
+                                    className="h-[320px] w-full"
+                                >
+                                    <ComposedChart data={purchase_chart}>
+                                        <CartesianGrid
+                                            strokeDasharray="3 3"
+                                            stroke="rgba(148, 163, 184, 0.4)"
+                                        />
+                                        <XAxis
+                                            dataKey="label"
+                                            tickLine={false}
+                                            axisLine={false}
+                                            tickMargin={8}
+                                        />
+                                        <YAxis
+                                            tickLine={false}
+                                            axisLine={false}
+                                            tickFormatter={formatAxisValue}
+                                        />
+                                        <ChartTooltip
+                                            cursor={{
+                                                fill: 'var(--color-payable)',
+                                                opacity: 0.08,
+                                            }}
+                                            content={
+                                                <ChartTooltipContent
+                                                    labelFormatter={buildMonthLabelFormatter(
+                                                        activeFilters.purchase_year,
+                                                    )}
+                                                    formatter={(
+                                                        value,
+                                                        _name,
+                                                        item,
+                                                    ) =>
+                                                        renderTooltipValue(
+                                                            value,
+                                                            item as TooltipItem,
+                                                        )
+                                                    }
+                                                />
+                                            }
+                                        />
+                                        <ChartLegend
+                                            verticalAlign="bottom"
+                                            align="left"
+                                            content={<ChartLegendContent />}
+                                        />
+                                        <Bar
+                                            dataKey="payable"
+                                            fill="var(--color-payable)"
+                                            radius={[4, 4, 0, 0]}
+                                            barSize={16}
+                                        />
+                                        <Line
+                                            type="monotone"
+                                            dataKey="invoice"
+                                            stroke="var(--color-invoice)"
+                                            strokeWidth={2}
+                                            dot={{ r: 3 }}
+                                        />
+                                    </ComposedChart>
+                                </ChartContainer>
+                            </CardContent>
+                        </Card>
                     </div>
                 </div>
             </div>
