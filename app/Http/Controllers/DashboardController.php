@@ -128,6 +128,16 @@ class DashboardController extends Controller
             ->groupByRaw('MONTH(date)')
             ->pluck('total', 'month');
 
+        $directlyPaidSales = SalesInvoice::query()
+            ->whereYear('date', $year)
+            ->where('is_paid', true)
+            ->whereDoesntHave('receivablePaymentDetails')
+            ->when($departmentId, fn ($q) => $q->whereHas('details', fn ($d) => $d->where('department_id', $departmentId)))
+            ->when($projectId, fn ($q) => $q->whereHas('details', fn ($d) => $d->where('project_id', $projectId)))
+            ->selectRaw('MONTH(date) as month, SUM(total) as total')
+            ->groupByRaw('MONTH(date)')
+            ->pluck('total', 'month');
+
         $invoices = SalesInvoice::query()
             ->whereYear('date', $year)
             ->when($departmentId, fn ($q) => $q->whereHas('details', fn ($d) => $d->where('department_id', $departmentId)))
@@ -140,7 +150,7 @@ class DashboardController extends Controller
         for ($month = 1; $month <= 12; $month++) {
             $result[] = [
                 'label' => $monthLabels[$month - 1],
-                'receivable' => round((float) ($receivables[$month] ?? 0), 2),
+                'receivable' => round((float) ($receivables[$month] ?? 0) + (float) ($directlyPaidSales[$month] ?? 0), 2),
                 'invoice' => round((float) ($invoices[$month] ?? 0), 2),
             ];
         }
@@ -160,6 +170,16 @@ class DashboardController extends Controller
             ->groupByRaw('MONTH(date)')
             ->pluck('total', 'month');
 
+        $directlyPaidPurchases = PurchaseInvoice::query()
+            ->whereYear('date', $year)
+            ->where('is_paid', true)
+            ->whereDoesntHave('payablePaymentDetails')
+            ->when($departmentId, fn ($q) => $q->whereHas('details', fn ($d) => $d->where('department_id', $departmentId)))
+            ->when($projectId, fn ($q) => $q->whereHas('details', fn ($d) => $d->where('project_id', $projectId)))
+            ->selectRaw('MONTH(date) as month, SUM(total) as total')
+            ->groupByRaw('MONTH(date)')
+            ->pluck('total', 'month');
+
         $invoices = PurchaseInvoice::query()
             ->whereYear('date', $year)
             ->when($departmentId, fn ($q) => $q->whereHas('details', fn ($d) => $d->where('department_id', $departmentId)))
@@ -172,7 +192,7 @@ class DashboardController extends Controller
         for ($month = 1; $month <= 12; $month++) {
             $result[] = [
                 'label' => $monthLabels[$month - 1],
-                'payable' => round((float) ($payables[$month] ?? 0), 2),
+                'payable' => round((float) ($payables[$month] ?? 0) + (float) ($directlyPaidPurchases[$month] ?? 0), 2),
                 'invoice' => round((float) ($invoices[$month] ?? 0), 2),
             ];
         }
