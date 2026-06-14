@@ -66,44 +66,60 @@
     </nav>
     <div class="container-fluid px-0">
         <div class="main-content d-flex flex-column mx-auto py-2 px-3">
-            {{-- Header --}}
-            <div class="text-center mb-4">
-                <h3 class="mb-0" style="font-weight: 600; font-size: 18px;">INVOICE PENJUALAN</h3>
+            {{-- Kop Surat --}}
+            <div class="d-flex align-items-center mb-3 pb-3" style="border-bottom: 1px solid #ccc;">
+                <div>
+                    <img src="{{ asset('logo.png') }}" alt="Logo" style="max-height: 70px; max-width: 150px; object-fit: contain;">
+                </div>
+                <div class="flex-grow-1 ps-3">
+                    <h2 class="mb-1" style="font-weight: bold; font-size: 16px;">PT. ARDANA BALAKOSA PRATAMA</h2>
+                    <p class="mb-0" style="font-size: 12px;">Jl. Raya Hankam No. 10A RT. 005 RW.008, Kel. Jatimurni, Kec. Pondok Melati, Kota Bekasi</p>
+                    <p class="mb-0" style="font-size: 12px;">Telp: 0851 2116 9627 | Email: alamat@gmail.com</p>
+                </div>
+                <div style="width: 70px;"></div>
             </div>
 
-            {{-- Recipient Info --}}
-            <div class="mb-4">
-                <p class="mb-0" style="font-size: 14px;">Kepada:</p>
-                <p class="mb-0" style="font-size: 14px; font-weight: 600;">{{ $payload['contact']['name'] ?? '-' }}</p>
+            {{-- Header --}}
+            <div class="text-center my-4">
+                <h3 class="mb-0" style="font-weight: 600; font-size: 18px;">INVOICE PENJUALAN</h3>
             </div>
 
             {{-- General Information --}}
             <div class="row mb-4">
-                <div class="col-md-6">
+                <div class="col-7">
                     <table class="table table-borderless table-sm"
                         style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 0;">
                         <tr>
-                            <td style="width: 150px;">Alamat</td>
-                            <td style="width: 16px;">:</td>
+                            <td>Kepada :</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600;">{{ $payload['contact']['name'] ?? '-' }}</td>
+                        </tr>
+                        <tr>
                             <td>{{ $payload['contact']['address'] ?? '-' }}</td>
                         </tr>
                     </table>
                 </div>
-                <div class="col-md-6">
+                <div class="col-5">
                     <table class="table table-borderless table-sm"
                         style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 0;">
                         <tr>
-                            <td style="width: 150px;">Nomor Invoice</td>
+                            <td style="width: 120px;">Nomor Invoice</td>
                             <td style="width: 16px;">:</td>
                             <td>{{ $payload['reference_no'] }}</td>
                         </tr>
                         <tr>
-                            <td style="width: 150px;">Tanggal Invoice</td>
+                            <td style="width: 120px;">Tanggal Invoice</td>
                             <td style="width: 16px;">:</td>
                             <td>{{ $payload['formatted_date'] ?? '-' }}</td>
                         </tr>
+                    </table>
+                </div>
+                <div class="col-12">
+                    <table class="table table-borderless table-sm"
+                        style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 0; margin-top: 20px">
                         <tr>
-                            <td style="width: 150px;">Deskripsi</td>
+                            <td style="width: 60px;">Uraian</td>
                             <td style="width: 16px;">:</td>
                             <td>{{ $payload['description'] && trim($payload['description']) ? $payload['description'] : '-' }}</td>
                         </tr>
@@ -120,8 +136,10 @@
                             <th class="text-start" style="min-width: 180px">Nama Produk</th>
                             <th class="text-end" style="width: 70px">Quantity</th>
                             <th class="text-end" style="width: 120px">Harga Satuan</th>
+                            @if ($payload['discount_amount'])
                             <th class="text-end" style="width: 60px">Diskon</th>
-                            <th class="text-end" style="width: 120px">Nilai</th>
+                            @endif
+                            <th class="text-end" style="width: 120px">Jumlah Harga</th>
                             <th class="text-end" style="width: 60px">Pajak</th>
                         </tr>
                     </thead>
@@ -136,9 +154,11 @@
                                 <td class="text-end">
                                     Rp {{ number_format($detail['price'], 0, ',', '.') }}
                                 </td>
+                                @if ($payload['discount_amount'])
                                 <td class="text-end">
                                     {{ number_format($detail['discount_percent'], 2, ',', '.') }}%
                                 </td>
+                                @endif
                                 <td class="text-end">
                                     Rp {{ number_format($detail['amount'], 0, ',', '.') }}
                                 </td>
@@ -164,17 +184,26 @@
                 <table class="table table-borderless table-sm"
                     style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 0;">
                     <tr>
-                        <td style="padding: 6px 0; width: 250px;">Subtotal</td>
+                        <td style="padding: 6px 0; width: 250px;">Jumlah</td>
                         <td style="padding: 6px 0; width: 30px; text-align: center;">:</td>
                         <td style="padding: 6px 0; text-align: right;">
                             Rp {{ number_format((float) $payload['amount'], 0, ',', '.') }}
                         </td>
                     </tr>
+                    @if ($payload['discount_amount'])
                     <tr>
                         <td style="padding: 6px 0;">Diskon ({{ number_format((float) $payload['discount_percent'], 2, ',', '.') }}%)</td>
                         <td style="padding: 6px 0; text-align: center;">:</td>
                         <td style="padding: 6px 0; text-align: right;">
                             Rp {{ number_format((float) $payload['discount_amount'], 0, ',', '.') }}
+                        </td>
+                    </tr>
+                    @endif
+                    <tr>
+                        <td style="padding: 6px 0;">Dasar Pengenaan Pajak</td>
+                        <td style="padding: 6px 0; text-align: center;">:</td>
+                        <td style="padding: 6px 0; text-align: right;">
+                            Rp {{ number_format((float) $payload['amount'] * 11 / 12, 0, ',', '.') }}
                         </td>
                     </tr>
                     <tr>
@@ -185,7 +214,7 @@
                         </td>
                     </tr>
                     <tr style="font-weight: 600; border-top: 1px solid #ccc; border-bottom: 1px solid #ccc;">
-                        <td style="padding: 6px 0;">Total Nilai</td>
+                        <td style="padding: 6px 0;">Total</td>
                         <td style="padding: 6px 0; text-align: center;">:</td>
                         <td style="padding: 6px 0; text-align: right;">
                             Rp {{ number_format((float) $payload['total'], 0, ',', '.') }}
