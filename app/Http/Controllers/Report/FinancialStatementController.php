@@ -135,6 +135,121 @@ class FinancialStatementController extends Controller
         ]);
     }
 
+    public function balanceSheetComparison(Request $request): Response
+    {
+        $month = (int) $request->input('month', Carbon::now()->month);
+        $year = (int) $request->input('year', Carbon::now()->year);
+
+        $baseFilters = [
+            'classification_id' => $request->filled('classification_id') ? (int) $request->input('classification_id') : null,
+            'department_id' => $request->filled('department_id') ? (int) $request->input('department_id') : null,
+            'project_id' => $request->filled('project_id') ? (int) $request->input('project_id') : null,
+            'customer_id' => $request->filled('customer_id') ? (int) $request->input('customer_id') : null,
+        ];
+
+        // Periode 1: Akumulasi s/d akhir bulan terpilih
+        $currentEnd = Carbon::create($year, $month, 1)->endOfMonth()->toDateString();
+        $currentFilters = array_merge($baseFilters, [
+            'date_from' => null,
+            'date_to' => $currentEnd,
+        ]);
+
+        // Periode 2: Akumulasi s/d akhir bulan sebelumnya
+        $prevMonth = Carbon::create($year, $month, 1)->subMonth();
+        $prevMonthEnd = $prevMonth->copy()->endOfMonth()->toDateString();
+        $prevMonthFilters = array_merge($baseFilters, [
+            'date_from' => null,
+            'date_to' => $prevMonthEnd,
+        ]);
+
+        // Periode 3: Akumulasi s/d 31 Desember tahun lalu
+        $prevYearEnd = Carbon::create($year - 1, 12, 31)->toDateString();
+        $prevYearFilters = array_merge($baseFilters, [
+            'date_from' => null,
+            'date_to' => $prevYearEnd,
+        ]);
+
+        $reportCurrent = $this->balanceSheetService->get($currentFilters);
+        $reportPrevMonth = $this->balanceSheetService->get($prevMonthFilters);
+        $reportPrevYear = $this->balanceSheetService->get($prevYearFilters);
+
+        $classificationOptions = CoaClassification::query()
+            ->where('type', BalanceSheetService::CLASSIFICATION_TYPE)
+            ->active()
+            ->whereHas('coas', fn($query) => $query->where('is_active', 1))
+            ->get(['id', 'name']);
+
+        $departments = Department::query()
+            ->active()
+            ->orderBy('code')
+            ->get(['id', 'name']);
+
+        $projects = Project::query()
+            ->active()
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
+        $customers = Contact::query()
+            ->where('is_customer', 1)
+            ->active()
+            ->orderBy('name')
+            ->get(['id', 'name']);
+
+        // Format label periode
+        $monthNames = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember',
+        ];
+
+        return inertia('report/finance/balance-sheet-comparison', [
+            'report' => [
+                'current' => $reportCurrent,
+                'previous_month' => $reportPrevMonth,
+                'previous_year' => $reportPrevYear,
+            ],
+            'filters' => [
+                'month' => $month,
+                'year' => $year,
+                'classification_id' => $baseFilters['classification_id'],
+                'department_id' => $baseFilters['department_id'],
+                'project_id' => $baseFilters['project_id'],
+                'customer_id' => $baseFilters['customer_id'],
+            ],
+            'periods' => [
+                'current' => $monthNames[$month] . ' ' . $year,
+                'previous_month' => $monthNames[$prevMonth->month] . ' ' . $prevMonth->year,
+                'previous_year' => 'Desember ' . ($year - 1),
+            ],
+            'options' => [
+                'classifications' => $classificationOptions
+                    ->map(fn($item) => [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                    ])
+                    ->values(),
+                'departments' => $departments
+                    ->map(fn($item) => [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                    ])
+                    ->values(),
+                'projects' => $projects
+                    ->map(fn($item) => [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                    ])
+                    ->values(),
+                'customers' => $customers
+                    ->map(fn($item) => [
+                        'id' => $item->id,
+                        'name' => $item->name,
+                    ])
+                    ->values(),
+            ],
+        ]);
+    }
+
     public function cashFlow(Request $request): Response
     {
         $filters = $this->buildStatementFilters($request);

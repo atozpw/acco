@@ -58,6 +58,12 @@ export default function FinancialStatementPage() {
                                     Neraca
                                 </Link>
                                 <Link
+                                    href={financialStatement.balanceSheetComparison.url()}
+                                    className="hover:underline"
+                                >
+                                    Neraca Perbandingan
+                                </Link>
+                                <Link
                                     href={financialStatement.cashFlow.url()}
                                     className="hover:underline"
                                 >
