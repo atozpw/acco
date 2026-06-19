@@ -16,6 +16,7 @@ import payablePayment from '@/routes/payable-payment';
 import permissions from '@/routes/permissions';
 import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
+import projectData from '@/routes/project-data';
 import purchaseInvoice from '@/routes/purchase-invoice';
 import purchaseReceipt from '@/routes/purchase-receipt';
 import receivablePayment from '@/routes/receivable-payment';
@@ -98,6 +99,11 @@ export const mainNavItems: NavItem[] = [
                 title: 'Data Gudang',
                 href: warehouseData.index(),
                 permissions: ['warehouses.index'],
+            },
+            {
+                title: 'Data Proyek',
+                href: projectData.index(),
+                permissions: ['projects.index'],
             },
         ],
     },
