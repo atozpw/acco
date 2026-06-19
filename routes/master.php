@@ -5,6 +5,7 @@ use App\Http\Controllers\Master\ContactController;
 use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\ProductCategoryController;
 use App\Http\Controllers\Master\ProductController;
+use App\Http\Controllers\Master\ProjectController;
 use App\Http\Controllers\Master\TaxController;
 use App\Http\Controllers\Master\UnitMeasurementController;
 use App\Http\Controllers\Master\WarehouseController;
@@ -164,4 +165,23 @@ Route::middleware('auth')->prefix('data-store')->group(function () {
     Route::delete('warehouse-data/{id}', [WarehouseController::class, 'destroy'])
         ->name('warehouse-data.destroy')
         ->middleware(['permission:warehouses.destroy']);
+
+    Route::get('project-data', [ProjectController::class, 'index'])
+        ->name('project-data.index')
+        ->middleware(['permission:projects.index']);
+    Route::get('project-data/create', [ProjectController::class, 'create'])
+        ->name('project-data.create')
+        ->middleware(['permission:projects.store']);
+    Route::post('project-data', [ProjectController::class, 'store'])
+        ->name('project-data.store')
+        ->middleware(['permission:projects.store']);
+    Route::get('project-data/{id}/edit', [ProjectController::class, 'edit'])
+        ->name('project-data.edit')
+        ->middleware(['permission:projects.update']);
+    Route::put('project-data/{id}', [ProjectController::class, 'update'])
+        ->name('project-data.update')
+        ->middleware(['permission:projects.update']);
+    Route::delete('project-data/{id}', [ProjectController::class, 'destroy'])
+        ->name('project-data.destroy')
+        ->middleware(['permission:projects.destroy']);
 });

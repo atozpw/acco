@@ -27,7 +27,7 @@ class UpdateProjectRequest extends FormRequest
                 'required',
                 'string',
                 'max:6',
-                Rule::unique('projects', 'code')->ignore($this->project->id),
+                Rule::unique('projects', 'code')->ignore($this->route('id')),
             ],
 
             'name' => [
