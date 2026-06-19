@@ -74,7 +74,7 @@
                 <div class="flex-grow-1 ps-3">
                     <h2 class="mb-1" style="font-weight: bold; font-size: 16px;">PT. ARDANA BALAKOSA PRATAMA</h2>
                     <p class="mb-0" style="font-size: 12px;">Jl. Raya Hankam No. 10A RT. 005 RW.008, Kel. Jatimurni, Kec. Pondok Melati, Kota Bekasi</p>
-                    <p class="mb-0" style="font-size: 12px;">Telp: 0851 2116 9627 | Email: alamat@gmail.com</p>
+                    <p class="mb-0" style="font-size: 12px;">Phone: 0851 2116 9627 | Email: ardanabalakosap@gmail.com</p>
                 </div>
                 <div style="width: 70px;"></div>
             </div>
@@ -219,6 +219,34 @@
                         <td style="padding: 6px 0; text-align: right;">
                             Rp {{ number_format((float) $payload['total'], 0, ',', '.') }}
                         </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="my-4" style="margin-left: auto; width: 200px;">
+                Hormat Kami,<br>
+                PT. Ardana Balakosa Pratama<br><br><br><br>
+                <u>( Nabila Nur Afifah Supardi, SE )</u><br>
+                Direktur
+            </div>
+
+            <div class="my-4" style="font-family: 'Courier New', monospace;">
+                Transfer by :<br>
+                <table class="table table-borderless table-sm">
+                    <tr>
+                        <td class="p-0" style="width: 100px">No. Rek</td>
+                        <td class="p-0" style="width: 16px;">:</td>
+                        <td class="p-0">...</td>
+                    </tr>
+                    <tr>
+                        <td class="p-0" style="width: 100px">Bank</td>
+                        <td class="p-0" style="width: 16px;">:</td>
+                        <td class="p-0">Bank Mandiri</td>
+                    </tr>
+                    <tr>
+                        <td class="p-0" style="width: 100px">A.n.</td>
+                        <td class="p-0" style="width: 16px;">:</td>
+                        <td class="p-0">PT. Ardana Balakosa Pratama</td>
                     </tr>
                 </table>
             </div>
