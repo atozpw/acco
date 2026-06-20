@@ -52,6 +52,12 @@ export default function FinancialStatementPage() {
                                     Laba Rugi
                                 </Link>
                                 <Link
+                                    href={financialStatement.profitLossComparison.url()}
+                                    className="hover:underline"
+                                >
+                                    Laba Rugi Perbandingan
+                                </Link>
+                                <Link
                                     href={financialStatement.balanceSheet.url()}
                                     className="hover:underline"
                                 >
