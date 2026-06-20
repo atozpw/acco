@@ -76,6 +76,7 @@ type UserItem = {
     email: string | null;
     is_active: boolean;
     roles: { id: number; name: string }[];
+    departments: { department: { id: number; name: string } }[];
 };
 
 type Filters = {
@@ -160,6 +161,9 @@ export default function UserIndexScreen({
                                     <TableHead className="min-w-[160px]">
                                         Role
                                     </TableHead>
+                                    <TableHead className="min-w-[160px]">
+                                        Departemen
+                                    </TableHead>
                                     <TableHead className="min-w-[100px]">
                                         Status
                                     </TableHead>
@@ -210,6 +214,28 @@ export default function UserIndexScreen({
                                                 )}
                                             </TableCell>
                                             <TableCell className="align-baseline">
+                                                {item.departments.length === 0 ? (
+                                                    <span className="text-sm text-muted-foreground">
+                                                        -
+                                                    </span>
+                                                ) : (
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {item.departments.map(
+                                                            (department) => (
+                                                                <Badge
+                                                                    key={
+                                                                        department.department.id
+                                                                    }
+                                                                    variant="secondary"
+                                                                >
+                                                                    {department.department.name}
+                                                                </Badge>
+                                                            ),
+                                                        )}
+                                                    </div>
+                                                )}
+                                            </TableCell>
+                                            <TableCell className="align-baseline">
                                                 {item.is_active ? (
                                                     <Badge className="bg-emerald-600 hover:bg-emerald-700">
                                                         Aktif
@@ -244,36 +270,36 @@ export default function UserIndexScreen({
                                                             {hasPermission([
                                                                 'users.update',
                                                             ]) && (
-                                                                <DropdownMenuItem
-                                                                    asChild
-                                                                >
-                                                                    <Link
-                                                                        href={userRoute.edit(
-                                                                            item.id,
-                                                                        )}
+                                                                    <DropdownMenuItem
+                                                                        asChild
                                                                     >
-                                                                        <Settings2Icon />
-                                                                        Perbarui
-                                                                    </Link>
-                                                                </DropdownMenuItem>
-                                                            )}
+                                                                        <Link
+                                                                            href={userRoute.edit(
+                                                                                item.id,
+                                                                            )}
+                                                                        >
+                                                                            <Settings2Icon />
+                                                                            Perbarui
+                                                                        </Link>
+                                                                    </DropdownMenuItem>
+                                                                )}
                                                             {hasPermission([
                                                                 'users.destroy',
                                                             ]) && (
-                                                                <DropdownMenuItem
-                                                                    onSelect={(
-                                                                        event,
-                                                                    ) => {
-                                                                        event.preventDefault();
-                                                                        setDeleteTarget(
-                                                                            item,
-                                                                        );
-                                                                    }}
-                                                                >
-                                                                    <Trash2 />
-                                                                    Hapus
-                                                                </DropdownMenuItem>
-                                                            )}
+                                                                    <DropdownMenuItem
+                                                                        onSelect={(
+                                                                            event,
+                                                                        ) => {
+                                                                            event.preventDefault();
+                                                                            setDeleteTarget(
+                                                                                item,
+                                                                            );
+                                                                        }}
+                                                                    >
+                                                                        <Trash2 />
+                                                                        Hapus
+                                                                    </DropdownMenuItem>
+                                                                )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>

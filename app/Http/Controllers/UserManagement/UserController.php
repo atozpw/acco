@@ -5,7 +5,9 @@ namespace App\Http\Controllers\UserManagement;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserManagement\StoreUserRequest;
 use App\Http\Requests\UserManagement\UpdateUserRequest;
+use App\Models\Department;
 use App\Models\User;
+use App\Models\UserDepartment;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -27,6 +29,7 @@ class UserController extends Controller
         $users = User::query()
             ->where('id', '>', 1)
             ->with('roles:id,name')
+            ->with('departments.department:id,name')
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', '%' . $search . '%')
@@ -51,10 +54,12 @@ class UserController extends Controller
      */
     public function create(): Response
     {
-        $roles = Role::query()->orderBy('name')->get(['id', 'name']);
+        $roles = Role::query()->where('id', '>', 1)->orderBy('name')->get(['id', 'name']);
+        $departments = Department::query()->get(['id', 'name']);
 
         return inertia('user-management/users/create', [
             'roles' => $roles,
+            'departments' => $departments,
         ]);
     }
 
@@ -76,6 +81,14 @@ class UserController extends Controller
         $roleIds = $request->input('roles', []);
         $user->syncRoles($roleIds);
 
+        $departmentIds = $request->input('departments', []);
+        foreach ($departmentIds as $departmentId) {
+            UserDepartment::create([
+                'user_id' => $user->id,
+                'department_id' => $departmentId,
+            ]);
+        }
+
         return redirect()->route('users.index');
     }
 
@@ -86,13 +99,16 @@ class UserController extends Controller
     {
         $user = User::query()
             ->with('roles:id,name')
+            ->with('departments.department:id,name')
             ->findOrFail($id);
 
-        $roles = Role::query()->orderBy('name')->get(['id', 'name']);
+        $roles = Role::query()->where('id', '>', 1)->orderBy('name')->get(['id', 'name']);
+        $departments = Department::query()->get(['id', 'name']);
 
         return inertia('user-management/users/edit', [
             'user' => $user,
             'roles' => $roles,
+            'departments' => $departments,
         ]);
     }
 
@@ -120,6 +136,16 @@ class UserController extends Controller
 
         $roleIds = $request->input('roles', []);
         $user->syncRoles($roleIds);
+
+        $departmentIds = $request->input('departments', []);
+        UserDepartment::where('user_id', $user->id)->delete();
+
+        foreach ($departmentIds as $departmentId) {
+            UserDepartment::create([
+                'user_id' => $user->id,
+                'department_id' => $departmentId,
+            ]);
+        }
 
         return redirect()->route('users.index');
     }
