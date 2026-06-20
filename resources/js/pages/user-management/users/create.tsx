@@ -21,6 +21,11 @@ type RoleOption = {
     name: string;
 };
 
+type DepartmentOption = {
+    id: number;
+    name: string;
+};
+
 type UserFormData = {
     name: string;
     username: string;
@@ -28,6 +33,7 @@ type UserFormData = {
     password: string;
     is_active: boolean;
     roles: number[];
+    departments: number[];
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -45,7 +51,13 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function UserCreateScreen({ roles }: { roles: RoleOption[] }) {
+export default function UserCreateScreen({
+    roles,
+    departments,
+}: {
+    roles: RoleOption[];
+    departments: DepartmentOption[];
+}) {
     const { data, setData, post, processing, errors, reset } =
         useForm<UserFormData>({
             name: '',
@@ -54,6 +66,7 @@ export default function UserCreateScreen({ roles }: { roles: RoleOption[] }) {
             password: '',
             is_active: true,
             roles: [],
+            departments: [],
         });
 
     const toggleRole = (roleId: number, checked: boolean | 'indeterminate') => {
@@ -63,6 +76,17 @@ export default function UserCreateScreen({ roles }: { roles: RoleOption[] }) {
             setData(
                 'roles',
                 data.roles.filter((id) => id !== roleId),
+            );
+        }
+    };
+
+    const toggleDepartment = (departmentId: number, checked: boolean | 'indeterminate') => {
+        if (checked === true) {
+            setData('departments', Array.from(new Set([...data.departments, departmentId])));
+        } else {
+            setData(
+                'departments',
+                data.departments.filter((id) => id !== departmentId),
             );
         }
     };
@@ -203,7 +227,7 @@ export default function UserCreateScreen({ roles }: { roles: RoleOption[] }) {
                             <div className="space-y-3">
                                 <div className="flex items-center justify-between">
                                     <div className="space-y-1">
-                                        <Label>Pilih Roles</Label>
+                                        <Label>Pilih Role</Label>
                                         <p className="text-xs text-muted-foreground">
                                             Berikan role untuk mengatur akses.
                                         </p>
@@ -241,6 +265,49 @@ export default function UserCreateScreen({ roles }: { roles: RoleOption[] }) {
                                     ))}
                                 </div>
                                 <InputError message={errors.roles} />
+                            </div>
+
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between">
+                                    <div className="space-y-1">
+                                        <Label>Pilih Departemen</Label>
+                                        <p className="text-xs text-muted-foreground">
+                                            Berikan departemen untuk mengatur akses.
+                                        </p>
+                                    </div>
+                                    <span className="text-xs text-muted-foreground">
+                                        {departments.length} tersedia
+                                    </span>
+                                </div>
+
+                                <div className="grid gap-3 sm:grid-cols-2">
+                                    {departments.length === 0 && (
+                                        <p className="col-span-2 text-sm text-muted-foreground">
+                                            Belum ada departemen yang tersedia.
+                                        </p>
+                                    )}
+                                    {departments.map((department) => (
+                                        <label
+                                            key={department.id}
+                                            className="flex cursor-pointer items-start gap-3 rounded-md border p-3 hover:bg-muted/60"
+                                        >
+                                            <Checkbox
+                                                checked={data.departments.includes(
+                                                    department.id,
+                                                )}
+                                                onCheckedChange={(checked) =>
+                                                    toggleDepartment(department.id, checked)
+                                                }
+                                            />
+                                            <div className="space-y-1">
+                                                <p className="text-sm font-medium">
+                                                    {department.name}
+                                                </p>
+                                            </div>
+                                        </label>
+                                    ))}
+                                </div>
+                                <InputError message={errors.departments} />
                             </div>
                         </div>
                     </div>
