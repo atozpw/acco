@@ -148,29 +148,31 @@ class FinancialStatementController extends Controller
         ];
 
         // Periode 1: Akumulasi s/d akhir bulan terpilih
-        $currentEnd = Carbon::create($year, $month, 1)->endOfMonth()->toDateString();
-        $currentFilters = array_merge($baseFilters, [
-            'date_from' => null,
-            'date_to' => $currentEnd,
+        $currentMonthStart = Carbon::create($year, $month, 1)->toDateString();
+        $currentMonthEnd = Carbon::create($year, $month, 1)->endOfMonth()->toDateString();
+        $currentMonthFilters = array_merge($baseFilters, [
+            'date_from' => $currentMonthStart,
+            'date_to' => $currentMonthEnd,
         ]);
 
         // Periode 2: Akumulasi s/d akhir bulan sebelumnya
-        $prevMonth = Carbon::create($year, $month, 1)->subMonth();
-        $prevMonthEnd = $prevMonth->copy()->endOfMonth()->toDateString();
-        $prevMonthFilters = array_merge($baseFilters, [
-            'date_from' => null,
-            'date_to' => $prevMonthEnd,
+        $currentYearStart = Carbon::create($year, 1, 1)->toDateString();
+        $currentYearEnd = Carbon::create($year, $month, 1)->endOfMonth()->toDateString();
+        $currentYearFilters = array_merge($baseFilters, [
+            'date_from' => $currentYearStart,
+            'date_to' => $currentYearEnd,
         ]);
 
         // Periode 3: Akumulasi s/d 31 Desember tahun lalu
+        $prevYearStart = Carbon::create($year - 1, 1, 1)->toDateString();
         $prevYearEnd = Carbon::create($year - 1, 12, 31)->toDateString();
         $prevYearFilters = array_merge($baseFilters, [
-            'date_from' => null,
+            'date_from' => $prevYearStart,
             'date_to' => $prevYearEnd,
         ]);
 
-        $reportCurrent = $this->balanceSheetService->get($currentFilters);
-        $reportPrevMonth = $this->balanceSheetService->get($prevMonthFilters);
+        $reportCurrentMonth = $this->balanceSheetService->get($currentMonthFilters);
+        $reportCurrentYear = $this->balanceSheetService->get($currentYearFilters);
         $reportPrevYear = $this->balanceSheetService->get($prevYearFilters);
 
         $classificationOptions = CoaClassification::query()
@@ -204,8 +206,8 @@ class FinancialStatementController extends Controller
 
         return inertia('report/finance/balance-sheet-comparison', [
             'report' => [
-                'current' => $reportCurrent,
-                'previous_month' => $reportPrevMonth,
+                'current_month' => $reportCurrentMonth,
+                'current_year' => $reportCurrentYear,
                 'previous_year' => $reportPrevYear,
             ],
             'filters' => [
@@ -217,9 +219,9 @@ class FinancialStatementController extends Controller
                 'customer_id' => $baseFilters['customer_id'],
             ],
             'periods' => [
-                'current' => $monthNames[$month] . ' ' . $year,
-                'previous_month' => $monthNames[$prevMonth->month] . ' ' . $prevMonth->year,
-                'previous_year' => 'Desember ' . ($year - 1),
+                'current_month' => $monthNames[$month] . ' ' . $year,
+                'current_year' => '1 Januari - ' . $monthNames[$month] . ' ' . $year,
+                'previous_year' => '1 Januari ' . ($year - 1) . ' - 31 Desember ' . ($year - 1),
             ],
             'options' => [
                 'classifications' => $classificationOptions

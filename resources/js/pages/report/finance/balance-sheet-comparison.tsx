@@ -79,14 +79,14 @@ type OptionItem = {
 
 type PageProps = {
     report: {
-        current: BalanceSheetReport;
-        previous_month: BalanceSheetReport;
+        current_month: BalanceSheetReport;
+        current_year: BalanceSheetReport;
         previous_year: BalanceSheetReport;
     };
     filters: ComparisonFilters;
     periods: {
-        current: string;
-        previous_month: string;
+        current_month: string;
+        current_year: string;
         previous_year: string;
     };
     options: {
@@ -233,16 +233,16 @@ export default function BalanceSheetComparisonPage({
 
     // Build lookup maps for previous period amounts
     const prevMonthMap = useMemo(
-        () => buildAmountMap(report.previous_month),
-        [report.previous_month],
+        () => buildAmountMap(report.current_year),
+        [report.current_year],
     );
     const prevYearMap = useMemo(
         () => buildAmountMap(report.previous_year),
         [report.previous_year],
     );
     const prevMonthClassTotalMap = useMemo(
-        () => buildClassificationTotalMap(report.previous_month),
-        [report.previous_month],
+        () => buildClassificationTotalMap(report.current_year),
+        [report.current_year],
     );
     const prevYearClassTotalMap = useMemo(
         () => buildClassificationTotalMap(report.previous_year),
@@ -309,7 +309,7 @@ export default function BalanceSheetComparisonPage({
         );
     };
 
-    const classificationRows = report?.current?.classifications ?? [];
+    const classificationRows = report?.current_month?.classifications ?? [];
     const hasData = classificationRows.length > 0;
 
     return (
@@ -368,7 +368,7 @@ export default function BalanceSheetComparisonPage({
                 <div className="text-center">
                     <HeadingSmall
                         title="NERACA PERBANDINGAN"
-                        description={`Akumulasi saldo per ${periods.current}`}
+                        description={`Akumulasi saldo per ${periods.current_month}`}
                     />
                 </div>
 
@@ -385,14 +385,14 @@ export default function BalanceSheetComparisonPage({
                                         colSpan={2}
                                     >
                                         {/* {periods.previous_year} */}
-                                        Tahun Lalu
+                                        S/D Tahun Lalu
                                     </TableHead>
                                     <TableHead
                                         className="min-w-[200px] pe-4 text-center"
                                         colSpan={2}
                                     >
                                         {/* {periods.previous_month} */}
-                                        Bulan Lalu
+                                        S/D Bulan Ini
                                     </TableHead>
                                     <TableHead
                                         className="min-w-[200px] pe-4 text-center"
