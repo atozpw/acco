@@ -104,7 +104,7 @@ export default function GeneralJournalCreateScreen({
         debit: '0.00',
         credit: '0.00',
         note: '',
-        department_id: '1',
+        department_id: departmentItems.length > 0 ? departmentItems[0].value : '',
         project_id: '',
     };
 
@@ -374,7 +374,7 @@ export default function GeneralJournalCreateScreen({
                                                                 name={`details.${index}.debit`}
                                                                 value={
                                                                     formattedDebits[
-                                                                        index
+                                                                    index
                                                                     ] ?? ''
                                                                 }
                                                                 onValueChange={(
@@ -418,7 +418,7 @@ export default function GeneralJournalCreateScreen({
                                                                 name={`details.${index}.credit`}
                                                                 value={
                                                                     formattedCredits[
-                                                                        index
+                                                                    index
                                                                     ] ?? ''
                                                                 }
                                                                 onValueChange={(

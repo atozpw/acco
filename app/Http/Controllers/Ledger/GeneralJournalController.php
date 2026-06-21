@@ -7,11 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Ledger\StoreGeneralJournalRequest;
 use App\Http\Requests\Ledger\UpdateGeneralJournalRequest;
 use App\Models\Coa;
-use App\Models\Department;
 use App\Models\Journal;
 use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Response;
 
@@ -68,7 +68,8 @@ class GeneralJournalController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
@@ -262,7 +263,8 @@ class GeneralJournalController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);

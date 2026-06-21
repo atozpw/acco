@@ -26,12 +26,6 @@ type DepartmentOption = {
     name: string;
 };
 
-type UserDepartmentOption = {
-    user_id: number;
-    department_id: number;
-    department: DepartmentOption;
-};
-
 type UserData = {
     id: number;
     name: string;
@@ -39,7 +33,7 @@ type UserData = {
     email: string | null;
     is_active: boolean;
     roles: RoleOption[];
-    departments: UserDepartmentOption[];
+    departments: DepartmentOption[];
 };
 
 type UserFormData = {
@@ -84,7 +78,7 @@ export default function UserEditScreen({
             password: '',
             is_active: Boolean(user.is_active),
             roles: user.roles?.map((r) => r.id) ?? [],
-            departments: user.departments?.map((d) => d.department?.id) ?? [],
+            departments: user.departments?.map((d) => d.id) ?? [],
         });
 
     const toggleRole = (roleId: number, checked: boolean | 'indeterminate') => {

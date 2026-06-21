@@ -76,7 +76,7 @@ type UserItem = {
     email: string | null;
     is_active: boolean;
     roles: { id: number; name: string }[];
-    departments: { department: { id: number; name: string } }[];
+    departments: { id: number; name: string }[];
 };
 
 type Filters = {
@@ -224,11 +224,11 @@ export default function UserIndexScreen({
                                                             (department) => (
                                                                 <Badge
                                                                     key={
-                                                                        department.department.id
+                                                                        department.id
                                                                     }
                                                                     variant="secondary"
                                                                 >
-                                                                    {department.department.name}
+                                                                    {department.name}
                                                                 </Badge>
                                                             ),
                                                         )}
