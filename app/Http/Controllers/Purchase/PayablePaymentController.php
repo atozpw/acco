@@ -8,7 +8,6 @@ use App\Http\Requests\Purchase\StorePayablePaymentRequest;
 use App\Http\Requests\Purchase\UpdatePayablePaymentRequest;
 use App\Models\Coa;
 use App\Models\Contact;
-use App\Models\Department;
 use App\Models\Journal;
 use App\Models\PayablePayment;
 use App\Models\Project;
@@ -16,6 +15,7 @@ use App\Models\PurchaseInvoice;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Response;
 
@@ -81,7 +81,8 @@ class PayablePaymentController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
@@ -278,7 +279,8 @@ class PayablePaymentController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);

@@ -8,7 +8,6 @@ use App\Http\Requests\Sales\StoreReceivablePaymentRequest;
 use App\Http\Requests\Sales\UpdateReceivablePaymentRequest;
 use App\Models\Coa;
 use App\Models\Contact;
-use App\Models\Department;
 use App\Models\Journal;
 use App\Models\Project;
 use App\Models\ReceivablePayment;
@@ -16,6 +15,7 @@ use App\Models\SalesInvoice;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Response;
 
@@ -81,7 +81,8 @@ class ReceivablePaymentController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
@@ -277,7 +278,8 @@ class ReceivablePaymentController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);

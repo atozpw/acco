@@ -7,7 +7,6 @@ use App\Helpers\ReferenceNumber;
 use App\Http\Controllers\Controller;
 use App\Models\Coa;
 use App\Models\Contact;
-use App\Models\Department;
 use App\Models\Product;
 use App\Models\Project;
 use App\Models\SalesDelivery;
@@ -21,6 +20,7 @@ use App\Models\Journal;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
 
 class SalesInvoiceController extends Controller
@@ -103,7 +103,8 @@ class SalesInvoiceController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name', 'rate']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
@@ -349,7 +350,8 @@ class SalesInvoiceController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name', 'rate']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);

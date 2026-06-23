@@ -6,14 +6,14 @@ use App\Helpers\ReferenceNumber;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CashBank\StoreIncomeRequest;
 use App\Http\Requests\CashBank\UpdateIncomeRequest;
-use App\Models\Contact;
 use App\Models\Coa;
-use App\Models\Department;
+use App\Models\Contact;
 use App\Models\Income;
 use App\Models\Journal;
 use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Response;
 
@@ -31,10 +31,10 @@ class IncomeController extends Controller
             ->with(['contact:id,name'])
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
-                    $q->where('reference_no', 'like', '%' . $search . '%')
-                        ->orWhere('description', 'like', '%' . $search . '%')
+                    $q->where('reference_no', 'like', '%'.$search.'%')
+                        ->orWhere('description', 'like', '%'.$search.'%')
                         ->orWhereHas('contact', function ($cq) use ($search) {
-                            $cq->where('name', 'like', '%' . $search . '%');
+                            $cq->where('name', 'like', '%'.$search.'%');
                         });
                 });
             })
@@ -85,7 +85,8 @@ class IncomeController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
@@ -241,7 +242,8 @@ class IncomeController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);

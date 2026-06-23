@@ -7,13 +7,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CashBank\StoreCashTransferRequest;
 use App\Http\Requests\CashBank\UpdateCashTransferRequest;
 use App\Models\Coa;
-use App\Models\Department;
 use App\Models\CashTransfer;
 use App\Models\Journal;
 use App\Models\Project;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Response;
 
@@ -74,7 +74,8 @@ class CashTransferController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
@@ -198,7 +199,8 @@ class CashTransferController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
