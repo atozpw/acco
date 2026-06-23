@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Sales;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
-use App\Models\SalesInvoice;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Response;

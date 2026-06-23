@@ -101,7 +101,7 @@ export default function CashTransferCreateScreen({
             date: today,
             description: '',
             amount: '0.00',
-            department_id: '1',
+            department_id: departmentItems.length > 0 ? departmentItems[0].value : '',
             project_id: '',
         });
 

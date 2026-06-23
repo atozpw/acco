@@ -130,7 +130,7 @@ export default function IncomeCreateScreen({
         coa_id: '',
         amount: '0.00',
         note: '',
-        department_id: '1',
+        department_id: departmentItems.length > 0 ? departmentItems[0].value : '',
         project_id: '',
     };
 
@@ -429,7 +429,7 @@ export default function IncomeCreateScreen({
                                                                 name={`details.${index}.amount`}
                                                                 value={
                                                                     formattedDetailAmounts[
-                                                                        index
+                                                                    index
                                                                     ] ?? ''
                                                                 }
                                                                 onValueChange={(

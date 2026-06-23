@@ -8,12 +8,12 @@ use App\Http\Requests\CashBank\StoreExpenseRequest;
 use App\Http\Requests\CashBank\UpdateExpenseRequest;
 use App\Models\Contact;
 use App\Models\Coa;
-use App\Models\Department;
 use App\Models\Expense;
 use App\Models\Journal;
 use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Response;
 
@@ -85,7 +85,8 @@ class ExpenseController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
@@ -241,7 +242,8 @@ class ExpenseController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);

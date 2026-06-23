@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Sales\StoreSalesDeliveryRequest;
 use App\Http\Requests\Sales\UpdateSalesDeliveryRequest;
 use App\Models\Contact;
-use App\Models\Department;
 use App\Models\Journal;
 use App\Models\Product;
 use App\Models\Project;
@@ -18,6 +17,7 @@ use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
 
 class SalesDeliveryController extends Controller
@@ -91,7 +91,8 @@ class SalesDeliveryController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name', 'rate']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
@@ -270,7 +271,8 @@ class SalesDeliveryController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name', 'rate']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
             ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
