@@ -2,16 +2,8 @@
 
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use Laravel\Fortify\Features;
 
-Route::get('/', function () {
-    return Inertia::render('welcome', [
-        'canRegister' => Features::enabled(Features::registration()),
-    ]);
-})->name('home');
-
-Route::prefix('dashboard')->middleware('auth')->group(function () {
+Route::prefix('/')->middleware('auth')->group(function () {
     Route::get('', [DashboardController::class, 'index'])
         ->name('dashboard');
     Route::get('profit-loss', [DashboardController::class, 'profitLoss'])
