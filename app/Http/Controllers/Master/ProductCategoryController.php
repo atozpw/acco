@@ -27,9 +27,11 @@ class ProductCategoryController extends Controller
                 'purchaseCoa:id,code,name',
                 'purchaseReceiptCoa:id,code,name',
                 'purchaseReturnCoa:id,code,name',
+                'payableCoa:id,code,name',
                 'salesCoa:id,code,name',
                 'salesDeliveryCoa:id,code,name',
                 'salesReturnCoa:id,code,name',
+                'receivableCoa:id,code,name',
             ])
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {

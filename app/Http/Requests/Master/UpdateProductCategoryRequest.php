@@ -60,6 +60,12 @@ class UpdateProductCategoryRequest extends FormRequest
                 'exists:coas,id',
             ],
 
+            'payable_coa_id' => [
+                'nullable',
+                'integer',
+                'exists:coas,id',
+            ],
+
             'sales_coa_id' => [
                 'nullable',
                 'integer',
@@ -73,6 +79,12 @@ class UpdateProductCategoryRequest extends FormRequest
             ],
 
             'sales_return_coa_id' => [
+                'nullable',
+                'integer',
+                'exists:coas,id',
+            ],
+
+            'receivable_coa_id' => [
                 'nullable',
                 'integer',
                 'exists:coas,id',

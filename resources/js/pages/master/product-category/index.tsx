@@ -77,9 +77,11 @@ type ProductCategoryProps = {
     purchase_coa?: { id: number; code: string; name: string } | null;
     purchase_receipt_coa?: { id: number; code: string; name: string } | null;
     purchase_return_coa?: { id: number; code: string; name: string } | null;
+    payable_coa?: { id: number; code: string; name: string } | null;
     sales_coa?: { id: number; code: string; name: string } | null;
     sales_delivery_coa?: { id: number; code: string; name: string } | null;
     sales_return_coa?: { id: number; code: string; name: string } | null;
+    receivable_coa?: { id: number; code: string; name: string } | null;
 };
 
 const formatCoa = (
@@ -263,36 +265,36 @@ export default function ProductCategoryIndexScreen({
                                                             {hasPermission([
                                                                 'product-categories.update',
                                                             ]) && (
-                                                                <DropdownMenuItem
-                                                                    asChild
-                                                                >
-                                                                    <Link
-                                                                        href={productCategory.edit(
-                                                                            item.id,
-                                                                        )}
+                                                                    <DropdownMenuItem
+                                                                        asChild
                                                                     >
-                                                                        <Settings2Icon />
-                                                                        Perbarui
-                                                                    </Link>
-                                                                </DropdownMenuItem>
-                                                            )}
+                                                                        <Link
+                                                                            href={productCategory.edit(
+                                                                                item.id,
+                                                                            )}
+                                                                        >
+                                                                            <Settings2Icon />
+                                                                            Perbarui
+                                                                        </Link>
+                                                                    </DropdownMenuItem>
+                                                                )}
                                                             {hasPermission([
                                                                 'product-categories.destroy',
                                                             ]) && (
-                                                                <DropdownMenuItem
-                                                                    onSelect={(
-                                                                        event,
-                                                                    ) => {
-                                                                        event.preventDefault();
-                                                                        setDeleteTarget(
-                                                                            item,
-                                                                        );
-                                                                    }}
-                                                                >
-                                                                    <Trash2 />
-                                                                    Hapus
-                                                                </DropdownMenuItem>
-                                                            )}
+                                                                    <DropdownMenuItem
+                                                                        onSelect={(
+                                                                            event,
+                                                                        ) => {
+                                                                            event.preventDefault();
+                                                                            setDeleteTarget(
+                                                                                item,
+                                                                            );
+                                                                        }}
+                                                                    >
+                                                                        <Trash2 />
+                                                                        Hapus
+                                                                    </DropdownMenuItem>
+                                                                )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
@@ -436,6 +438,12 @@ export default function ProductCategoryIndexScreen({
                                                     selectedCategory.purchase_return_coa,
                                                 )}
                                             />
+                                            <DetailRow
+                                                label="Akun Utang"
+                                                value={formatCoa(
+                                                    selectedCategory.payable_coa,
+                                                )}
+                                            />
                                         </div>
                                     </div>
 
@@ -454,6 +462,12 @@ export default function ProductCategoryIndexScreen({
                                                 label="Akun Retur Penjualan"
                                                 value={formatCoa(
                                                     selectedCategory.sales_return_coa,
+                                                )}
+                                            />
+                                            <DetailRow
+                                                label="Akun Piutang"
+                                                value={formatCoa(
+                                                    selectedCategory.receivable_coa,
                                                 )}
                                             />
                                         </div>
