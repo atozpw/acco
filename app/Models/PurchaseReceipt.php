@@ -17,6 +17,8 @@ class PurchaseReceipt extends Model
     protected $fillable = [
         'contact_id',
         'warehouse_id',
+        'department_id',
+        'project_id',
         'reference_no',
         'date',
         'description',
@@ -38,6 +40,16 @@ class PurchaseReceipt extends Model
     public function warehouse(): BelongsTo
     {
         return $this->belongsTo(Warehouse::class);
+    }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
     }
 
     public function createdBy(): BelongsTo

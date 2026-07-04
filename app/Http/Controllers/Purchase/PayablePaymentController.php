@@ -148,6 +148,8 @@ class PayablePaymentController extends Controller
             $payment = PayablePayment::query()->create([
                 'contact_id' => $validated['contact_id'],
                 'coa_id' => $validated['coa_id'],
+                'department_id' => $validated['department_id'],
+                'project_id' => $validated['project_id'] ?? null,
                 'reference_no' => $validated['reference_no'],
                 'date' => $validated['date'],
                 'description' => $validated['description'],
@@ -160,8 +162,8 @@ class PayablePaymentController extends Controller
                     'purchase_invoice_id' => $detail['purchase_invoice_id'],
                     'amount' => number_format((float) $detail['amount'], 2, '.', ''),
                     'note' => $detail['note'] ?? null,
-                    'department_id' => $detail['department_id'],
-                    'project_id' => $detail['project_id'] ?? null,
+                    'department_id' => $validated['department_id'],
+                    'project_id' => $validated['project_id'] ?? null,
                     'created_by' => $request->user()?->id,
                 ]);
             }
@@ -374,6 +376,8 @@ class PayablePaymentController extends Controller
             $payment->update([
                 'contact_id' => $validated['contact_id'],
                 'coa_id' => $validated['coa_id'],
+                'department_id' => $validated['department_id'],
+                'project_id' => $validated['project_id'] ?? null,
                 'reference_no' => $validated['reference_no'],
                 'date' => $validated['date'],
                 'description' => $validated['description'],
@@ -382,13 +386,13 @@ class PayablePaymentController extends Controller
 
             $payment->details()->delete();
 
-            $detailPayloads = array_map(function ($detail) use ($request) {
+            $detailPayloads = array_map(function ($detail) use ($request, $validated) {
                 return [
                     'purchase_invoice_id' => $detail['purchase_invoice_id'],
                     'amount' => number_format((float) $detail['amount'], 2, '.', ''),
                     'note' => $detail['note'] ?? null,
-                    'department_id' => $detail['department_id'],
-                    'project_id' => $detail['project_id'] ?? null,
+                    'department_id' => $validated['department_id'],
+                    'project_id' => $validated['project_id'] ?? null,
                     'created_by' => $request->user()?->id,
                 ];
             }, $validated['details']);

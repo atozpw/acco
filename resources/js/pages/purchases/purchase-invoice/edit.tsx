@@ -118,6 +118,8 @@ type InvoicePayload = {
     contact_id: number;
     coa_id: number | null;
     warehouse_id: number;
+    department_id: number;
+    project_id: number;
     reference_no: string;
     date: string;
     description: string;
@@ -158,6 +160,8 @@ type FormData = {
     contact_id: string;
     coa_id: string;
     warehouse_id: string;
+    department_id: string;
+    project_id: string;
     reference_no: string;
     date: string;
     description: string;
@@ -421,9 +425,11 @@ export default function PurchaseInvoiceEditScreen({
                 invoice.coa_id !== null && invoice.coa_id !== undefined
                     ? String(invoice.coa_id)
                     : referenceCoa
-                      ? String(referenceCoa)
-                      : '',
+                        ? String(referenceCoa)
+                        : '',
             warehouse_id: String(invoice.warehouse_id),
+            department_id: String(invoice.department_id),
+            project_id: invoice.project_id ? String(invoice.project_id) : '',
             reference_no: invoice.reference_no,
             date: invoice.date,
             description: invoice.description ?? '',
@@ -477,9 +483,9 @@ export default function PurchaseInvoiceEditScreen({
         const filtered =
             details.length > 1
                 ? details.filter(
-                      (detail) =>
-                          detail.product_id !== '' || detail.source_receipt_id,
-                  )
+                    (detail) =>
+                        detail.product_id !== '' || detail.source_receipt_id,
+                )
                 : details;
 
         return filtered.length ? filtered : [{ ...initialDetail }];
@@ -502,8 +508,8 @@ export default function PurchaseInvoiceEditScreen({
             department_id: detail.department_id
                 ? String(detail.department_id)
                 : departments[0]
-                  ? String(departments[0].id)
-                  : '',
+                    ? String(departments[0].id)
+                    : '',
             project_id: detail.project_id ? String(detail.project_id) : '',
             discount_type:
                 Number(detail.discount_percent) <= 0 ? 'amount' : 'percent',
@@ -650,7 +656,7 @@ export default function PurchaseInvoiceEditScreen({
         updateDetail(index, (detail) => {
             const nextPrice =
                 product?.purchase_price !== null &&
-                product?.purchase_price !== undefined
+                    product?.purchase_price !== undefined
                     ? toNumber(product.purchase_price).toFixed(2)
                     : toNumber(detail.price ?? '0.00').toFixed(2);
             const nextTaxId = product?.purchase_tax_id
@@ -869,11 +875,11 @@ export default function PurchaseInvoiceEditScreen({
 
             const receiptPayload = form.is_receipt
                 ? form.receipts
-                      .filter((receipt) => receipt.sales_delivery_id)
-                      .map((receipt) => ({
-                          sales_delivery_id: Number(receipt.sales_delivery_id),
-                          note: receipt.note || null,
-                      }))
+                    .filter((receipt) => receipt.sales_delivery_id)
+                    .map((receipt) => ({
+                        sales_delivery_id: Number(receipt.sales_delivery_id),
+                        note: receipt.note || null,
+                    }))
                 : [];
 
             return {
@@ -976,8 +982,8 @@ export default function PurchaseInvoiceEditScreen({
                                                         'coa_id',
                                                         referenceCoa
                                                             ? String(
-                                                                  referenceCoa,
-                                                              )
+                                                                referenceCoa,
+                                                            )
                                                             : '',
                                                     );
                                                 }
@@ -1034,6 +1040,32 @@ export default function PurchaseInvoiceEditScreen({
                                     />
                                     <InputError message={errors.warehouse_id} />
                                 </div>
+                                <div className="grid gap-2">
+                                    <Label>Departemen</Label>
+                                    <InputCombobox
+                                        name="department_id"
+                                        items={departmentItems}
+                                        placeholder="Pilih departemen"
+                                        value={data.department_id}
+                                        onValueChange={(value) =>
+                                            setData('department_id', value)
+                                        }
+                                    />
+                                    <InputError message={errors.department_id} />
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label>Proyek</Label>
+                                    <InputCombobox
+                                        name="project_id"
+                                        items={projectItems}
+                                        placeholder="Pilih proyek"
+                                        value={data.project_id}
+                                        onValueChange={(value) =>
+                                            setData('project_id', value)
+                                        }
+                                    />
+                                    <InputError message={errors.project_id} />
+                                </div>
                             </div>
 
                             <div className="grid max-w-2xl gap-2">
@@ -1085,8 +1117,8 @@ export default function PurchaseInvoiceEditScreen({
                                     const selectedReceipt =
                                         receiptLink.sales_delivery_id
                                             ? receiptMap[
-                                                  receiptLink.sales_delivery_id
-                                              ]
+                                            receiptLink.sales_delivery_id
+                                            ]
                                             : undefined;
 
                                     return (
@@ -1240,9 +1272,9 @@ export default function PurchaseInvoiceEditScreen({
                                                 toNumber(
                                                     computedDetail.amount,
                                                 ) -
-                                                    toNumber(
-                                                        computedDetail.discount_amount,
-                                                    ),
+                                                toNumber(
+                                                    computedDetail.discount_amount,
+                                                ),
                                             );
 
                                             return (
@@ -1314,7 +1346,7 @@ export default function PurchaseInvoiceEditScreen({
                                                                 name={`details.${index}.qty`}
                                                                 value={
                                                                     formattedDetailQty[
-                                                                        index
+                                                                    index
                                                                     ] ?? ''
                                                                 }
                                                                 onValueChange={(
@@ -1374,7 +1406,7 @@ export default function PurchaseInvoiceEditScreen({
                                                                 name={`details.${index}.price`}
                                                                 value={
                                                                     formattedDetailPrice[
-                                                                        index
+                                                                    index
                                                                     ] ?? ''
                                                                 }
                                                                 onValueChange={(
@@ -1464,12 +1496,12 @@ export default function PurchaseInvoiceEditScreen({
                                                                         </Label>
                                                                         <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
                                                                             {detail.discount_type ===
-                                                                            'amount' ? (
+                                                                                'amount' ? (
                                                                                 <InputDecimal
                                                                                     name={`details.${index}.discount_amount`}
                                                                                     value={
                                                                                         formattedDetailDiscountAmount[
-                                                                                            index
+                                                                                        index
                                                                                         ] ??
                                                                                         ''
                                                                                     }
@@ -1515,7 +1547,7 @@ export default function PurchaseInvoiceEditScreen({
                                                                                     name={`details.${index}.discount_percent`}
                                                                                     value={
                                                                                         formattedDetailDiscountPercent[
-                                                                                            index
+                                                                                        index
                                                                                         ] ??
                                                                                         ''
                                                                                     }
@@ -1614,17 +1646,17 @@ export default function PurchaseInvoiceEditScreen({
                                                                         <InputError
                                                                             message={
                                                                                 detail.discount_type ===
-                                                                                'amount'
+                                                                                    'amount'
                                                                                     ? errorAt(
-                                                                                          'details',
-                                                                                          index,
-                                                                                          'discount_amount',
-                                                                                      )
+                                                                                        'details',
+                                                                                        index,
+                                                                                        'discount_amount',
+                                                                                    )
                                                                                     : errorAt(
-                                                                                          'details',
-                                                                                          index,
-                                                                                          'discount_percent',
-                                                                                      )
+                                                                                        'details',
+                                                                                        index,
+                                                                                        'discount_percent',
+                                                                                    )
                                                                             }
                                                                         />
                                                                     </div>
@@ -1705,77 +1737,6 @@ export default function PurchaseInvoiceEditScreen({
                                                                             )}
                                                                         />
                                                                     </div>
-                                                                    <div className="space-y-1">
-                                                                        <Label>
-                                                                            Departemen
-                                                                        </Label>
-                                                                        <InputCombobox
-                                                                            name={`details.${index}.department_id`}
-                                                                            items={
-                                                                                departmentItems
-                                                                            }
-                                                                            placeholder="Pilih departemen"
-                                                                            value={
-                                                                                detail.department_id
-                                                                            }
-                                                                            onValueChange={(
-                                                                                value,
-                                                                            ) =>
-                                                                                updateDetail(
-                                                                                    index,
-                                                                                    (
-                                                                                        current,
-                                                                                    ) => ({
-                                                                                        ...current,
-                                                                                        department_id:
-                                                                                            value,
-                                                                                    }),
-                                                                                )
-                                                                            }
-                                                                            disabled={
-                                                                                data.is_receipt
-                                                                            }
-                                                                        />
-                                                                        <InputError
-                                                                            message={errorAt(
-                                                                                'details',
-                                                                                index,
-                                                                                'department_id',
-                                                                            )}
-                                                                        />
-                                                                    </div>
-                                                                    <div className="space-y-1">
-                                                                        <Label>
-                                                                            Proyek
-                                                                        </Label>
-                                                                        <InputCombobox
-                                                                            name={`details.${index}.project_id`}
-                                                                            items={
-                                                                                projectItems
-                                                                            }
-                                                                            placeholder="Pilih proyek (opsional)"
-                                                                            value={
-                                                                                detail.project_id
-                                                                            }
-                                                                            onValueChange={(
-                                                                                value,
-                                                                            ) =>
-                                                                                updateDetail(
-                                                                                    index,
-                                                                                    (
-                                                                                        current,
-                                                                                    ) => ({
-                                                                                        ...current,
-                                                                                        project_id:
-                                                                                            value,
-                                                                                    }),
-                                                                                )
-                                                                            }
-                                                                            disabled={
-                                                                                data.is_receipt
-                                                                            }
-                                                                        />
-                                                                    </div>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -1803,11 +1764,10 @@ export default function PurchaseInvoiceEditScreen({
                                 )}
 
                                 <div
-                                    className={`grid gap-4 rounded-md border p-4 ${
-                                        data.is_receipt
-                                            ? 'lg:col-span-3'
-                                            : 'lg:col-span-2'
-                                    } lg:ml-auto lg:w-full lg:max-w-lg`}
+                                    className={`grid gap-4 rounded-md border p-4 ${data.is_receipt
+                                        ? 'lg:col-span-3'
+                                        : 'lg:col-span-2'
+                                        } lg:ml-auto lg:w-full lg:max-w-lg`}
                                 >
                                     <div className="flex items-center justify-between text-sm">
                                         <span>Total Produk</span>
