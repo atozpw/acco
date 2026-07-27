@@ -3,6 +3,14 @@
 use App\Http\Controllers\PrintController;
 
 Route::middleware('auth')->prefix('print')->group(function () {
+    Route::get('balance-sheet', [PrintController::class, 'balanceSheet'])
+        ->name('print.balance-sheet')
+        ->middleware(['permission:financial-statement.balance-sheet']);
+
+    Route::get('profit-loss', [PrintController::class, 'profitLoss'])
+        ->name('print.profit-loss')
+        ->middleware(['permission:financial-statement.profit-loss']);
+
     Route::get('journal-voucher/{id}', [PrintController::class, 'voucher'])
         ->name('print.voucher')
         ->middleware(['permission:general-journal.index']);

@@ -11,8 +11,15 @@ use App\Models\PurchaseInvoice;
 use App\Models\PurchaseReceipt;
 use App\Models\ReceivablePayment;
 use App\Models\SalesDelivery;
+use App\Models\CoaClassification;
+use App\Models\Contact;
+use App\Models\Department;
+use App\Models\Project;
 use App\Models\SalesInvoice;
+use App\Services\Report\Finance\BalanceSheetService;
+use App\Services\Report\Finance\ProfitLossService;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class PrintController extends Controller
 {
@@ -640,5 +647,123 @@ class PrintController extends Controller
         ];
 
         return view('print.cash-transfer', compact('payload'));
+    }
+
+    public function balanceSheet(Request $request, BalanceSheetService $balanceSheetService)
+    {
+        $dateFrom = (string) $request->input('date_from', Carbon::now()->startOfMonth()->toDateString());
+        $dateTo = (string) $request->input('date_to', Carbon::now()->toDateString());
+
+        $filters = [
+            'date_from' => $dateFrom,
+            'date_to' => $dateTo,
+            'classification_id' => $request->filled('classification_id') ? (int) $request->input('classification_id') : null,
+            'department_id' => $request->filled('department_id') ? (int) $request->input('department_id') : null,
+            'project_id' => $request->filled('project_id') ? (int) $request->input('project_id') : null,
+            'customer_id' => $request->filled('customer_id') ? (int) $request->input('customer_id') : null,
+        ];
+
+        $report = $balanceSheetService->get($filters);
+
+        $formatDateLabel = function ($value) {
+            if (!$value) {
+                return '-';
+            }
+            try {
+                return Carbon::parse($value)->translatedFormat('d M Y');
+            } catch (\Exception $e) {
+                return $value;
+            }
+        };
+
+        $periodLabel = ($filters['date_from'] || $filters['date_to'])
+            ? $formatDateLabel($filters['date_from']) . ' - ' . $formatDateLabel($filters['date_to'])
+            : 'Semua periode';
+
+        $departmentName = $filters['department_id']
+            ? (Department::find($filters['department_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $projectName = $filters['project_id']
+            ? (Project::find($filters['project_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $classificationName = $filters['classification_id']
+            ? (CoaClassification::find($filters['classification_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $customerName = $filters['customer_id']
+            ? (Contact::find($filters['customer_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $payload = [
+            'report' => $report,
+            'period' => $periodLabel,
+            'department' => $departmentName,
+            'project' => $projectName,
+            'classification' => $classificationName,
+            'customer' => $customerName,
+            'created_by' => [
+                'name' => $request->user()?->name ?? '-',
+            ],
+        ];
+
+        return view('print.balance-sheet', compact('payload'));
+    }
+
+    public function profitLoss(Request $request, ProfitLossService $profitLossService)
+    {
+        $dateFrom = (string) $request->input('date_from', Carbon::now()->startOfMonth()->toDateString());
+        $dateTo = (string) $request->input('date_to', Carbon::now()->toDateString());
+
+        $filters = [
+            'date_from' => $dateFrom,
+            'date_to' => $dateTo,
+            'classification_id' => $request->filled('classification_id') ? (int) $request->input('classification_id') : null,
+            'department_id' => $request->filled('department_id') ? (int) $request->input('department_id') : null,
+            'project_id' => $request->filled('project_id') ? (int) $request->input('project_id') : null,
+        ];
+
+        $report = $profitLossService->generate($filters);
+
+        $formatDateLabel = function ($value) {
+            if (!$value) {
+                return '-';
+            }
+            try {
+                return Carbon::parse($value)->translatedFormat('d M Y');
+            } catch (\Exception $e) {
+                return $value;
+            }
+        };
+
+        $periodLabel = ($filters['date_from'] || $filters['date_to'])
+            ? $formatDateLabel($filters['date_from']) . ' - ' . $formatDateLabel($filters['date_to'])
+            : 'Semua periode';
+
+        $departmentName = $filters['department_id']
+            ? (Department::find($filters['department_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $projectName = $filters['project_id']
+            ? (Project::find($filters['project_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $classificationName = $filters['classification_id']
+            ? (CoaClassification::find($filters['classification_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $payload = [
+            'report' => $report,
+            'period' => $periodLabel,
+            'department' => $departmentName,
+            'project' => $projectName,
+            'classification' => $classificationName,
+            'created_by' => [
+                'name' => $request->user()?->name ?? '-',
+            ],
+        ];
+
+        return view('print.profit-loss', compact('payload'));
     }
 }

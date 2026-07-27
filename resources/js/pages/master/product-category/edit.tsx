@@ -32,9 +32,11 @@ type ProductCategoryProps = {
     purchase_coa_id: number | null;
     purchase_receipt_coa_id: number | null;
     purchase_return_coa_id: number | null;
+    payable_coa_id: number | null;
     sales_coa_id: number | null;
     sales_delivery_coa_id: number | null;
     sales_return_coa_id: number | null;
+    receivable_coa_id: number | null;
     is_active: boolean;
 };
 
@@ -45,9 +47,11 @@ type ProductCategoryFormData = {
     purchase_coa_id: string;
     purchase_receipt_coa_id: string;
     purchase_return_coa_id: string;
+    payable_coa_id: string;
     sales_coa_id: string;
     sales_delivery_coa_id: string;
     sales_return_coa_id: string;
+    receivable_coa_id: string;
     is_active: boolean;
 };
 
@@ -94,6 +98,9 @@ export default function ProductCategoryEditScreen({
             purchase_return_coa_id: category.purchase_return_coa_id
                 ? String(category.purchase_return_coa_id)
                 : '',
+            payable_coa_id: category.payable_coa_id
+                ? String(category.payable_coa_id)
+                : '',
             sales_coa_id: category.sales_coa_id
                 ? String(category.sales_coa_id)
                 : '',
@@ -102,6 +109,9 @@ export default function ProductCategoryEditScreen({
                 : '',
             sales_return_coa_id: category.sales_return_coa_id
                 ? String(category.sales_return_coa_id)
+                : '',
+            receivable_coa_id: category.receivable_coa_id
+                ? String(category.receivable_coa_id)
                 : '',
             is_active: Boolean(category.is_active),
         });
@@ -332,6 +342,26 @@ export default function ProductCategoryEditScreen({
                                         message={errors.purchase_return_coa_id}
                                     />
                                 </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="payable_coa_id">
+                                        Akun Utang
+                                    </Label>
+                                    <InputCombobox
+                                        name="payable_coa_id"
+                                        items={coaItems}
+                                        placeholder="Pilih akun utang"
+                                        value={data.payable_coa_id}
+                                        onValueChange={(value) =>
+                                            setData(
+                                                'payable_coa_id',
+                                                value,
+                                            )
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.payable_coa_id}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -379,6 +409,26 @@ export default function ProductCategoryEditScreen({
                                     />
                                     <InputError
                                         message={errors.sales_return_coa_id}
+                                    />
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="receivable_coa_id">
+                                        Akun Piutang
+                                    </Label>
+                                    <InputCombobox
+                                        name="receivable_coa_id"
+                                        items={coaItems}
+                                        placeholder="Pilih akun piutang"
+                                        value={data.receivable_coa_id}
+                                        onValueChange={(value) =>
+                                            setData(
+                                                'receivable_coa_id',
+                                                value,
+                                            )
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.receivable_coa_id}
                                     />
                                 </div>
                             </div>

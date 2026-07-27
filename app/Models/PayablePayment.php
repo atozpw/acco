@@ -17,6 +17,8 @@ class PayablePayment extends Model
     protected $fillable = [
         'contact_id',
         'coa_id',
+        'department_id',
+        'project_id',
         'reference_no',
         'date',
         'description',
@@ -32,6 +34,16 @@ class PayablePayment extends Model
     public function coa(): BelongsTo
     {
         return $this->belongsTo(Coa::class);
+    }
+
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class);
+    }
+
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
     }
 
     public function createdBy(): BelongsTo

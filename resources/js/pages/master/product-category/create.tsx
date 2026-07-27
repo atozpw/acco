@@ -31,9 +31,11 @@ type ProductCategoryFormData = {
     purchase_coa_id: string;
     purchase_receipt_coa_id: string;
     purchase_return_coa_id: string;
+    payable_coa_id: string;
     sales_coa_id: string;
     sales_delivery_coa_id: string;
     sales_return_coa_id: string;
+    receivable_coa_id: string;
     is_active: boolean;
 };
 
@@ -70,9 +72,11 @@ export default function ProductCategoryCreateScreen({
             purchase_coa_id: '',
             purchase_receipt_coa_id: '',
             purchase_return_coa_id: '',
+            payable_coa_id: '',
             sales_coa_id: '',
             sales_delivery_coa_id: '',
             sales_return_coa_id: '',
+            receivable_coa_id: '',
             is_active: true,
         });
 
@@ -302,6 +306,26 @@ export default function ProductCategoryCreateScreen({
                                         message={errors.purchase_return_coa_id}
                                     />
                                 </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="payable_coa_id">
+                                        Akun Utang
+                                    </Label>
+                                    <InputCombobox
+                                        name="payable_coa_id"
+                                        items={coaItems}
+                                        placeholder="Pilih akun utang"
+                                        value={data.payable_coa_id}
+                                        onValueChange={(value) =>
+                                            setData(
+                                                'payable_coa_id',
+                                                value,
+                                            )
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.payable_coa_id}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -349,6 +373,26 @@ export default function ProductCategoryCreateScreen({
                                     />
                                     <InputError
                                         message={errors.sales_return_coa_id}
+                                    />
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="receivable_coa_id">
+                                        Akun Piutang
+                                    </Label>
+                                    <InputCombobox
+                                        name="receivable_coa_id"
+                                        items={coaItems}
+                                        placeholder="Pilih akun piutang"
+                                        value={data.receivable_coa_id}
+                                        onValueChange={(value) =>
+                                            setData(
+                                                'receivable_coa_id',
+                                                value,
+                                            )
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.receivable_coa_id}
                                     />
                                 </div>
                             </div>

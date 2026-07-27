@@ -51,6 +51,8 @@ type PaymentPayload = {
     id: number;
     contact_id: number;
     coa_id: number;
+    department_id: number;
+    project_id: number | null;
     reference_no: string;
     date: string;
     description: string | null;
@@ -69,6 +71,8 @@ type DetailForm = {
 type FormData = {
     contact_id: string;
     coa_id: string;
+    department_id: string;
+    project_id: string;
     reference_no: string;
     date: string;
     description: string;
@@ -161,22 +165,24 @@ export default function PayablePaymentEditScreen({
 
     const formattedDetails = payment.details.length
         ? payment.details.map((detail) => ({
-              purchase_invoice_id: detail.purchase_invoice_id
-                  ? String(detail.purchase_invoice_id)
-                  : '',
-              amount: formatLocalNumber(parseFloat(detail.amount)),
-              note: detail.note ?? '',
-              department_id: detail.department_id
-                  ? String(detail.department_id)
-                  : defaultDepartmentId,
-              project_id: detail.project_id ? String(detail.project_id) : '',
-          }))
+            purchase_invoice_id: detail.purchase_invoice_id
+                ? String(detail.purchase_invoice_id)
+                : '',
+            amount: formatLocalNumber(parseFloat(detail.amount)),
+            note: detail.note ?? '',
+            department_id: detail.department_id
+                ? String(detail.department_id)
+                : defaultDepartmentId,
+            project_id: detail.project_id ? String(detail.project_id) : '',
+        }))
         : [{ ...initialDetail }];
 
     const { data, setData, put, processing, errors, transform } =
         useForm<FormData>({
             contact_id: payment.contact_id ? String(payment.contact_id) : '',
             coa_id: payment.coa_id ? String(payment.coa_id) : '',
+            department_id: payment.department_id ? String(payment.department_id) : '',
+            project_id: payment.project_id ? String(payment.project_id) : '',
             reference_no: payment.reference_no,
             date: payment.date,
             description: payment.description ?? '',
@@ -441,6 +447,34 @@ export default function PayablePaymentEditScreen({
                                     <InputError message={errors.coa_id} />
                                 </div>
                             </div>
+                            <div className="grid items-baseline gap-6 md:grid-cols-2">
+                                <div className="grid gap-2">
+                                    <Label>Departemen</Label>
+                                    <InputCombobox
+                                        name="department_id"
+                                        items={departmentItems}
+                                        placeholder="Pilih departemen"
+                                        value={data.department_id}
+                                        onValueChange={(value) =>
+                                            setData('department_id', value)
+                                        }
+                                    />
+                                    <InputError message={errors.department_id} />
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label>Proyek</Label>
+                                    <InputCombobox
+                                        name="project_id"
+                                        items={projectItems}
+                                        placeholder="Pilih proyek"
+                                        value={data.project_id}
+                                        onValueChange={(value) =>
+                                            setData('project_id', value)
+                                        }
+                                    />
+                                    <InputError message={errors.project_id} />
+                                </div>
+                            </div>
                             <div className="grid gap-2">
                                 <Label htmlFor="description">Deskripsi</Label>
                                 <Textarea
@@ -496,16 +530,16 @@ export default function PayablePaymentEditScreen({
                                             const selectedInvoice =
                                                 detail.purchase_invoice_id
                                                     ? invoiceMap[
-                                                          detail
-                                                              .purchase_invoice_id
-                                                      ]
+                                                    detail
+                                                        .purchase_invoice_id
+                                                    ]
                                                     : null;
                                             const outstandingValue =
                                                 selectedInvoice
                                                     ? parseFloat(
-                                                          selectedInvoice.outstanding_amount ??
-                                                              '0',
-                                                      ) || 0
+                                                        selectedInvoice.outstanding_amount ??
+                                                        '0',
+                                                    ) || 0
                                                     : 0;
 
                                             return (
@@ -596,9 +630,9 @@ export default function PayablePaymentEditScreen({
                                                                         {formatCurrency(
                                                                             parseFloat(
                                                                                 selectedInvoice?.total ??
-                                                                                    '0',
+                                                                                '0',
                                                                             ) ||
-                                                                                0,
+                                                                            0,
                                                                         )}
                                                                     </p>
                                                                 </div>
@@ -684,68 +718,6 @@ export default function PayablePaymentEditScreen({
                                                                                 'details',
                                                                                 index,
                                                                                 'note',
-                                                                            )}
-                                                                        />
-                                                                    </div>
-                                                                    <div className="space-y-1">
-                                                                        <Label>
-                                                                            Departemen
-                                                                        </Label>
-                                                                        <InputCombobox
-                                                                            name={`details.${index}.department_id`}
-                                                                            items={
-                                                                                departmentItems
-                                                                            }
-                                                                            value={
-                                                                                detail.department_id
-                                                                            }
-                                                                            placeholder="Pilih departemen"
-                                                                            onValueChange={(
-                                                                                value,
-                                                                            ) =>
-                                                                                updateDetail(
-                                                                                    index,
-                                                                                    'department_id',
-                                                                                    value,
-                                                                                )
-                                                                            }
-                                                                        />
-                                                                        <InputError
-                                                                            message={errorAt(
-                                                                                'details',
-                                                                                index,
-                                                                                'department_id',
-                                                                            )}
-                                                                        />
-                                                                    </div>
-                                                                    <div className="space-y-1">
-                                                                        <Label>
-                                                                            Proyek
-                                                                        </Label>
-                                                                        <InputCombobox
-                                                                            name={`details.${index}.project_id`}
-                                                                            items={
-                                                                                projectItems
-                                                                            }
-                                                                            value={
-                                                                                detail.project_id
-                                                                            }
-                                                                            placeholder="Pilih proyek (Opsional)"
-                                                                            onValueChange={(
-                                                                                value,
-                                                                            ) =>
-                                                                                updateDetail(
-                                                                                    index,
-                                                                                    'project_id',
-                                                                                    value,
-                                                                                )
-                                                                            }
-                                                                        />
-                                                                        <InputError
-                                                                            message={errorAt(
-                                                                                'details',
-                                                                                index,
-                                                                                'project_id',
                                                                             )}
                                                                         />
                                                                     </div>

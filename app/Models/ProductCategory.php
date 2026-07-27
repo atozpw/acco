@@ -19,9 +19,11 @@ class ProductCategory extends Model
         'purchase_coa_id',
         'purchase_receipt_coa_id',
         'purchase_return_coa_id',
+        'payable_coa_id',
         'sales_coa_id',
         'sales_delivery_coa_id',
         'sales_return_coa_id',
+        'receivable_coa_id',
         'is_active',
     ];
 
@@ -51,6 +53,11 @@ class ProductCategory extends Model
         return $this->belongsTo(Coa::class, 'purchase_return_coa_id');
     }
 
+    public function payableCoa(): BelongsTo
+    {
+        return $this->belongsTo(Coa::class, 'payable_coa_id');
+    }
+
     public function salesCoa(): BelongsTo
     {
         return $this->belongsTo(Coa::class, 'sales_coa_id');
@@ -64,5 +71,10 @@ class ProductCategory extends Model
     public function salesReturnCoa(): BelongsTo
     {
         return $this->belongsTo(Coa::class, 'sales_return_coa_id');
+    }
+
+    public function receivableCoa(): BelongsTo
+    {
+        return $this->belongsTo(Coa::class, 'receivable_coa_id');
     }
 }
