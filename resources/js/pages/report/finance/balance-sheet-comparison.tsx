@@ -168,7 +168,7 @@ const renderComparisonAccounts = (
                 </TableCell>
                 <TableCell className="w-[50px]">Rp</TableCell>
                 <TableCell className="min-w-[150px] pe-4 text-right">
-                    {formatCurrency(account.amount)}
+                    {formatCurrency(prevYearMap.get(account.id) ?? 0)}
                 </TableCell>
                 <TableCell className="w-[50px]">Rp</TableCell>
                 <TableCell className="min-w-[150px] pe-4 text-right">
@@ -176,7 +176,7 @@ const renderComparisonAccounts = (
                 </TableCell>
                 <TableCell className="w-[50px]">Rp</TableCell>
                 <TableCell className="min-w-[150px] pe-4 text-right">
-                    {formatCurrency(prevYearMap.get(account.id) ?? 0)}
+                    {formatCurrency(account.amount)}
                 </TableCell>
             </TableRow>
             {account.children && account.children.length > 0
