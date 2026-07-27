@@ -766,4 +766,226 @@ class PrintController extends Controller
 
         return view('print.profit-loss', compact('payload'));
     }
+
+    public function balanceSheetComparison(Request $request, BalanceSheetService $balanceSheetService)
+    {
+        $month = (int) $request->input('month', Carbon::now()->month);
+        $year = (int) $request->input('year', Carbon::now()->year);
+
+        $baseFilters = [
+            'classification_id' => $request->filled('classification_id') ? (int) $request->input('classification_id') : null,
+            'department_id' => $request->filled('department_id') ? (int) $request->input('department_id') : null,
+            'project_id' => $request->filled('project_id') ? (int) $request->input('project_id') : null,
+            'customer_id' => $request->filled('customer_id') ? (int) $request->input('customer_id') : null,
+        ];
+
+        // Periode 1: Akumulasi s/d akhir bulan terpilih
+        $currentMonthStart = Carbon::create($year, $month, 1)->toDateString();
+        $currentMonthEnd = Carbon::create($year, $month, 1)->endOfMonth()->toDateString();
+        $currentMonthFilters = array_merge($baseFilters, [
+            'date_from' => $currentMonthStart,
+            'date_to' => $currentMonthEnd,
+        ]);
+
+        // Periode 2: Akumulasi s/d akhir bulan sebelumnya / tahun berjalan
+        $currentYearStart = Carbon::create($year, 1, 1)->toDateString();
+        $currentYearEnd = Carbon::create($year, $month, 1)->endOfMonth()->toDateString();
+        $currentYearFilters = array_merge($baseFilters, [
+            'date_from' => $currentYearStart,
+            'date_to' => $currentYearEnd,
+        ]);
+
+        // Periode 3: Akumulasi s/d 31 Desember tahun lalu
+        $prevYearStart = Carbon::create($year - 1, 1, 1)->toDateString();
+        $prevYearEnd = Carbon::create($year - 1, 12, 31)->toDateString();
+        $prevYearFilters = array_merge($baseFilters, [
+            'date_from' => $prevYearStart,
+            'date_to' => $prevYearEnd,
+        ]);
+
+        $reportCurrentMonth = $balanceSheetService->get($currentMonthFilters);
+        $reportCurrentYear = $balanceSheetService->get($currentYearFilters);
+        $reportPrevYear = $balanceSheetService->get($prevYearFilters);
+
+        $buildAmountMap = function ($report) use (&$buildAmountMap) {
+            $map = [];
+            $walk = function ($accounts) use (&$walk, &$map) {
+                foreach ($accounts as $acc) {
+                    $map[$acc['id']] = $acc['amount'];
+                    if (!empty($acc['children']) && count($acc['children']) > 0) {
+                        $walk($acc['children']);
+                    }
+                }
+            };
+            foreach ($report['classifications'] ?? [] as $cls) {
+                $walk($cls['accounts'] ?? []);
+            }
+            return $map;
+        };
+
+        $buildClassTotalMap = function ($report) {
+            $map = [];
+            foreach ($report['classifications'] ?? [] as $cls) {
+                $map[$cls['classification_id']] = $cls['total'];
+            }
+            return $map;
+        };
+
+        $prevYearMap = $buildAmountMap($reportPrevYear);
+        $currentYearMap = $buildAmountMap($reportCurrentYear);
+
+        $prevYearClassMap = $buildClassTotalMap($reportPrevYear);
+        $currentYearClassMap = $buildClassTotalMap($reportCurrentYear);
+
+        $monthNames = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember',
+        ];
+
+        $periodLabel = ($monthNames[$month] ?? '') . ' ' . $year;
+
+        $departmentName = $baseFilters['department_id']
+            ? (Department::find($baseFilters['department_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $projectName = $baseFilters['project_id']
+            ? (Project::find($baseFilters['project_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $classificationName = $baseFilters['classification_id']
+            ? (CoaClassification::find($baseFilters['classification_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $customerName = $baseFilters['customer_id']
+            ? (Contact::find($baseFilters['customer_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $payload = [
+            'report' => $reportCurrentMonth,
+            'prev_year_map' => $prevYearMap,
+            'current_year_map' => $currentYearMap,
+            'prev_year_class_map' => $prevYearClassMap,
+            'current_year_class_map' => $currentYearClassMap,
+            'period' => $periodLabel,
+            'department' => $departmentName,
+            'project' => $projectName,
+            'classification' => $classificationName,
+            'customer' => $customerName,
+            'created_by' => [
+                'name' => $request->user()?->name ?? '-',
+            ],
+        ];
+
+        return view('print.balance-sheet-comparison', compact('payload'));
+    }
+
+    public function profitLossComparison(Request $request, ProfitLossService $profitLossService)
+    {
+        $month = (int) $request->input('month', Carbon::now()->month);
+        $year = (int) $request->input('year', Carbon::now()->year);
+
+        $baseFilters = [
+            'classification_id' => $request->filled('classification_id') ? (int) $request->input('classification_id') : null,
+            'department_id' => $request->filled('department_id') ? (int) $request->input('department_id') : null,
+            'project_id' => $request->filled('project_id') ? (int) $request->input('project_id') : null,
+        ];
+
+        // Periode 1: Bulan ini
+        $currentMonthStart = Carbon::create($year, $month, 1)->toDateString();
+        $currentMonthEnd = Carbon::create($year, $month, 1)->endOfMonth()->toDateString();
+        $currentMonthFilters = array_merge($baseFilters, [
+            'date_from' => $currentMonthStart,
+            'date_to' => $currentMonthEnd,
+        ]);
+
+        // Periode 2: Tahun berjalan s/d bulan terpilih
+        $currentYearStart = Carbon::create($year, 1, 1)->toDateString();
+        $currentYearEnd = Carbon::create($year, $month, 1)->endOfMonth()->toDateString();
+        $currentYearFilters = array_merge($baseFilters, [
+            'date_from' => $currentYearStart,
+            'date_to' => $currentYearEnd,
+        ]);
+
+        // Periode 3: Tahun lalu penuh
+        $prevYearStart = Carbon::create($year - 1, 1, 1)->toDateString();
+        $prevYearEnd = Carbon::create($year - 1, 12, 31)->toDateString();
+        $prevYearFilters = array_merge($baseFilters, [
+            'date_from' => $prevYearStart,
+            'date_to' => $prevYearEnd,
+        ]);
+
+        $reportCurrentMonth = $profitLossService->generate($currentMonthFilters);
+        $reportCurrentYear = $profitLossService->generate($currentYearFilters);
+        $reportPrevYear = $profitLossService->generate($prevYearFilters);
+
+        $buildAmountMap = function ($report) use (&$buildAmountMap) {
+            $map = [];
+            $walk = function ($accounts) use (&$walk, &$map) {
+                foreach ($accounts as $acc) {
+                    $map[$acc['id']] = $acc['amount'];
+                    if (!empty($acc['children']) && count($acc['children']) > 0) {
+                        $walk($acc['children']);
+                    }
+                }
+            };
+            foreach ($report['classifications'] ?? [] as $cls) {
+                $walk($cls['accounts'] ?? []);
+            }
+            return $map;
+        };
+
+        $buildClassTotalMap = function ($report) {
+            $map = [];
+            foreach ($report['classifications'] ?? [] as $cls) {
+                $map[$cls['classification_id']] = $cls['total'];
+            }
+            return $map;
+        };
+
+        $prevYearMap = $buildAmountMap($reportPrevYear);
+        $currentYearMap = $buildAmountMap($reportCurrentYear);
+
+        $prevYearClassMap = $buildClassTotalMap($reportPrevYear);
+        $currentYearClassMap = $buildClassTotalMap($reportCurrentYear);
+
+        $monthNames = [
+            1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+            5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+            9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember',
+        ];
+
+        $periodLabel = ($monthNames[$month] ?? '') . ' ' . $year;
+
+        $departmentName = $baseFilters['department_id']
+            ? (Department::find($baseFilters['department_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $projectName = $baseFilters['project_id']
+            ? (Project::find($baseFilters['project_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $classificationName = $baseFilters['classification_id']
+            ? (CoaClassification::find($baseFilters['classification_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $payload = [
+            'report_current_month' => $reportCurrentMonth,
+            'report_current_year' => $reportCurrentYear,
+            'report_prev_year' => $reportPrevYear,
+            'prev_year_map' => $prevYearMap,
+            'current_year_map' => $currentYearMap,
+            'prev_year_class_map' => $prevYearClassMap,
+            'current_year_class_map' => $currentYearClassMap,
+            'period' => $periodLabel,
+            'department' => $departmentName,
+            'project' => $projectName,
+            'classification' => $classificationName,
+            'created_by' => [
+                'name' => $request->user()?->name ?? '-',
+            ],
+        ];
+
+        return view('print.profit-loss-comparison', compact('payload'));
+    }
 }

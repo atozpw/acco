@@ -7,8 +7,16 @@ Route::middleware('auth')->prefix('print')->group(function () {
         ->name('print.balance-sheet')
         ->middleware(['permission:financial-statement.balance-sheet']);
 
+    Route::get('balance-sheet-comparison', [PrintController::class, 'balanceSheetComparison'])
+        ->name('print.balance-sheet-comparison')
+        ->middleware(['permission:financial-statement.balance-sheet']);
+
     Route::get('profit-loss', [PrintController::class, 'profitLoss'])
         ->name('print.profit-loss')
+        ->middleware(['permission:financial-statement.profit-loss']);
+
+    Route::get('profit-loss-comparison', [PrintController::class, 'profitLossComparison'])
+        ->name('print.profit-loss-comparison')
         ->middleware(['permission:financial-statement.profit-loss']);
 
     Route::get('journal-voucher/{id}', [PrintController::class, 'voucher'])

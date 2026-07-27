@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Neraca</title>
+    <title>Cetak Neraca Perbandingan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <style type="text/css">
         .main-content {
-            width: 800px;
-            font-size: 14px;
+            width: 900px;
+            font-size: 13px;
             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
             min-height: calc(100vh - 55px);
         }
@@ -35,6 +35,7 @@
 
             .main-content {
                 min-height: 100vh;
+                width: 100% !important;
             }
 
             .hide {
@@ -81,22 +82,22 @@
 
             {{-- Header --}}
             <div class="text-center mb-4">
-                <h3 class="mb-0" style="font-weight: 600; font-size: 18px;">LAPORAN NERACA</h3>
-                <p class="text-muted mb-0" style="font-size: 14px;">Periode: {{ $payload['period'] }}</p>
+                <h3 class="mb-0" style="font-weight: 600; font-size: 18px;">NERACA PERBANDINGAN</h3>
+                <p class="text-muted mb-0" style="font-size: 14px;">Akumulasi saldo per {{ $payload['period'] }}</p>
             </div>
 
             {{-- General Information --}}
             <div class="row mb-4">
                 <div class="col-md-6">
                     <table class="table table-borderless table-sm"
-                        style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 0;">
+                        style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 0;">
                         <tr>
-                            <td style="width: 150px;">Periode</td>
+                            <td style="width: 140px;">Periode</td>
                             <td style="width: 16px;">:</td>
                             <td>{{ $payload['period'] }}</td>
                         </tr>
                         <tr>
-                            <td style="width: 150px;">Klasifikasi Akun</td>
+                            <td style="width: 140px;">Klasifikasi Akun</td>
                             <td style="width: 16px;">:</td>
                             <td>{{ $payload['classification'] }}</td>
                         </tr>
@@ -104,24 +105,22 @@
                 </div>
                 <div class="col-md-6">
                     <table class="table table-borderless table-sm"
-                        style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 0;">
+                        style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 0;">
                         <tr>
-                            <td style="width: 150px;">Departemen</td>
+                            <td style="width: 140px;">Departemen</td>
                             <td style="width: 16px;">:</td>
                             <td>{{ $payload['department'] }}</td>
                         </tr>
                         <tr>
-                            <td style="width: 150px;">Proyek</td>
+                            <td style="width: 140px;">Proyek</td>
                             <td style="width: 16px;">:</td>
                             <td>{{ $payload['project'] }}</td>
                         </tr>
-                        @if($payload['customer'] !== 'Semua')
                         <tr>
-                            <td style="width: 150px;">Pelanggan</td>
+                            <td style="width: 140px;">Pelanggan</td>
                             <td style="width: 16px;">:</td>
                             <td>{{ $payload['customer'] }}</td>
                         </tr>
-                        @endif
                     </table>
                 </div>
             </div>
@@ -129,17 +128,26 @@
             {{-- Details Table --}}
             <div class="mb-4">
                 @php
-                    $renderAccounts = function($accounts, $depth = 0) use (&$renderAccounts) {
+                    $renderAccounts = function($accounts, $depth = 0) use (&$renderAccounts, $payload) {
                         foreach ($accounts as $account) {
-                            $padding = $depth * 24 + 16;
+                            $padding = $depth * 20 + 16;
                             $code = !empty($account['code']) ? $account['code'] . ' - ' : '';
                             $name = $code . $account['name'];
-                            $amount = number_format((float) $account['amount'], 2, ',', '.');
+                            
+                            $prevYearAmt = number_format((float) ($payload['prev_year_map'][$account['id']] ?? 0), 2, ',', '.');
+                            $currYearAmt = number_format((float) ($payload['current_year_map'][$account['id']] ?? 0), 2, ',', '.');
+                            $currMonthAmt = number_format((float) $account['amount'], 2, ',', '.');
+
                             echo '<tr>';
                             echo '<td class="text-start" style="padding-left: ' . $padding . 'px !important;">' . htmlspecialchars($name) . '</td>';
-                            echo '<td class="text-start" style="width: 50px;">Rp</td>';
-                            echo '<td class="text-end" style="width: 200px;">' . $amount . '</td>';
+                            echo '<td class="text-start" style="width: 25px;">Rp</td>';
+                            echo '<td class="text-end" style="width: 120px;">' . $prevYearAmt . '</td>';
+                            echo '<td class="text-start" style="width: 25px;">Rp</td>';
+                            echo '<td class="text-end" style="width: 120px;">' . $currYearAmt . '</td>';
+                            echo '<td class="text-start" style="width: 25px;">Rp</td>';
+                            echo '<td class="text-end" style="width: 120px;">' . $currMonthAmt . '</td>';
                             echo '</tr>';
+
                             if (!empty($account['children']) && count($account['children']) > 0) {
                                 $renderAccounts($account['children'], $depth + 1);
                             }
@@ -149,17 +157,34 @@
                 <table class="table table-bordered table-sm" style="margin-bottom: 0;">
                     <thead class="table-light">
                         <tr>
-                            <th class="text-start">Akun / Klasifikasi</th>
-                            <th class="text-start" style="width: 50px;"></th>
-                            <th class="text-end" style="width: 200px;">Saldo</th>
+                            <th class="text-start align-middle" rowspan="2">Akun / Klasifikasi</th>
+                            <th class="text-center align-middle" colspan="2">S/D Tahun Lalu</th>
+                            <th class="text-center align-middle" colspan="2">S/D Bulan Ini</th>
+                            <th class="text-center align-middle" colspan="2">Bulan Ini</th>
+                        </tr>
+                        <tr>
+                            <th style="width: 25px;"></th>
+                            <th class="text-end" style="width: 120px;">Saldo</th>
+                            <th style="width: 25px;"></th>
+                            <th class="text-end" style="width: 120px;">Saldo</th>
+                            <th style="width: 25px;"></th>
+                            <th class="text-end" style="width: 120px;">Saldo</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($payload['report']['classifications'] as $classification)
+                        @forelse($payload['report']['classifications'] ?? [] as $classification)
                             <tr class="table-light fw-bold" style="background-color: #f8f9fa;">
                                 <td class="text-start ps-2">{{ $classification['classification_name'] }}</td>
-                                <td class="text-start" style="width: 50px;">Rp</td>
-                                <td class="text-end" style="width: 200px;">
+                                <td class="text-start" style="width: 25px;">Rp</td>
+                                <td class="text-end" style="width: 120px;">
+                                    {{ number_format((float) ($payload['prev_year_class_map'][$classification['classification_id']] ?? 0), 2, ',', '.') }}
+                                </td>
+                                <td class="text-start" style="width: 25px;">Rp</td>
+                                <td class="text-end" style="width: 120px;">
+                                    {{ number_format((float) ($payload['current_year_class_map'][$classification['classification_id']] ?? 0), 2, ',', '.') }}
+                                </td>
+                                <td class="text-start" style="width: 25px;">Rp</td>
+                                <td class="text-end" style="width: 120px;">
                                     {{ number_format((float) $classification['total'], 2, ',', '.') }}
                                 </td>
                             </tr>
@@ -168,7 +193,7 @@
                             @endif
                         @empty
                             <tr>
-                                <td colspan="3" class="text-center text-muted py-4">Tidak ada data untuk periode dan filter yang dipilih.</td>
+                                <td colspan="7" class="text-center text-muted py-4">Tidak ada data untuk periode dan filter yang dipilih.</td>
                             </tr>
                         @endforelse
                     </tbody>

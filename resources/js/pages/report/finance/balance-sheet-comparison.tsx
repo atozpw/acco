@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import financialStatement from '@/routes/financial-statement';
+import print from '@/routes/print';
 import report from '@/routes/report';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -112,9 +113,7 @@ const formatCurrency = (value: string | number | null | undefined) => {
 /**
  * Build a flat map of coa_id -> amount from a BalanceSheetReport
  */
-const buildAmountMap = (
-    report: BalanceSheetReport,
-): Map<number, number> => {
+const buildAmountMap = (report: BalanceSheetReport): Map<number, number> => {
     const map = new Map<number, number>();
 
     const walk = (accounts: AccountNode[]) => {
@@ -181,11 +180,11 @@ const renderComparisonAccounts = (
             </TableRow>
             {account.children && account.children.length > 0
                 ? renderComparisonAccounts(
-                    account.children,
-                    prevMonthMap,
-                    prevYearMap,
-                    depth + 1,
-                )
+                      account.children,
+                      prevMonthMap,
+                      prevYearMap,
+                      depth + 1,
+                  )
                 : null}
         </Fragment>
     ));
@@ -260,9 +259,7 @@ export default function BalanceSheetComparisonPage({
                 ? String(filters.department_id)
                 : '',
             projectId: filters.project_id ? String(filters.project_id) : '',
-            customerId: filters.customer_id
-                ? String(filters.customer_id)
-                : '',
+            customerId: filters.customer_id ? String(filters.customer_id) : '',
         }),
         [
             filters.month,
@@ -285,17 +282,12 @@ export default function BalanceSheetComparisonPage({
         if (values.departmentId)
             query.department_id = Number(values.departmentId);
         if (values.projectId) query.project_id = Number(values.projectId);
-        if (values.customerId)
-            query.customer_id = Number(values.customerId);
+        if (values.customerId) query.customer_id = Number(values.customerId);
 
-        router.get(
-            financialStatement.balanceSheetComparison.url(),
-            query,
-            {
-                preserveScroll: true,
-                preserveState: true,
-            },
-        );
+        router.get(financialStatement.balanceSheetComparison.url(), query, {
+            preserveScroll: true,
+            preserveState: true,
+        });
     };
 
     const handleResetFilters = () => {
@@ -311,6 +303,20 @@ export default function BalanceSheetComparisonPage({
 
     const classificationRows = report?.current_month?.classifications ?? [];
     const hasData = classificationRows.length > 0;
+
+    const printUrl = useMemo(() => {
+        const query: Record<string, string | number> = {
+            month: filters.month,
+            year: filters.year,
+        };
+        if (filters.classification_id)
+            query.classification_id = filters.classification_id;
+        if (filters.department_id) query.department_id = filters.department_id;
+        if (filters.project_id) query.project_id = filters.project_id;
+        if (filters.customer_id) query.customer_id = filters.customer_id;
+
+        return print.balanceSheetComparison.url({ query });
+    }, [filters]);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -353,9 +359,15 @@ export default function BalanceSheetComparisonPage({
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem>
-                                        <Printer />
-                                        Cetak
+                                    <DropdownMenuItem asChild>
+                                        <a
+                                            href={printUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            <Printer />
+                                            Cetak
+                                        </a>
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
                             </DropdownMenuContent>
@@ -406,9 +418,7 @@ export default function BalanceSheetComparisonPage({
                             <TableBody>
                                 {classificationRows.map((classification) => (
                                     <Fragment
-                                        key={
-                                            classification.classification_id
-                                        }
+                                        key={classification.classification_id}
                                     >
                                         <TableRow className="bg-muted/50">
                                             <TableCell className="w-full ps-4 font-medium">
@@ -446,19 +456,19 @@ export default function BalanceSheetComparisonPage({
                                             </TableCell>
                                         </TableRow>
                                         {classification.accounts &&
-                                            classification.accounts.length > 0
+                                        classification.accounts.length > 0
                                             ? renderComparisonAccounts(
-                                                classification.accounts,
-                                                prevMonthMap,
-                                                prevYearMap,
-                                            )
+                                                  classification.accounts,
+                                                  prevMonthMap,
+                                                  prevYearMap,
+                                              )
                                             : null}
                                     </Fragment>
                                 ))}
                             </TableBody>
                         </Table>
                     ) : (
-                        <div className="py-12 text-center text-sm text-muted-foreground">
+                        <div className="text-muted-foreground py-12 text-center text-sm">
                             Tidak ada data untuk periode dan filter yang
                             dipilih.
                         </div>

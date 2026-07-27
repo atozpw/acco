@@ -66,6 +66,19 @@
     </nav>
     <div class="container-fluid px-0">
         <div class="main-content d-flex flex-column mx-auto py-2 px-3">
+            {{-- Kop Surat --}}
+            <div class="d-flex align-items-center mb-3 pb-3" style="border-bottom: 1px solid #ccc;">
+                <div>
+                    <img src="{{ asset('logo.png') }}" alt="Logo" style="max-height: 70px; max-width: 150px; object-fit: contain;">
+                </div>
+                <div class="flex-grow-1 ps-3">
+                    <h2 class="mb-1" style="font-weight: bold; font-size: 16px;">PT. ARDANA BALAKOSA PRATAMA</h2>
+                    <p class="mb-0" style="font-size: 12px;">Jl. Raya Hankam No. 10A RT. 005 RW.008, Kel. Jatimurni, Kec. Pondok Melati, Kota Bekasi</p>
+                    <p class="mb-0" style="font-size: 12px;">Phone: 0851 2116 9627 | Email: ardanabalakosap@gmail.com</p>
+                </div>
+                <div style="width: 70px;"></div>
+            </div>
+
             {{-- Header --}}
             <div class="text-center mb-4">
                 <h3 class="mb-0" style="font-weight: 600; font-size: 18px;">LAPORAN LABA RUGI</h3>
