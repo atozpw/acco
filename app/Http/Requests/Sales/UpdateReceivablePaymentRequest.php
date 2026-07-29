@@ -35,6 +35,18 @@ class UpdateReceivablePaymentRequest extends FormRequest
                 'exists:coas,id',
             ],
 
+            'department_id' => [
+                'required',
+                'integer',
+                'exists:departments,id',
+            ],
+
+            'project_id' => [
+                'nullable',
+                'integer',
+                'exists:projects,id',
+            ],
+
             'reference_no' => [
                 'required',
                 'string',

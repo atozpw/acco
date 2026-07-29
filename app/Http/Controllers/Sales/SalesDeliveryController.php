@@ -125,6 +125,8 @@ class SalesDeliveryController extends Controller
             $delivery = SalesDelivery::create([
                 'contact_id' => $validated['contact_id'],
                 'warehouse_id' => $validated['warehouse_id'],
+                'department_id' => $validated['department_id'],
+                'project_id' => $validated['project_id'],
                 'reference_no' => $validated['reference_no'],
                 'date' => $validated['date'],
                 'description' => $validated['description'],
@@ -149,8 +151,10 @@ class SalesDeliveryController extends Controller
                     'total' => $detail['total'],
                     'note' => $detail['note'] ?? null,
                     'tax_id' => $detail['tax_id'] ?? null,
-                    'department_id' => $detail['department_id'],
-                    'project_id' => $detail['project_id'] ?? null,
+                    // 'department_id' => $detail['department_id'],
+                    // 'project_id' => $detail['project_id'] ?? null,
+                    'department_id' => $validated['department_id'],
+                    'project_id' => $validated['project_id'],
                     'created_by' => $request->user()?->id,
                 ]);
             }
@@ -306,6 +310,8 @@ class SalesDeliveryController extends Controller
             $delivery->update([
                 'contact_id' => $validated['contact_id'],
                 'warehouse_id' => $validated['warehouse_id'],
+                'department_id' => $validated['department_id'],
+                'project_id' => $validated['project_id'] ?? null,
                 'reference_no' => $validated['reference_no'],
                 'date' => $validated['date'],
                 'description' => $validated['description'],
@@ -331,8 +337,10 @@ class SalesDeliveryController extends Controller
                     'total' => $detail['total'],
                     'note' => $detail['note'] ?? null,
                     'tax_id' => $detail['tax_id'] ?? null,
-                    'department_id' => $detail['department_id'],
-                    'project_id' => $detail['project_id'] ?? null,
+                    // 'department_id' => $detail['department_id'],
+                    // 'project_id' => $detail['project_id'] ?? null,
+                    'department_id' => $validated['department_id'],
+                    'project_id' => $validated['project_id'] ?? null,
                     'created_by' => $request->user()?->id,
                 ]);
             }
