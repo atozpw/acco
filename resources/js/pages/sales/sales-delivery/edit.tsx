@@ -101,6 +101,8 @@ type DeliveryPayload = {
     id: number;
     contact_id: number;
     warehouse_id: number;
+    department_id: string;
+    project_id: string;
     reference_no: string;
     date: string;
     description: string;
@@ -116,6 +118,8 @@ type DeliveryPayload = {
 type FormData = {
     contact_id: string;
     warehouse_id: string;
+    department_id: string;
+    project_id: string;
     reference_no: string;
     date: string;
     description: string;
@@ -304,6 +308,8 @@ export default function SalesDeliveryEditScreen({
     const { data, setData, put, processing, errors } = useForm<FormData>({
         contact_id: String(delivery.contact_id),
         warehouse_id: String(delivery.warehouse_id),
+        department_id: String(delivery.department_id),
+        project_id: String(delivery.project_id),
         reference_no: delivery.reference_no,
         date: delivery.date,
         description: delivery.description,
@@ -473,7 +479,7 @@ export default function SalesDeliveryEditScreen({
         updateDetail(index, (detail) => {
             const nextPrice =
                 product?.sales_price !== null &&
-                product?.sales_price !== undefined
+                    product?.sales_price !== undefined
                     ? toNumber(product.sales_price).toFixed(2)
                     : toNumber(detail.price ?? '0.00').toFixed(2);
 
@@ -671,6 +677,35 @@ export default function SalesDeliveryEditScreen({
                                 </div>
                             </div>
 
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:space-y-0 lg:space-x-6">
+                                <div className="grid gap-2 lg:basis-1/2">
+                                    <Label>Departemen</Label>
+                                    <InputCombobox
+                                        name="department_id"
+                                        items={departmentItems}
+                                        placeholder="Pilih departemen"
+                                        value={data.department_id}
+                                        onValueChange={(value) =>
+                                            setData('department_id', value)
+                                        }
+                                    />
+                                    <InputError message={errors.department_id} />
+                                </div>
+                                <div className="grid gap-2 lg:basis-1/2">
+                                    <Label>Proyek</Label>
+                                    <InputCombobox
+                                        name="project_id"
+                                        items={projectItems}
+                                        placeholder="Pilih proyek"
+                                        value={data.project_id}
+                                        onValueChange={(value) =>
+                                            setData('project_id', value)
+                                        }
+                                    />
+                                    <InputError message={errors.project_id} />
+                                </div>
+                            </div>
+
                             <div className="grid max-w-2xl gap-2">
                                 <Label htmlFor="description">Deskripsi</Label>
                                 <Textarea
@@ -734,9 +769,9 @@ export default function SalesDeliveryEditScreen({
                                                 toNumber(
                                                     computedDetail.amount,
                                                 ) -
-                                                    toNumber(
-                                                        computedDetail.discount_amount,
-                                                    ),
+                                                toNumber(
+                                                    computedDetail.discount_amount,
+                                                ),
                                             );
 
                                             return (
@@ -805,7 +840,7 @@ export default function SalesDeliveryEditScreen({
                                                                 name={`details.${index}.qty`}
                                                                 value={
                                                                     formattedDetailQty[
-                                                                        index
+                                                                    index
                                                                     ] ?? ''
                                                                 }
                                                                 onValueChange={(
@@ -862,7 +897,7 @@ export default function SalesDeliveryEditScreen({
                                                                 name={`details.${index}.price`}
                                                                 value={
                                                                     formattedDetailPrice[
-                                                                        index
+                                                                    index
                                                                     ] ?? ''
                                                                 }
                                                                 onValueChange={(
@@ -946,12 +981,12 @@ export default function SalesDeliveryEditScreen({
                                                                         </Label>
                                                                         <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
                                                                             {detail.discount_type ===
-                                                                            'amount' ? (
+                                                                                'amount' ? (
                                                                                 <InputDecimal
                                                                                     name={`details.${index}.discount_amount`}
                                                                                     value={
                                                                                         formattedDetailDiscountAmount[
-                                                                                            index
+                                                                                        index
                                                                                         ] ??
                                                                                         ''
                                                                                     }
@@ -994,7 +1029,7 @@ export default function SalesDeliveryEditScreen({
                                                                                     name={`details.${index}.discount_percent`}
                                                                                     value={
                                                                                         formattedDetailDiscountPercent[
-                                                                                            index
+                                                                                        index
                                                                                         ] ??
                                                                                         ''
                                                                                     }
@@ -1087,17 +1122,17 @@ export default function SalesDeliveryEditScreen({
                                                                         <InputError
                                                                             message={
                                                                                 detail.discount_type ===
-                                                                                'amount'
+                                                                                    'amount'
                                                                                     ? errorAt(
-                                                                                          'details',
-                                                                                          index,
-                                                                                          'discount_amount',
-                                                                                      )
+                                                                                        'details',
+                                                                                        index,
+                                                                                        'discount_amount',
+                                                                                    )
                                                                                     : errorAt(
-                                                                                          'details',
-                                                                                          index,
-                                                                                          'discount_percent',
-                                                                                      )
+                                                                                        'details',
+                                                                                        index,
+                                                                                        'discount_percent',
+                                                                                    )
                                                                             }
                                                                         />
                                                                     </div>
@@ -1174,7 +1209,7 @@ export default function SalesDeliveryEditScreen({
                                                                             )}
                                                                         />
                                                                     </div>
-                                                                    <div className="space-y-1">
+                                                                    {/* <div className="space-y-1">
                                                                         <Label>
                                                                             Departemen
                                                                         </Label>
@@ -1238,7 +1273,7 @@ export default function SalesDeliveryEditScreen({
                                                                                 )
                                                                             }
                                                                         />
-                                                                    </div>
+                                                                    </div> */}
                                                                 </div>
                                                             </td>
                                                         </tr>
