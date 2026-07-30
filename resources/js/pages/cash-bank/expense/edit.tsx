@@ -39,6 +39,8 @@ type ExpenseDetailForm = {
 type ExpenseFormData = {
     contact_id: string;
     coa_id: string;
+    department_id: string;
+    project_id: string;
     reference_no: string;
     date: string;
     description: string;
@@ -59,6 +61,8 @@ type ExpenseProps = {
     id: number;
     contact_id: number;
     coa_id: number;
+    department_id: number;
+    project_id: number;
     reference_no: string;
     date: string;
     description: string;
@@ -130,36 +134,38 @@ export default function ExpenseEditScreen({
     const initialDetails: ExpenseDetailForm[] =
         expense.details.length > 0
             ? expense.details.map((d) => ({
-                  coa_id: d.coa_id ? String(d.coa_id) : '',
-                  amount: d.amount ?? '0.00',
-                  note: d.note ?? '',
-                  department_id: d.department_id
-                      ? String(d.department_id)
-                      : '1',
-                  project_id: d.project_id ? String(d.project_id) : '',
-              }))
+                coa_id: d.coa_id ? String(d.coa_id) : '',
+                amount: d.amount ?? '0.00',
+                note: d.note ?? '',
+                department_id: d.department_id
+                    ? String(d.department_id)
+                    : '1',
+                project_id: d.project_id ? String(d.project_id) : '',
+            }))
             : [
-                  {
-                      coa_id: '',
-                      amount: '0.00',
-                      note: '',
-                      department_id: '1',
-                      project_id: '',
-                  },
-              ];
+                {
+                    coa_id: '',
+                    amount: '0.00',
+                    note: '',
+                    department_id: '1',
+                    project_id: '',
+                },
+            ];
 
     const { data, setData, put, processing, errors, transform } =
         useForm<ExpenseFormData>(
-        {
-            contact_id: String(expense.contact_id),
-            coa_id: String(expense.coa_id),
-            reference_no: expense.reference_no ?? '',
-            date: expense.date ?? '',
-            description: expense.description ?? '',
-            amount: expense.amount ?? '0.00',
-            details: initialDetails,
-        },
-    );
+            {
+                contact_id: String(expense.contact_id),
+                coa_id: String(expense.coa_id),
+                department_id: String(expense.department_id),
+                project_id: expense.project_id ? String(expense.project_id) : '',
+                reference_no: expense.reference_no ?? '',
+                date: expense.date ?? '',
+                description: expense.description ?? '',
+                amount: expense.amount ?? '0.00',
+                details: initialDetails,
+            },
+        );
 
     const [formattedDetailAmounts, setFormattedDetailAmounts] = useState<
         string[]
@@ -351,6 +357,34 @@ export default function ExpenseEditScreen({
                                     <InputError message={errors.contact_id} />
                                 </div>
                             </div>
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                                <div className="grid gap-2 lg:basis-1/3">
+                                    <Label>Departemen</Label>
+                                    <InputCombobox
+                                        name="department_id"
+                                        items={departmentItems}
+                                        placeholder="Pilih departemen"
+                                        value={data.department_id}
+                                        onValueChange={(value) =>
+                                            setData('department_id', value)
+                                        }
+                                    />
+                                    <InputError message={errors.department_id} />
+                                </div>
+                                <div className="grid gap-2 lg:basis-2/3">
+                                    <Label>Proyek</Label>
+                                    <InputCombobox
+                                        name="project_id"
+                                        items={projectItems}
+                                        placeholder="Pilih proyek"
+                                        value={data.project_id}
+                                        onValueChange={(value) =>
+                                            setData('project_id', value)
+                                        }
+                                    />
+                                    <InputError message={errors.project_id} />
+                                </div>
+                            </div>
                             <div className="grid max-w-2xl gap-2">
                                 <Label htmlFor="description">Deskripsi</Label>
                                 <Textarea
@@ -454,7 +488,7 @@ export default function ExpenseEditScreen({
                                                                 name={`details.${index}.amount`}
                                                                 value={
                                                                     formattedDetailAmounts[
-                                                                        index
+                                                                    index
                                                                     ] ?? ''
                                                                 }
                                                                 onValueChange={(
@@ -551,7 +585,7 @@ export default function ExpenseEditScreen({
                                                                             )}
                                                                         />
                                                                     </div>
-                                                                    <div className="space-y-1">
+                                                                    {/* <div className="space-y-1">
                                                                         <Label>
                                                                             Departemen
                                                                         </Label>
@@ -605,7 +639,7 @@ export default function ExpenseEditScreen({
                                                                                 )
                                                                             }
                                                                         />
-                                                                    </div>
+                                                                    </div> */}
                                                                 </div>
                                                             </td>
                                                         </tr>

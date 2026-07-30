@@ -56,6 +56,8 @@ type IncomeDetailForm = {
 type IncomeFormData = {
     contact_id: string;
     coa_id: string;
+    department_id: string;
+    project_id: string;
     reference_no: string;
     date: string;
     description: string;
@@ -138,6 +140,8 @@ export default function IncomeCreateScreen({
         useForm<IncomeFormData>({
             contact_id: '',
             coa_id: '',
+            department_id: '',
+            project_id: '',
             reference_no: referenceNumber,
             date: today,
             description: '',
@@ -324,6 +328,34 @@ export default function IncomeCreateScreen({
                                         }
                                     />
                                     <InputError message={errors.contact_id} />
+                                </div>
+                            </div>
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                                <div className="grid gap-2 lg:basis-1/3">
+                                    <Label>Departemen</Label>
+                                    <InputCombobox
+                                        name="department_id"
+                                        items={departmentItems}
+                                        placeholder="Pilih departemen"
+                                        value={data.department_id}
+                                        onValueChange={(value) =>
+                                            setData('department_id', value)
+                                        }
+                                    />
+                                    <InputError message={errors.department_id} />
+                                </div>
+                                <div className="grid gap-2 lg:basis-2/3">
+                                    <Label>Proyek</Label>
+                                    <InputCombobox
+                                        name="project_id"
+                                        items={projectItems}
+                                        placeholder="Pilih proyek"
+                                        value={data.project_id}
+                                        onValueChange={(value) =>
+                                            setData('project_id', value)
+                                        }
+                                    />
+                                    <InputError message={errors.project_id} />
                                 </div>
                             </div>
                             <div className="grid max-w-2xl gap-2">
@@ -526,7 +558,7 @@ export default function IncomeCreateScreen({
                                                                             )}
                                                                         />
                                                                     </div>
-                                                                    <div className="space-y-1">
+                                                                    {/* <div className="space-y-1">
                                                                         <Label>
                                                                             Departemen
                                                                         </Label>
@@ -580,7 +612,7 @@ export default function IncomeCreateScreen({
                                                                                 )
                                                                             }
                                                                         />
-                                                                    </div>
+                                                                    </div> */}
                                                                 </div>
                                                             </td>
                                                         </tr>
