@@ -118,6 +118,8 @@ class ExpenseController extends Controller
             $expense = Expense::create([
                 'contact_id' => $validated['contact_id'],
                 'coa_id' => $validated['coa_id'],
+                'department_id' => $validated['department_id'],
+                'project_id' => $validated['project_id'] ?? null,
                 'reference_no' => $validated['reference_no'],
                 'date' => $validated['date'],
                 'description' => $validated['description'],
@@ -130,8 +132,8 @@ class ExpenseController extends Controller
                     'coa_id' => $detail['coa_id'],
                     'amount' => $detail['amount'],
                     'note' => $detail['note'] ?? null,
-                    'department_id' => $detail['department_id'],
-                    'project_id' => $detail['project_id'] ?? null,
+                    'department_id' => $validated['department_id'],
+                    'project_id' => $validated['project_id'] ?? null,
                     'created_by' => $request->user()?->id,
                 ]);
             }
@@ -275,6 +277,8 @@ class ExpenseController extends Controller
 
             $expense->contact_id = $validated['contact_id'];
             $expense->coa_id = $validated['coa_id'];
+            $expense->department_id = $validated['department_id'];
+            $expense->project_id = $validated['project_id'] ?? null;
             $expense->reference_no = $validated['reference_no'];
             $expense->date = $validated['date'];
             $expense->description = $validated['description'];
@@ -288,8 +292,8 @@ class ExpenseController extends Controller
                     'coa_id' => $detail['coa_id'],
                     'amount' => $detail['amount'],
                     'note' => $detail['note'] ?? null,
-                    'department_id' => $detail['department_id'],
-                    'project_id' => $detail['project_id'] ?? null,
+                    'department_id' => $validated['department_id'],
+                    'project_id' => $validated['project_id'] ?? null,
                     'created_by' => $request->user()?->id,
                 ]);
             }
