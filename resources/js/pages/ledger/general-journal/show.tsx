@@ -88,7 +88,7 @@ export default function GeneralJournalShowScreen({
     const generalInfo = [
         { label: 'Nomor Referensi', value: data.reference_no },
         { label: 'Tanggal', value: data.formatted_date ?? '-' },
-        { label: 'Deskripsi', value: data.description?.trim() || '-' },
+        { label: 'Keterangan', value: data.description?.trim() || '-' },
     ];
 
     const metaInfo = [
@@ -96,16 +96,16 @@ export default function GeneralJournalShowScreen({
             label: 'Departemen',
             value: details.some((d) => d.department)
                 ? Array.from(
-                      new Set(details.map((d) => d.department?.name ?? 'N/A')),
-                  ).join(', ')
+                    new Set(details.map((d) => d.department?.name ?? 'N/A')),
+                ).join(', ')
                 : 'N/A',
         },
         {
             label: 'Proyek',
             value: details.some((d) => d.project)
                 ? Array.from(
-                      new Set(details.map((d) => d.project?.name ?? 'N/A')),
-                  ).join(', ')
+                    new Set(details.map((d) => d.project?.name ?? 'N/A')),
+                ).join(', ')
                 : 'N/A',
         },
     ];
@@ -192,7 +192,7 @@ export default function GeneralJournalShowScreen({
                                     Nama Akun
                                 </TableHead>
                                 <TableHead className="min-w-[150px]">
-                                    Catatan
+                                    Uraian
                                 </TableHead>
                                 <TableHead className="min-w-[160px] text-right">
                                     Debit
@@ -215,7 +215,7 @@ export default function GeneralJournalShowScreen({
                                     </TableCell>
                                     <TableCell>
                                         <div className="line-clamp-2 whitespace-normal">
-                                            {row.note}
+                                            {row.note ?? '-'}
                                         </div>
                                     </TableCell>
                                     <TableCell className="text-right">

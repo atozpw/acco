@@ -74,7 +74,7 @@
                 <div class="flex-grow-1 ps-3">
                     <h2 class="mb-1" style="font-weight: bold; font-size: 16px;">PT. ARDANA BALAKOSA PRATAMA</h2>
                     <p class="mb-0" style="font-size: 12px;">Jl. Raya Hankam No. 10A RT. 005 RW.008, Kel. Jatimurni, Kec. Pondok Melati, Kota Bekasi</p>
-                    <p class="mb-0" style="font-size: 12px;">Phone: 0851 2116 9627 | Email: ardanabalakosap@gmail.com</p>
+                    <p class="mb-0" style="font-size: 12px;">Phone: 0851 2116 9627 | Email: info@ardanabalakosapratama.co.id</p>
                 </div>
                 <div style="width: 70px;"></div>
             </div>
@@ -100,7 +100,7 @@
                             <td>{{ $payload['formatted_date'] ?? '-' }}</td>
                         </tr>
                         <tr>
-                            <td style="width: 150px;">Deskripsi</td>
+                            <td style="width: 150px;">Keterangan</td>
                             <td style="width: 16px;">:</td>
                             <td>
                                 {{ $payload['description'] && trim($payload['description']) ? $payload['description'] : '-' }}
@@ -148,7 +148,7 @@
                         <tr>
                             <th class="text-start">Kode Akun</th>
                             <th class="text-start">Nama Akun</th>
-                            <th class="text-start">Departemen</th>
+                            <th class="text-start">Uraian</th>
                             <th class="text-end">Debit</th>
                             <th class="text-end">Kredit</th>
                         </tr>
@@ -158,7 +158,7 @@
                             <tr>
                                 <td class="text-start">{{ $detail['coa']['code'] ?? '-' }}</td>
                                 <td class="text-start">{{ $detail['coa']['name'] ?? '-' }}</td>
-                                <td class="text-start">{{ $detail['department']['name'] ?? 'N/A' }}</td>
+                                <td class="text-start">{{ $detail['note'] ?? '-' }}</td>
                                 <td class="text-end">
                                     {{ $detail['debit'] > 0 ? 'Rp ' . number_format((float) $detail['debit'], 2, ',', '.') : 'Rp 0,00' }}
                                 </td>
