@@ -26,7 +26,7 @@ class BalanceSheetService
             ->active()
             ->when($classificationId, fn($query) => $query->where('id', $classificationId))
             ->whereHas('coas', fn($query) => $query->where('is_active', 1))
-            ->with(['coas' => fn($query) => $query->where('is_active', 1)])
+            ->with(['coas' => fn($query) => $query->where('is_active', 1)->orderBy('code')])
             ->get();
 
         $amounts = $this->collectAmounts($filters, $classificationId);
