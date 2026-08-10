@@ -74,7 +74,7 @@
                 <div class="flex-grow-1 ps-3">
                     <h2 class="mb-1" style="font-weight: bold; font-size: 16px;">PT. ARDANA BALAKOSA PRATAMA</h2>
                     <p class="mb-0" style="font-size: 12px;">Jl. Raya Hankam No. 10A RT. 005 RW.008, Kel. Jatimurni, Kec. Pondok Melati, Kota Bekasi</p>
-                    <p class="mb-0" style="font-size: 12px;">Phone: 0851 2116 9627 | Email: info@ardanabalakosapratama.co.id</p>
+                    <p class="mb-0" style="font-size: 12px;">Phone: 0851 2116 9627 | Email: info@ardanabalakosapratama.co.id <br> Website: https://ardanabalakosapratama.co.id</p>
                 </div>
                 <div style="width: 70px;"></div>
             </div>
