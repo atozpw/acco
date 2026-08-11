@@ -13,7 +13,8 @@ class ExpenseDetailObserver implements ShouldHandleEventsAfterCommit
      */
     public function created(ExpenseDetail $expenseDetail): void
     {
-        $referenceNumber = $expenseDetail->expense->reference_no;
+        $expense = $expenseDetail->expense;
+        $referenceNumber = $expense->reference_no;
 
         $journal = Journal::query()
             ->ofReferenceNo($referenceNumber)
@@ -22,7 +23,7 @@ class ExpenseDetailObserver implements ShouldHandleEventsAfterCommit
         $journal->details()->create([
             'coa_id' => $expenseDetail->coa_id,
             'debit' => $expenseDetail->amount,
-            'note' => $expenseDetail->note,
+            'note' => $expenseDetail->note ?? $expense->description,
             'department_id' => $expenseDetail->department_id,
             'project_id' => $expenseDetail->project_id,
             'created_by' => $expenseDetail->created_by,

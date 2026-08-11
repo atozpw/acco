@@ -13,7 +13,8 @@ class IncomeDetailObserver implements ShouldHandleEventsAfterCommit
      */
     public function created(IncomeDetail $incomeDetail): void
     {
-        $referenceNumber = $incomeDetail->income->reference_no;
+        $income = $incomeDetail->income;
+        $referenceNumber = $income->reference_no;
 
         $journal = Journal::query()
             ->ofReferenceNo($referenceNumber)
@@ -22,7 +23,7 @@ class IncomeDetailObserver implements ShouldHandleEventsAfterCommit
         $journal->details()->create([
             'coa_id' => $incomeDetail->coa_id,
             'credit' => $incomeDetail->amount,
-            'note' => $incomeDetail->note,
+            'note' => $incomeDetail->note ?? $income->description,
             'department_id' => $incomeDetail->department_id,
             'project_id' => $incomeDetail->project_id,
             'created_by' => $incomeDetail->created_by,

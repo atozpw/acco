@@ -366,6 +366,7 @@ class ExpenseController extends Controller
                             'name' => $detail->project->name,
                         ]
                         : null,
+                    'note' => $detail->note,
                 ];
             }),
             'created_by' => $journal->createdBy

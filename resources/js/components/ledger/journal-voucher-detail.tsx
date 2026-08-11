@@ -34,6 +34,7 @@ export interface JournalDetailPayload {
     coa: EntityInfo | null;
     department: EntityInfo | null;
     project: EntityInfo | null;
+    note: string | null;
 }
 
 export interface UserInfo {
@@ -117,16 +118,16 @@ export function JournalVoucherDetail({
             label: 'Departemen',
             value: details.some((d) => d.department)
                 ? Array.from(
-                      new Set(details.map((d) => d.department?.name ?? 'N/A')),
-                  ).join(', ')
+                    new Set(details.map((d) => d.department?.name ?? 'N/A')),
+                ).join(', ')
                 : 'N/A',
         },
         {
             label: 'Proyek',
             value: details.some((d) => d.project)
                 ? Array.from(
-                      new Set(details.map((d) => d.project?.name ?? 'N/A')),
-                  ).join(', ')
+                    new Set(details.map((d) => d.project?.name ?? 'N/A')),
+                ).join(', ')
                 : 'N/A',
         },
     ];
@@ -224,7 +225,7 @@ export function JournalVoucherDetail({
                                 Nama Akun
                             </TableHead>
                             <TableHead className="min-w-[140px]">
-                                Departemen
+                                Catatan
                             </TableHead>
                             <TableHead className="min-w-[175px] text-right">
                                 Debit
@@ -257,7 +258,7 @@ export function JournalVoucherDetail({
                                     </TableCell>
                                     <TableCell>
                                         <div className="line-clamp-2 whitespace-normal">
-                                            {detail.department?.name ?? 'N/A'}
+                                            {detail.note ?? '-'}
                                         </div>
                                     </TableCell>
                                     <TableCell className="text-right">

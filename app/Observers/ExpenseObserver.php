@@ -25,6 +25,7 @@ class ExpenseObserver implements ShouldHandleEventsAfterCommit
         $journal->details()->create([
             'coa_id' => $expense->coa_id,
             'credit' => $expense->amount,
+            'note' => $expense->description,
             'department_id' => 1,
             'created_by' => $expense->created_by,
         ]);
@@ -51,6 +52,7 @@ class ExpenseObserver implements ShouldHandleEventsAfterCommit
         $journal->details()->create([
             'coa_id' => $expense->coa_id,
             'credit' => $expense->amount,
+            'note' => $expense->description,
             'department_id' => 1,
             'created_by' => $expense->created_by,
         ]);
