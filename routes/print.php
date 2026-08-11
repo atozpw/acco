@@ -52,4 +52,8 @@ Route::middleware('auth')->prefix('print')->group(function () {
     Route::get('cash-transfer/{id}', [PrintController::class, 'cashTransfer'])
         ->name('print.cash-transfer')
         ->middleware(['permission:cash-transfers.index']);
+
+    Route::get('ledger', [PrintController::class, 'ledger'])
+        ->name('print.ledger')
+        ->middleware(['permission:ledgers.index']);
 });

@@ -16,6 +16,8 @@ use App\Models\Contact;
 use App\Models\Department;
 use App\Models\Project;
 use App\Models\SalesInvoice;
+use App\Models\JournalDetail;
+use App\Models\Coa;
 use App\Services\Report\Finance\BalanceSheetService;
 use App\Services\Report\Finance\ProfitLossService;
 use Carbon\Carbon;
@@ -988,5 +990,94 @@ class PrintController extends Controller
         ];
 
         return view('print.profit-loss-comparison', compact('payload'));
+    }
+
+    public function ledger(Request $request)
+    {
+        $search = (string) $request->input('search');
+        $coa_id = (int) $request->input('coa_id');
+        $department_id = (int) $request->input('department_id');
+        $date_from = (string) $request->input('date_from', Carbon::now()->startOfMonth()->toDateString());
+        $date_to = (string) $request->input('date_to', Carbon::now()->toDateString());
+
+        $year_of_date_from = Carbon::parse($date_from)->year;
+
+        $opening_balance = JournalDetail::query()
+            ->whereHas('journal', function ($query) use ($date_from, $year_of_date_from) {
+                $query->whereYear('date', '=', $year_of_date_from)
+                    ->where('date', '<', $date_from);
+            })
+            ->when($coa_id, fn($query) => $query->where('coa_id', $coa_id))
+            ->when($department_id, fn($query) => $query->where('department_id', $department_id))
+            ->selectRaw('COALESCE(SUM(debit) - SUM(credit), 0) as balance')
+            ->value('balance');
+
+        $journals = JournalDetail::query()
+            ->with([
+                'journal:id,date,reference_no,description',
+                'coa:id,code,name',
+                'department:id,code,name',
+                'project:id,code,name',
+            ])
+            ->when($coa_id, fn($query) => $query->where('coa_id', $coa_id))
+            ->when($department_id, fn($query) => $query->where('department_id', $department_id))
+            ->when($search, function ($query) use ($search) {
+                $query->whereHas('journal', function ($journalQuery) use ($search) {
+                    $journalQuery->where(function ($innerQuery) use ($search) {
+                        $innerQuery->where('reference_no', 'like', '%' . $search . '%')
+                            ->orWhere('description', 'like', '%' . $search . '%');
+                    });
+                });
+            })
+            ->when($date_from || $date_to, function ($query) use ($date_from, $date_to) {
+                $query->whereHas('journal', function ($journalQuery) use ($date_from, $date_to) {
+                    if ($date_from) {
+                        $journalQuery->whereDate('date', '>=', $date_from);
+                    }
+                    if ($date_to) {
+                        $journalQuery->whereDate('date', '<=', $date_to);
+                    }
+                });
+            })
+            ->orderBy(
+                Journal::select('date')
+                    ->whereColumn('journals.id', 'journal_details.journal_id')
+            )
+            ->orderBy('journal_details.id')
+            ->get();
+
+        $formatDateLabel = function ($value) {
+            if (!$value) return '-';
+            try {
+                return Carbon::parse($value)->translatedFormat('d M Y');
+            } catch (\Exception $e) {
+                return $value;
+            }
+        };
+
+        $periodLabel = ($date_from || $date_to)
+            ? $formatDateLabel($date_from) . ' - ' . $formatDateLabel($date_to)
+            : 'Semua periode';
+
+        $departmentName = $department_id
+            ? (Department::find($department_id)?->name ?? 'Semua')
+            : 'Semua';
+
+        $coaName = $coa_id
+            ? (Coa::find($coa_id)?->name ?? 'Semua')
+            : 'Semua';
+
+        $payload = [
+            'journals' => $journals,
+            'opening_balance' => $opening_balance,
+            'period' => $periodLabel,
+            'department' => $departmentName,
+            'coa' => $coaName,
+            'created_by' => [
+                'name' => $request->user()?->name ?? '-',
+            ],
+        ];
+
+        return view('print.ledger', compact('payload'));
     }
 }
