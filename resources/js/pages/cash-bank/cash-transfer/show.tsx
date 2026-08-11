@@ -116,12 +116,14 @@ export default function CashTransferShowScreen({
             department: departmentLabel,
             debit: amountValue,
             credit: 0,
+            note: transfer.description,
         },
         {
             account: transfer.from_coa,
             department: departmentLabel,
             debit: 0,
             credit: amountValue,
+            note: transfer.description,
         },
     ];
 
@@ -213,7 +215,7 @@ export default function CashTransferShowScreen({
                                     Nama Akun
                                 </TableHead>
                                 <TableHead className="min-w-[125px]">
-                                    Departemen
+                                    Catatan
                                 </TableHead>
                                 <TableHead className="min-w-[175px] text-right">
                                     Debit
@@ -238,7 +240,7 @@ export default function CashTransferShowScreen({
                                     </TableCell>
                                     <TableCell>
                                         <div className="line-clamp-2 whitespace-normal">
-                                            {row.department}
+                                            {row.note}
                                         </div>
                                     </TableCell>
                                     <TableCell className="text-right">

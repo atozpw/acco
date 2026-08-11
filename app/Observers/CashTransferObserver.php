@@ -25,6 +25,7 @@ class CashTransferObserver implements ShouldHandleEventsAfterCommit
         $journal->details()->create([
             'coa_id' => $cashTransfer->to_coa_id,
             'debit' => $cashTransfer->amount,
+            'note' => $cashTransfer->description,
             'department_id' => $cashTransfer->department_id,
             'project_id' => $cashTransfer->project_id,
             'created_by' => $cashTransfer->created_by,
@@ -33,6 +34,7 @@ class CashTransferObserver implements ShouldHandleEventsAfterCommit
         $journal->details()->create([
             'coa_id' => $cashTransfer->from_coa_id,
             'credit' => $cashTransfer->amount,
+            'note' => $cashTransfer->description,
             'department_id' => $cashTransfer->department_id,
             'project_id' => $cashTransfer->project_id,
             'created_by' => $cashTransfer->created_by,
@@ -60,6 +62,7 @@ class CashTransferObserver implements ShouldHandleEventsAfterCommit
         $journal->details()->create([
             'coa_id' => $cashTransfer->to_coa_id,
             'debit' => $cashTransfer->amount,
+            'note' => $cashTransfer->description,
             'department_id' => $cashTransfer->department_id,
             'project_id' => $cashTransfer->project_id,
             'created_by' => $cashTransfer->created_by,
@@ -68,6 +71,7 @@ class CashTransferObserver implements ShouldHandleEventsAfterCommit
         $journal->details()->create([
             'coa_id' => $cashTransfer->from_coa_id,
             'credit' => $cashTransfer->amount,
+            'note' => $cashTransfer->description,
             'department_id' => $cashTransfer->department_id,
             'project_id' => $cashTransfer->project_id,
             'created_by' => $cashTransfer->created_by,
