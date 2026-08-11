@@ -14,6 +14,13 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
@@ -40,6 +47,7 @@ import {
 import { useDebounceValue } from '@/hooks/use-debounce';
 import AppLayout from '@/layouts/app-layout';
 import ledger from '@/routes/ledger';
+import print from '@/routes/print';
 import ledgerData from '@/routes/ledger-data';
 import { BreadcrumbItem, CursorPagination } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -48,6 +56,8 @@ import {
     ListFilterPlus,
     ReceiptText,
     RotateCcw,
+    Printer,
+    Share2,
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { type DateRange } from 'react-day-picker';
@@ -292,6 +302,16 @@ export default function LedgerIndexScreen({
 
     const totalMutation = totalDebit - totalCredit;
 
+    const printUrl = useMemo(() => {
+        const query: Record<string, string | number> = {};
+        if (filters.coa_id) query.coa_id = filters.coa_id;
+        if (filters.date_from) query.date_from = filters.date_from;
+        if (filters.date_to) query.date_to = filters.date_to;
+        if (filters.department_id) query.department_id = filters.department_id;
+
+        return print.ledger.url({ query });
+    }, [filters]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Buku Besar" />
@@ -417,6 +437,27 @@ export default function LedgerIndexScreen({
                                     </DialogFooter>
                                 </DialogContent>
                             </Dialog>
+                            <DropdownMenu modal={false}>
+                                <DropdownMenuTrigger asChild>
+                                    <Button aria-label="Open menu">
+                                        <Share2 />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent align="end">
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuItem asChild>
+                                            <a
+                                                href={printUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                <Printer />
+                                                Cetak
+                                            </a>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </div>
                     </div>
 
@@ -556,9 +597,9 @@ export default function LedgerIndexScreen({
                                                         Number(
                                                             opening_balance,
                                                         ) +
-                                                            Number(
-                                                                totalMutation,
-                                                            ),
+                                                        Number(
+                                                            totalMutation,
+                                                        ),
                                                     )}
                                                 </p>
                                             </div>
