@@ -4,6 +4,13 @@ import InputError from '@/components/input-error';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
 import {
     Table,
@@ -17,7 +24,7 @@ import AppLayout from '@/layouts/app-layout';
 import BeginningBalanceLayout from '@/layouts/settings/beginning-balance-layout';
 import beginningBalance from '@/routes/beginning-balance';
 import { type BreadcrumbItem } from '@/types';
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { AlertCircle, CheckCircle2 } from 'lucide-react';
 import { FormEventHandler, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
@@ -41,12 +48,20 @@ type FormattedEntry = {
     credit: string;
 };
 
+type Department = {
+    id: number;
+    name: string;
+};
+
 type FormData = {
+    department_id: number | null;
     entries: AccountFormEntry[];
 };
 
 type BeginningBalanceAccountIndexProps = {
     accounts: AccountItem[];
+    departments: Department[];
+    department_id: number | null;
     totals: {
         debit: string;
         credit: string;
@@ -122,6 +137,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 export default function BeginningBalanceAccountIndex({
     accounts,
+    departments,
+    department_id,
 }: BeginningBalanceAccountIndexProps) {
     const initialEntries = useMemo<AccountFormEntry[]>(() => {
         return accounts.map((account) => ({
@@ -132,15 +149,17 @@ export default function BeginningBalanceAccountIndex({
     }, [accounts]);
 
     const { data, setData, put, processing, errors } = useForm<FormData>({
+        department_id: department_id,
         entries: initialEntries,
     });
 
     useEffect(() => {
         setData((prev) => ({
             ...prev,
+            department_id: department_id,
             entries: initialEntries,
         }));
-    }, [initialEntries, setData]);
+    }, [department_id, initialEntries, setData]);
 
     const initialFormattedValues = useMemo(
         () => buildFormattedMap(accounts),
@@ -252,10 +271,39 @@ export default function BeginningBalanceAccountIndex({
 
             <BeginningBalanceLayout>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <HeadingSmall
-                        title="Saldo Awal Akun"
-                        description="Mengisi saldo awal akun"
-                    />
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <HeadingSmall
+                            title="Saldo Awal Akun"
+                            description="Mengisi saldo awal akun"
+                        />
+                        {departments.length > 0 && (
+                            <div className="w-full sm:w-[250px]">
+                                <Select
+                                    value={data.department_id?.toString() ?? ''}
+                                    onValueChange={(value) => {
+                                        router.get(
+                                            beginningBalance.account.index.url(),
+                                            { department_id: value }
+                                        );
+                                    }}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Pilih Departemen" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {departments.map((dept) => (
+                                            <SelectItem
+                                                key={dept.id}
+                                                value={dept.id.toString()}
+                                            >
+                                                {dept.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        )}
+                    </div>
 
                     <div className="space-y-3">
                         <div className="overflow-x-auto rounded-md border">
