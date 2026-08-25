@@ -22,6 +22,12 @@ class UpdateAccountBeginningBalanceRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'department_id' => [
+                'required',
+                'integer',
+                'exists:departments,id',
+            ],
+
             'entries' => [
                 'required',
                 'array',

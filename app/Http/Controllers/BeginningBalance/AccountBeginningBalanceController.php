@@ -14,12 +14,24 @@ use Inertia\Response;
 
 class AccountBeginningBalanceController extends Controller
 {
-    public function index(): Response
+    public function index(): Response|RedirectResponse
     {
+        $departments = \App\Models\Department::query()->active()->get(['id', 'name']);
+        $departmentId = request('department_id');
+
+        if (!$departmentId && $departments->isNotEmpty()) {
+            return redirect()->route('beginning-balance.account.index', [
+                'department_id' => $departments->first()->id,
+            ]);
+        }
+
         $journalDate = Carbon::create(now()->year, 1, 1)->format('Y-m-d');
 
         $journal = Journal::query()
-            ->with(['details' => function ($query) {
+            ->with(['details' => function ($query) use ($departmentId) {
+                if ($departmentId) {
+                    $query->where('department_id', $departmentId);
+                }
                 $query->orderBy('id');
             }])
             ->where('journal_category_id', 1)
@@ -59,6 +71,8 @@ class AccountBeginningBalanceController extends Controller
 
         return inertia('settings/beginning-balance/account-index', [
             'accounts' => $accountPayload,
+            'departments' => $departments,
+            'department_id' => $departmentId ? (int) $departmentId : null,
         ]);
     }
 
@@ -87,7 +101,7 @@ class AccountBeginningBalanceController extends Controller
                 ReferenceNumber::updateAccountBeginningBalance();
             }
 
-            $journal->details()->delete();
+            $journal->details()->where('department_id', $validated['department_id'])->delete();
 
             $entries = collect($validated['entries'])
                 ->map(function ($entry) {
@@ -107,7 +121,7 @@ class AccountBeginningBalanceController extends Controller
                     'coa_id' => $detail['coa_id'],
                     'debit' => $detail['debit'],
                     'credit' => $detail['credit'],
-                    'department_id' => 1, // Default department
+                    'department_id' => $validated['department_id'],
                     'project_id' => null,
                     'note' => null,
                     'created_by' => $request->user()?->id,
@@ -116,7 +130,7 @@ class AccountBeginningBalanceController extends Controller
         });
 
         return redirect()
-            ->route('beginning-balance.account.index')
+            ->route('beginning-balance.account.index', ['department_id' => $validated['department_id']])
             ->with('success', 'Saldo awal akun berhasil diperbarui.');
     }
 }
