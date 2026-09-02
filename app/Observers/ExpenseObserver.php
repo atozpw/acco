@@ -26,7 +26,7 @@ class ExpenseObserver implements ShouldHandleEventsAfterCommit
             'coa_id' => $expense->coa_id,
             'credit' => $expense->amount,
             'note' => $expense->description,
-            'department_id' => 1,
+            'department_id' => $expense->department_id,
             'created_by' => $expense->created_by,
         ]);
 
@@ -53,7 +53,7 @@ class ExpenseObserver implements ShouldHandleEventsAfterCommit
             'coa_id' => $expense->coa_id,
             'credit' => $expense->amount,
             'note' => $expense->description,
-            'department_id' => 1,
+            'department_id' => $expense->department_id,
             'created_by' => $expense->created_by,
         ]);
     }
