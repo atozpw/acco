@@ -27,6 +27,7 @@ class ExpenseObserver implements ShouldHandleEventsAfterCommit
             'credit' => $expense->amount,
             'note' => $expense->description,
             'department_id' => $expense->department_id,
+            'project_id' => $expense->project_id,
             'created_by' => $expense->created_by,
         ]);
 
@@ -54,6 +55,7 @@ class ExpenseObserver implements ShouldHandleEventsAfterCommit
             'credit' => $expense->amount,
             'note' => $expense->description,
             'department_id' => $expense->department_id,
+            'project_id' => $expense->project_id,
             'created_by' => $expense->created_by,
         ]);
     }
