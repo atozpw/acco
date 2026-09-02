@@ -26,7 +26,7 @@ class IncomeObserver implements ShouldHandleEventsAfterCommit
             'coa_id' => $income->coa_id,
             'debit' => $income->amount,
             'note' => $income->description,
-            'department_id' => 1,
+            'department_id' => $income->department_id,
             'created_by' => $income->created_by,
         ]);
 
@@ -53,7 +53,7 @@ class IncomeObserver implements ShouldHandleEventsAfterCommit
             'coa_id' => $income->coa_id,
             'debit' => $income->amount,
             'note' => $income->description,
-            'department_id' => 1,
+            'department_id' => $income->department_id,
             'created_by' => $income->created_by,
         ]);
     }
