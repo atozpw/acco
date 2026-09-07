@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserManagement\StoreUserRequest;
 use App\Http\Requests\UserManagement\UpdateUserRequest;
 use App\Models\Department;
+use App\Models\Project;
 use App\Models\User;
 use App\Models\UserDepartment;
+use App\Models\UserProject;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -56,10 +58,12 @@ class UserController extends Controller
     {
         $roles = Role::query()->where('id', '>', 1)->orderBy('name')->get(['id', 'name']);
         $departments = Department::query()->get(['id', 'name']);
+        $projects = Project::query()->get(['id', 'name']);
 
         return inertia('user-management/users/create', [
             'roles' => $roles,
             'departments' => $departments,
+            'projects' => $projects,
         ]);
     }
 
@@ -89,6 +93,14 @@ class UserController extends Controller
             ]);
         }
 
+        $projectIds = $request->input('projects', []);
+        foreach ($projectIds as $projectId) {
+            UserProject::create([
+                'user_id' => $user->id,
+                'project_id' => $projectId,
+            ]);
+        }
+
         return redirect()->route('users.index');
     }
 
@@ -104,11 +116,13 @@ class UserController extends Controller
 
         $roles = Role::query()->where('id', '>', 1)->orderBy('name')->get(['id', 'name']);
         $departments = Department::query()->get(['id', 'name']);
+        $projects = Project::query()->get(['id', 'name']);
 
         return inertia('user-management/users/edit', [
             'user' => $user,
             'roles' => $roles,
             'departments' => $departments,
+            'projects' => $projects,
         ]);
     }
 
@@ -144,6 +158,16 @@ class UserController extends Controller
             UserDepartment::create([
                 'user_id' => $user->id,
                 'department_id' => $departmentId,
+            ]);
+        }
+
+        $projectIds = $request->input('projects', []);
+        UserProject::where('user_id', $user->id)->delete();
+
+        foreach ($projectIds as $projectId) {
+            UserProject::create([
+                'user_id' => $user->id,
+                'project_id' => $projectId,
             ]);
         }
 
