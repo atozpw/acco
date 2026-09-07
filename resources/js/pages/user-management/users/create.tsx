@@ -26,6 +26,11 @@ type DepartmentOption = {
     name: string;
 };
 
+type ProjectOption = {
+    id: number;
+    name: string;
+};
+
 type UserFormData = {
     name: string;
     username: string;
@@ -34,6 +39,7 @@ type UserFormData = {
     is_active: boolean;
     roles: number[];
     departments: number[];
+    projects: number[];
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -54,9 +60,11 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function UserCreateScreen({
     roles,
     departments,
+    projects,
 }: {
     roles: RoleOption[];
     departments: DepartmentOption[];
+    projects: ProjectOption[];
 }) {
     const { data, setData, post, processing, errors, reset } =
         useForm<UserFormData>({
@@ -67,6 +75,7 @@ export default function UserCreateScreen({
             is_active: true,
             roles: [],
             departments: [],
+            projects: [],
         });
 
     const toggleRole = (roleId: number, checked: boolean | 'indeterminate') => {
@@ -87,6 +96,17 @@ export default function UserCreateScreen({
             setData(
                 'departments',
                 data.departments.filter((id) => id !== departmentId),
+            );
+        }
+    };
+
+    const toggleProject = (projectId: number, checked: boolean | 'indeterminate') => {
+        if (checked === true) {
+            setData('projects', Array.from(new Set([...data.projects, projectId])));
+        } else {
+            setData(
+                'projects',
+                data.projects.filter((id) => id !== projectId),
             );
         }
     };
@@ -308,6 +328,49 @@ export default function UserCreateScreen({
                                     ))}
                                 </div>
                                 <InputError message={errors.departments} />
+                            </div>
+
+                            <div className="space-y-3">
+                                <div className="flex items-center justify-between">
+                                    <div className="space-y-1">
+                                        <Label>Pilih Proyek</Label>
+                                        <p className="text-xs text-muted-foreground">
+                                            Berikan proyek untuk mengatur akses.
+                                        </p>
+                                    </div>
+                                    <span className="text-xs text-muted-foreground">
+                                        {projects.length} tersedia
+                                    </span>
+                                </div>
+
+                                <div className="grid gap-3 sm:grid-cols-2">
+                                    {projects.length === 0 && (
+                                        <p className="col-span-2 text-sm text-muted-foreground">
+                                            Belum ada proyek yang tersedia.
+                                        </p>
+                                    )}
+                                    {projects.map((project) => (
+                                        <label
+                                            key={project.id}
+                                            className="flex cursor-pointer items-start gap-3 rounded-md border p-3 hover:bg-muted/60"
+                                        >
+                                            <Checkbox
+                                                checked={data.projects.includes(
+                                                    project.id,
+                                                )}
+                                                onCheckedChange={(checked) =>
+                                                    toggleProject(project.id, checked)
+                                                }
+                                            />
+                                            <div className="space-y-1">
+                                                <p className="text-sm font-medium">
+                                                    {project.name}
+                                                </p>
+                                            </div>
+                                        </label>
+                                    ))}
+                                </div>
+                                <InputError message={errors.projects} />
                             </div>
                         </div>
                     </div>
