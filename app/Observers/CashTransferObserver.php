@@ -26,8 +26,8 @@ class CashTransferObserver implements ShouldHandleEventsAfterCommit
             'coa_id' => $cashTransfer->to_coa_id,
             'debit' => $cashTransfer->amount,
             'note' => $cashTransfer->description,
-            'department_id' => $cashTransfer->department_id,
-            'project_id' => $cashTransfer->project_id,
+            'department_id' => $cashTransfer->to_department_id,
+            'project_id' => $cashTransfer->to_project_id,
             'created_by' => $cashTransfer->created_by,
         ]);
 
@@ -63,8 +63,8 @@ class CashTransferObserver implements ShouldHandleEventsAfterCommit
             'coa_id' => $cashTransfer->to_coa_id,
             'debit' => $cashTransfer->amount,
             'note' => $cashTransfer->description,
-            'department_id' => $cashTransfer->department_id,
-            'project_id' => $cashTransfer->project_id,
+            'department_id' => $cashTransfer->to_department_id,
+            'project_id' => $cashTransfer->to_project_id,
             'created_by' => $cashTransfer->created_by,
         ]);
 
