@@ -64,7 +64,19 @@ class UpdateCashTransferRequest extends FormRequest
                 'exists:departments,id',
             ],
 
+            'to_department_id' => [
+                'required',
+                'integer',
+                'exists:departments,id',
+            ],
+
             'project_id' => [
+                'nullable',
+                'integer',
+                'exists:projects,id',
+            ],
+
+            'to_project_id' => [
                 'nullable',
                 'integer',
                 'exists:projects,id',

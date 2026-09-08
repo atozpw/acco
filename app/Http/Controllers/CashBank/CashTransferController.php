@@ -9,7 +9,6 @@ use App\Http\Requests\CashBank\UpdateCashTransferRequest;
 use App\Models\Coa;
 use App\Models\CashTransfer;
 use App\Models\Journal;
-use App\Models\Project;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -112,6 +111,8 @@ class CashTransferController extends Controller
                 'amount' => $validated['amount'],
                 'department_id' => $validated['department_id'],
                 'project_id' => $validated['project_id'] ?? null,
+                'to_department_id' => $validated['to_department_id'],
+                'to_project_id' => $validated['to_project_id'] ?? null,
                 'created_by' => $request->user()?->id,
             ]);
         });
@@ -238,6 +239,8 @@ class CashTransferController extends Controller
             $cashTransfer->amount = $validated['amount'];
             $cashTransfer->department_id = $validated['department_id'];
             $cashTransfer->project_id = $validated['project_id'] ?? null;
+            $cashTransfer->to_department_id = $validated['to_department_id'];
+            $cashTransfer->to_project_id = $validated['to_project_id'] ?? null;
             $cashTransfer->save();
         });
 

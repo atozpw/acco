@@ -21,7 +21,9 @@ class CashTransfer extends Model
         'description',
         'amount',
         'department_id',
+        'to_department_id',
         'project_id',
+        'to_project_id',
         'created_by',
     ];
 
@@ -40,9 +42,19 @@ class CashTransfer extends Model
         return $this->belongsTo(Department::class);
     }
 
+    public function toDepartment(): BelongsTo
+    {
+        return $this->belongsTo(Department::class, 'to_department_id');
+    }
+
     public function project(): BelongsTo
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function toProject(): BelongsTo
+    {
+        return $this->belongsTo(Project::class, 'to_project_id');
     }
 
     public function createdBy(): BelongsTo

@@ -31,6 +31,8 @@ type CashTransferFormData = {
     amount: string;
     department_id: string;
     project_id: string;
+    to_department_id: string;
+    to_project_id: string;
 };
 
 type CashTransferProps = {
@@ -43,6 +45,8 @@ type CashTransferProps = {
     amount: string;
     department_id: number;
     project_id: number | null;
+    to_department_id: number;
+    to_project_id: number | null;
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -105,6 +109,12 @@ export default function CashTransferEditScreen({
                 : '1',
             project_id: cashTransfer.project_id
                 ? String(cashTransfer.project_id)
+                : '',
+            to_department_id: cashTransfer.to_department_id
+                ? String(cashTransfer.to_department_id)
+                : '1',
+            to_project_id: cashTransfer.to_project_id
+                ? String(cashTransfer.to_project_id)
                 : '',
         });
 
@@ -173,23 +183,6 @@ export default function CashTransferEditScreen({
                                     />
                                     <InputError message={errors.reference_no} />
                                 </div>
-                                <div className="grid gap-2 lg:basis-2/3">
-                                    <Label>Departemen</Label>
-                                    <InputCombobox
-                                        name="department_id"
-                                        items={departmentItems}
-                                        placeholder="Pilih departemen"
-                                        value={data.department_id}
-                                        onValueChange={(value) =>
-                                            setData('department_id', value)
-                                        }
-                                    />
-                                    <InputError
-                                        message={errors.department_id}
-                                    />
-                                </div>
-                            </div>
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
                                 <div className="grid gap-2 lg:basis-1/3">
                                     <Label htmlFor="date">Tanggal</Label>
                                     <InputDatepicker
@@ -200,19 +193,6 @@ export default function CashTransferEditScreen({
                                         }
                                     />
                                     <InputError message={errors.date} />
-                                </div>
-                                <div className="grid gap-2 lg:basis-2/3">
-                                    <Label>Proyek</Label>
-                                    <InputCombobox
-                                        name="project_id"
-                                        items={projectItems}
-                                        placeholder="Pilih proyek (opsional)"
-                                        value={data.project_id}
-                                        onValueChange={(value) =>
-                                            setData('project_id', value)
-                                        }
-                                    />
-                                    <InputError message={errors.project_id} />
                                 </div>
                             </div>
                             <div className="grid max-w-2xl gap-2">
@@ -270,6 +250,64 @@ export default function CashTransferEditScreen({
                                         }
                                     />
                                     <InputError message={errors.to_coa_id} />
+                                </div>
+                            </div>
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                                <div className="grid gap-2 lg:basis-1/2">
+                                    <Label>Dari Departemen</Label>
+                                    <InputCombobox
+                                        name="department_id"
+                                        items={departmentItems}
+                                        placeholder="Pilih departemen"
+                                        value={data.department_id}
+                                        onValueChange={(value) =>
+                                            setData('department_id', value)
+                                        }
+                                    />
+                                    <InputError
+                                        message={errors.department_id}
+                                    />
+                                </div>
+                                <div className="grid gap-2 lg:basis-1/2">
+                                    <Label>Ke Departemen</Label>
+                                    <InputCombobox
+                                        name="to_department_id"
+                                        items={departmentItems}
+                                        placeholder="Pilih departemen"
+                                        value={data.to_department_id}
+                                        onValueChange={(value) =>
+                                            setData('to_department_id', value)
+                                        }
+                                    />
+                                    <InputError message={errors.to_department_id} />
+                                </div>
+                            </div>
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                                <div className="grid gap-2 lg:basis-1/2">
+                                    <Label>Dari Proyek</Label>
+                                    <InputCombobox
+                                        name="project_id"
+                                        items={projectItems}
+                                        placeholder="Pilih proyek (opsional)"
+                                        value={data.project_id}
+                                        onValueChange={(value) =>
+                                            setData('project_id', value)
+                                        }
+                                    />
+                                    <InputError message={errors.project_id} />
+                                </div>
+                                <div className="grid gap-2 lg:basis-1/2">
+                                    <Label>Ke Proyek</Label>
+                                    <InputCombobox
+                                        name="to_project_id"
+                                        items={projectItems}
+                                        placeholder="Pilih proyek (opsional)"
+                                        value={data.to_project_id}
+                                        onValueChange={(value) =>
+                                            setData('to_project_id', value)
+                                        }
+                                    />
+                                    <InputError message={errors.to_project_id} />
                                 </div>
                             </div>
                             <div className="grid max-w-2xl gap-2">
