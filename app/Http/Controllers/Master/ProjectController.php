@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Master\StoreProjectRequest;
 use App\Http\Requests\Master\UpdateProjectRequest;
 use App\Models\Project;
+use App\Models\User;
+use App\Models\UserProject;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
 
 class ProjectController extends Controller
@@ -55,7 +58,25 @@ class ProjectController extends Controller
     {
         $validated = $request->validated();
 
-        Project::create($validated);
+        $project = Project::create($validated);
+
+        if ($validated['is_add_to_me'] && !$validated['is_add_to_all']) {
+            UserProject::create([
+                'user_id' => Auth::id(),
+                'project_id' => $project->id
+            ]);
+        }
+
+        if ($validated['is_add_to_all']) {
+            $users = User::where('is_active', true)->get();
+
+            foreach ($users as $user) {
+                UserProject::create([
+                    'user_id' => $user->id,
+                    'project_id' => $project->id
+                ]);
+            }
+        }
 
         return redirect()->route('project-data.index');
     }

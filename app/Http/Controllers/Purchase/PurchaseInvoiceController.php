@@ -11,7 +11,6 @@ use App\Models\Coa;
 use App\Models\Contact;
 use App\Models\Journal;
 use App\Models\Product;
-use App\Models\Project;
 use App\Models\PurchaseInvoice;
 use App\Models\PurchaseReceipt;
 use App\Models\Tax;
@@ -109,7 +108,8 @@ class PurchaseInvoiceController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $projects = Project::query()
+        $projects = Auth::user()
+            ->projects()
             ->active()
             ->orderBy('name')
             ->get(['id', 'code', 'name']);
@@ -358,7 +358,8 @@ class PurchaseInvoiceController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $projects = Project::query()
+        $projects = Auth::user()
+            ->projects()
             ->active()
             ->orderBy('name')
             ->get(['id', 'code', 'name']);

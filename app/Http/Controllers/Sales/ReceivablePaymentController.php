@@ -9,7 +9,6 @@ use App\Http\Requests\Sales\UpdateReceivablePaymentRequest;
 use App\Models\Coa;
 use App\Models\Contact;
 use App\Models\Journal;
-use App\Models\Project;
 use App\Models\ReceivablePayment;
 use App\Models\SalesInvoice;
 use Carbon\Carbon;
@@ -87,7 +86,8 @@ class ReceivablePaymentController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $projects = Project::query()
+        $projects = Auth::user()
+            ->projects()
             ->active()
             ->orderBy('name')
             ->get(['id', 'code', 'name']);
@@ -286,7 +286,8 @@ class ReceivablePaymentController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $projects = Project::query()
+        $projects = Auth::user()
+            ->projects()
             ->active()
             ->orderBy('name')
             ->get(['id', 'code', 'name']);
