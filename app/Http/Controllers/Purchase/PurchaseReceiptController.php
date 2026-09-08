@@ -9,7 +9,6 @@ use App\Http\Requests\Purchase\UpdatePurchaseReceiptRequest;
 use App\Models\Contact;
 use App\Models\Journal;
 use App\Models\Product;
-use App\Models\Project;
 use App\Models\PurchaseReceipt;
 use App\Models\Tax;
 use App\Models\Warehouse;
@@ -98,7 +97,8 @@ class PurchaseReceiptController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $projects = Project::query()
+        $projects = Auth::user()
+            ->projects()
             ->active()
             ->orderBy('name')
             ->get(['id', 'code', 'name']);
@@ -302,7 +302,8 @@ class PurchaseReceiptController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $projects = Project::query()
+        $projects = Auth::user()
+            ->projects()
             ->active()
             ->orderBy('name')
             ->get(['id', 'code', 'name']);

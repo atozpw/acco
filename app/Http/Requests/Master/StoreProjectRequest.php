@@ -39,6 +39,16 @@ class StoreProjectRequest extends FormRequest
                 'required',
                 'boolean',
             ],
+
+            'is_add_to_me' => [
+                'required',
+                'boolean',
+            ],
+
+            'is_add_to_all' => [
+                'required',
+                'boolean',
+            ],
         ];
     }
 }

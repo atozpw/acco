@@ -10,7 +10,6 @@ use App\Models\Coa;
 use App\Models\Contact;
 use App\Models\Income;
 use App\Models\Journal;
-use App\Models\Project;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -91,7 +90,8 @@ class IncomeController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $projects = Project::query()
+        $projects = Auth::user()
+            ->projects()
             ->active()
             ->orderBy('name')
             ->get(['id', 'code', 'name']);
@@ -250,7 +250,8 @@ class IncomeController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $projects = Project::query()
+        $projects = Auth::user()
+            ->projects()
             ->active()
             ->orderBy('name')
             ->get(['id', 'code', 'name']);

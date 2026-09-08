@@ -10,7 +10,6 @@ use App\Models\Coa;
 use App\Models\Contact;
 use App\Models\Journal;
 use App\Models\PayablePayment;
-use App\Models\Project;
 use App\Models\PurchaseInvoice;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
@@ -87,7 +86,8 @@ class PayablePaymentController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $projects = Project::query()
+        $projects = Auth::user()
+            ->projects()
             ->active()
             ->orderBy('name')
             ->get(['id', 'code', 'name']);
@@ -287,7 +287,8 @@ class PayablePaymentController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $projects = Project::query()
+        $projects = Auth::user()
+            ->projects()
             ->active()
             ->orderBy('name')
             ->get(['id', 'code', 'name']);

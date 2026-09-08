@@ -9,7 +9,6 @@ use App\Http\Requests\Sales\UpdateSalesDeliveryRequest;
 use App\Models\Contact;
 use App\Models\Journal;
 use App\Models\Product;
-use App\Models\Project;
 use App\Models\SalesDelivery;
 use App\Models\Tax;
 use App\Models\Warehouse;
@@ -97,7 +96,8 @@ class SalesDeliveryController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $projects = Project::query()
+        $projects = Auth::user()
+            ->projects()
             ->active()
             ->orderBy('name')
             ->get(['id', 'code', 'name']);
@@ -281,7 +281,8 @@ class SalesDeliveryController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $projects = Project::query()
+        $projects = Auth::user()
+            ->projects()
             ->active()
             ->orderBy('name')
             ->get(['id', 'code', 'name']);

@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Ledger;
 
 use App\Http\Controllers\Controller;
 use App\Models\Coa;
-use App\Models\Department;
 use App\Models\Journal;
 use App\Models\JournalDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
 
 class LedgerController extends Controller
@@ -24,7 +24,9 @@ class LedgerController extends Controller
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 
-        $departments = Department::query()
+        $departments = Auth::user()
+            ->departments()
+            ->active()
             ->orderBy('code')
             ->get(['id', 'code', 'name']);
 

@@ -19,6 +19,8 @@ type ProjectFormData = {
     code: string;
     name: string;
     is_active: boolean;
+    is_add_to_me: boolean;
+    is_add_to_all: boolean;
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -42,6 +44,8 @@ export default function ProjectCreateScreen() {
             code: '',
             name: '',
             is_active: true,
+            is_add_to_me: false,
+            is_add_to_all: false,
         });
 
     const submit: FormEventHandler<HTMLFormElement> = (event) => {
@@ -147,6 +151,68 @@ export default function ProjectCreateScreen() {
                                         </span>
                                     </div>
                                     <InputError message={errors.is_active} />
+                                </div>
+                            </div>
+                            <div className="grid max-w-2xl gap-4">
+                                <div className="flex items-center justify-between gap-4">
+                                    <div className="space-y-1">
+                                        <Label htmlFor="is_add_to_me">
+                                            Tambah ke Saya
+                                        </Label>
+                                        <p className="text-xs text-muted-foreground">
+                                            Tentukan apakah proyek ini akan ditambahkan ke akun saya.
+                                        </p>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-xs text-muted-foreground">
+                                            Tidak
+                                        </span>
+                                        <Switch
+                                            id="is_add_to_me"
+                                            checked={data.is_add_to_me}
+                                            onCheckedChange={(checked) =>
+                                                setData(
+                                                    'is_add_to_me',
+                                                    Boolean(checked),
+                                                )
+                                            }
+                                        />
+                                        <span className="text-xs text-muted-foreground">
+                                            Ya
+                                        </span>
+                                    </div>
+                                    <InputError message={errors.is_add_to_me} />
+                                </div>
+                            </div>
+                            <div className="grid max-w-2xl gap-4">
+                                <div className="flex items-center justify-between gap-4">
+                                    <div className="space-y-1">
+                                        <Label htmlFor="is_add_to_all">
+                                            Tambah ke Semua Pengguna
+                                        </Label>
+                                        <p className="text-xs text-muted-foreground">
+                                            Tentukan apakah proyek ini akan ditambahkan ke semua pengguna.
+                                        </p>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-xs text-muted-foreground">
+                                            Tidak
+                                        </span>
+                                        <Switch
+                                            id="is_add_to_all"
+                                            checked={data.is_add_to_all}
+                                            onCheckedChange={(checked) =>
+                                                setData(
+                                                    'is_add_to_all',
+                                                    Boolean(checked),
+                                                )
+                                            }
+                                        />
+                                        <span className="text-xs text-muted-foreground">
+                                            Ya
+                                        </span>
+                                    </div>
+                                    <InputError message={errors.is_add_to_all} />
                                 </div>
                             </div>
                         </div>
