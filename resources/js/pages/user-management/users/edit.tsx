@@ -263,7 +263,7 @@ export default function UserEditScreen({
                                 <div className="flex items-center justify-between gap-4 rounded-md border p-4">
                                     <div>
                                         <Label htmlFor="is_only_mine">
-                                            Hanya Milik Sendiri
+                                            Visibilitas Data
                                         </Label>
                                         <p className="text-xs text-muted-foreground">
                                             Jika diaktifkan, user hanya bisa
