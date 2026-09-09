@@ -2,14 +2,17 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\DataVisibilityScope;
 use App\Observers\PayablePaymentObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 #[ObservedBy([PayablePaymentObserver::class])]
+#[ScopedBy([DataVisibilityScope::class])]
 class PayablePayment extends Model
 {
     use SoftDeletes;

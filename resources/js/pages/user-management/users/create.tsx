@@ -37,6 +37,7 @@ type UserFormData = {
     email: string;
     password: string;
     is_active: boolean;
+    is_only_mine: boolean;
     roles: number[];
     departments: number[];
     projects: number[];
@@ -73,6 +74,7 @@ export default function UserCreateScreen({
             email: '',
             password: '',
             is_active: true,
+            is_only_mine: true,
             roles: [],
             departments: [],
             projects: [],
@@ -233,6 +235,35 @@ export default function UserCreateScreen({
                                             onCheckedChange={(checked) =>
                                                 setData(
                                                     'is_active',
+                                                    Boolean(checked),
+                                                )
+                                            }
+                                        />
+                                        <span className="text-xs text-muted-foreground">
+                                            Aktif
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="flex items-center justify-between gap-4 rounded-md border p-4">
+                                    <div>
+                                        <Label htmlFor="is_only_mine">
+                                            Hanya Milik Sendiri
+                                        </Label>
+                                        <p className="text-xs text-muted-foreground">
+                                            Jika diaktifkan, user hanya bisa
+                                            melihat data miliknya sendiri.
+                                        </p>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-xs text-muted-foreground">
+                                            Nonaktif
+                                        </span>
+                                        <Switch
+                                            id="is_only_mine"
+                                            checked={data.is_only_mine}
+                                            onCheckedChange={(checked) =>
+                                                setData(
+                                                    'is_only_mine',
                                                     Boolean(checked),
                                                 )
                                             }

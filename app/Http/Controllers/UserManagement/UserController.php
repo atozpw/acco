@@ -80,6 +80,7 @@ class UserController extends Controller
             'email' => $data['email'] ?? null,
             'password' => Hash::make($data['password']),
             'is_active' => $data['is_active'],
+            'is_only_mine' => $data['is_only_mine'],
         ]);
 
         $roleIds = $request->input('roles', []);
@@ -140,6 +141,7 @@ class UserController extends Controller
             'username' => $data['username'],
             'email' => $data['email'] ?? null,
             'is_active' => $data['is_active'],
+            'is_only_mine' => $data['is_only_mine'],
         ];
 
         if (! empty($data['password'])) {
