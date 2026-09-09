@@ -33,6 +33,7 @@ class User extends Authenticatable
         'password',
         'avatar',
         'is_active',
+        'is_only_mine',
     ];
 
     /**

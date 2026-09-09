@@ -37,6 +37,7 @@ type UserData = {
     username: string;
     email: string | null;
     is_active: boolean;
+    is_only_mine: boolean;
     roles: RoleOption[];
     departments: DepartmentOption[];
     projects: ProjectOption[];
@@ -48,6 +49,7 @@ type UserFormData = {
     email: string;
     password: string;
     is_active: boolean;
+    is_only_mine: boolean;
     roles: number[];
     departments: number[];
     projects: number[];
@@ -86,6 +88,7 @@ export default function UserEditScreen({
             email: user.email ?? '',
             password: '',
             is_active: Boolean(user.is_active),
+            is_only_mine: Boolean(user.is_only_mine),
             roles: user.roles?.map((r) => r.id) ?? [],
             departments: user.departments?.map((d) => d.id) ?? [],
             projects: user.projects?.map((p) => p.id) ?? [],
@@ -248,6 +251,35 @@ export default function UserEditScreen({
                                             onCheckedChange={(checked) =>
                                                 setData(
                                                     'is_active',
+                                                    Boolean(checked),
+                                                )
+                                            }
+                                        />
+                                        <span className="text-xs text-muted-foreground">
+                                            Aktif
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="flex items-center justify-between gap-4 rounded-md border p-4">
+                                    <div>
+                                        <Label htmlFor="is_only_mine">
+                                            Hanya Milik Sendiri
+                                        </Label>
+                                        <p className="text-xs text-muted-foreground">
+                                            Jika diaktifkan, user hanya bisa
+                                            melihat data miliknya sendiri.
+                                        </p>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-xs text-muted-foreground">
+                                            Nonaktif
+                                        </span>
+                                        <Switch
+                                            id="is_only_mine"
+                                            checked={data.is_only_mine}
+                                            onCheckedChange={(checked) =>
+                                                setData(
+                                                    'is_only_mine',
                                                     Boolean(checked),
                                                 )
                                             }

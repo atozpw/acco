@@ -38,6 +38,7 @@ class StoreUserRequest extends FormRequest
             ],
             'password' => ['required', 'string', 'min:8'],
             'is_active' => ['required', 'boolean'],
+            'is_only_mine' => ['required', 'boolean'],
             'roles' => ['array'],
             'roles.*' => ['integer', 'exists:roles,id'],
         ];
