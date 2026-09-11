@@ -102,6 +102,11 @@ type LedgerEntry = {
         code: string;
         name: string;
     } | null;
+    project: {
+        id: number;
+        code: string;
+        name: string;
+    } | null;
 };
 
 type OptionItem = {
@@ -115,6 +120,7 @@ type LedgerFilters = {
     perPage?: number;
     coa_id?: number | null;
     department_id?: number | null;
+    project_id?: number | null;
     date_from?: string | null;
     date_to?: string | null;
 };
@@ -132,12 +138,14 @@ export default function LedgerIndexScreen({
     opening_balance,
     coas,
     departments,
+    projects,
     filters,
 }: {
     journals: CursorPagination<LedgerEntry>;
     opening_balance: string | number;
     coas: OptionItem[];
     departments: OptionItem[];
+    projects: OptionItem[];
     filters: LedgerFilters;
 }) {
     const coaItems: ComboboxItem[] = coas.map((c) => ({
@@ -150,11 +158,19 @@ export default function LedgerIndexScreen({
         label: d.name,
     }));
 
+    const projectItems: ComboboxItem[] = projects.map((p) => ({
+        value: String(p.id),
+        label: p.name,
+    }));
+
     const filtersSearch = filters.search ?? '';
     const filtersPerPage = filters.perPage ?? 25;
     const filtersCoa = filters.coa_id ? String(filters.coa_id) : '';
     const filtersDepartment = filters.department_id
         ? String(filters.department_id)
+        : '';
+    const filtersProject = filters.project_id
+        ? String(filters.project_id)
         : '';
     const filtersDateFrom = filters.date_from ?? '';
     const filtersDateTo = filters.date_to ?? '';
@@ -164,6 +180,7 @@ export default function LedgerIndexScreen({
     const searchBounce = useDebounceValue(search, 300);
     const [coaId, setCoaId] = useState<string>(filtersCoa);
     const [departmentId, setDepartmentId] = useState<string>(filtersDepartment);
+    const [projectId, setProjectId] = useState<string>(filtersProject);
     const [dateRange, setDateRange] = useState<DateRange | undefined>();
     const [filtersDialogOpen, setFiltersDialogOpen] = useState<boolean>(false);
     const [openDate, setOpenDate] = useState<boolean>(false);
@@ -177,6 +194,7 @@ export default function LedgerIndexScreen({
             Number(itemsPage) !== filtersPerPage ||
             coaId !== filtersCoa ||
             departmentId !== filtersDepartment ||
+            projectId !== filtersProject ||
             (!!dateRange && selectedDateFrom !== filtersDateFrom) ||
             (!!dateRange && selectedDateTo !== filtersDateTo)
         );
@@ -189,6 +207,8 @@ export default function LedgerIndexScreen({
         filtersCoa,
         departmentId,
         filtersDepartment,
+        projectId,
+        filtersProject,
         dateRange,
         selectedDateFrom,
         filtersDateFrom,
@@ -215,6 +235,9 @@ export default function LedgerIndexScreen({
         if (departmentId) {
             query.department_id = Number(departmentId);
         }
+        if (projectId) {
+            query.project_id = Number(projectId);
+        }
         if (selectedDateFrom) {
             query.date_from = selectedDateFrom;
         }
@@ -232,6 +255,7 @@ export default function LedgerIndexScreen({
         itemsPage,
         coaId,
         departmentId,
+        projectId,
         selectedDateFrom,
         selectedDateTo,
         filtersPerPage,
@@ -243,6 +267,7 @@ export default function LedgerIndexScreen({
         setItemsPage('25');
         setCoaId(filtersCoa);
         setDepartmentId('');
+        setProjectId('');
         setDateRange(undefined);
 
         router.get(
@@ -308,6 +333,7 @@ export default function LedgerIndexScreen({
         if (filters.date_from) query.date_from = filters.date_from;
         if (filters.date_to) query.date_to = filters.date_to;
         if (filters.department_id) query.department_id = filters.department_id;
+        if (filters.project_id) query.project_id = filters.project_id;
 
         return print.ledger.url({ query });
     }, [filters]);
@@ -377,6 +403,18 @@ export default function LedgerIndexScreen({
                                                     setDepartmentId(value)
                                                 }
                                                 items={departmentItems}
+                                            />
+                                        </div>
+                                        <div className="grid gap-2">
+                                            <Label>Proyek</Label>
+                                            <InputCombobox
+                                                name="project_selected"
+                                                placeholder="Pilih proyek"
+                                                value={projectId}
+                                                onValueChange={(value) =>
+                                                    setProjectId(value)
+                                                }
+                                                items={projectItems}
                                             />
                                         </div>
                                         <div className="grid gap-2">
