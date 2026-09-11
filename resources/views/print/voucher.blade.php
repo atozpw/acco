@@ -72,9 +72,9 @@
                     <img src="{{ asset('logo.png') }}" alt="Logo" style="max-height: 70px; max-width: 150px; object-fit: contain;">
                 </div>
                 <div class="flex-grow-1 ps-3">
-                    <h2 class="mb-1" style="font-weight: bold; font-size: 16px;">PT. ARDANA BALAKOSA PRATAMA</h2>
-                    <p class="mb-0" style="font-size: 12px;">Jl. Raya Hankam No. 10A RT. 005 RW.008, Kel. Jatimurni, Kec. Pondok Melati, Kota Bekasi</p>
-                    <p class="mb-0" style="font-size: 12px;">Phone: 0851 2116 9627 | Email: info@ardanabalakosapratama.co.id <br> Website: https://ardanabalakosapratama.co.id</p>
+                    <h2 class="mb-1" style="font-weight: bold; font-size: 14px;">PT. ARDANA BALAKOSA PRATAMA</h2>
+                    <p class="mb-0" style="font-size: 11px;">Jl. Raya Hankam No. 10A RT. 005 RW.008, Kel. Jatimurni, Kec. Pondok Melati, Kota Bekasi</p>
+                    <p class="mb-0" style="font-size: 11px;">Phone: 0851 2116 9627 | Email: info@ardanabalakosapratama.co.id | Website: https://ardanabalakosapratama.co.id</p>
                 </div>
                 <div style="width: 70px;"></div>
             </div>
