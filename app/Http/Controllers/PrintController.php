@@ -997,6 +997,7 @@ class PrintController extends Controller
         $search = (string) $request->input('search');
         $coa_id = (int) $request->input('coa_id');
         $department_id = (int) $request->input('department_id');
+        $project_id = (int) $request->input('project_id');
         $date_from = (string) $request->input('date_from', Carbon::now()->startOfMonth()->toDateString());
         $date_to = (string) $request->input('date_to', Carbon::now()->toDateString());
 
@@ -1009,6 +1010,7 @@ class PrintController extends Controller
             })
             ->when($coa_id, fn($query) => $query->where('coa_id', $coa_id))
             ->when($department_id, fn($query) => $query->where('department_id', $department_id))
+            ->when($project_id, fn($query) => $query->where('project_id', $project_id))
             ->selectRaw('COALESCE(SUM(debit) - SUM(credit), 0) as balance')
             ->value('balance');
 
@@ -1021,6 +1023,7 @@ class PrintController extends Controller
             ])
             ->when($coa_id, fn($query) => $query->where('coa_id', $coa_id))
             ->when($department_id, fn($query) => $query->where('department_id', $department_id))
+            ->when($project_id, fn($query) => $query->where('project_id', $project_id))
             ->when($search, function ($query) use ($search) {
                 $query->whereHas('journal', function ($journalQuery) use ($search) {
                     $journalQuery->where(function ($innerQuery) use ($search) {
@@ -1063,6 +1066,10 @@ class PrintController extends Controller
             ? (Department::find($department_id)?->name ?? 'Semua')
             : 'Semua';
 
+        $projectName = $project_id
+            ? (Project::find($project_id)?->name ?? 'Semua')
+            : 'Semua';
+
         $coaName = $coa_id
             ? (Coa::find($coa_id)?->name ?? 'Semua')
             : 'Semua';
@@ -1072,6 +1079,7 @@ class PrintController extends Controller
             'opening_balance' => $opening_balance,
             'period' => $periodLabel,
             'department' => $departmentName,
+            'project' => $projectName,
             'coa' => $coaName,
             'created_by' => [
                 'name' => $request->user()?->name ?? '-',

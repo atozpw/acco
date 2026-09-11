@@ -107,6 +107,16 @@
                         </tr>
                     </table>
                 </div>
+                <div class="col-md-6">
+                    <table class="table table-borderless table-sm"
+                        style="width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 0;">
+                        <tr>
+                            <td style="width: 150px;">Proyek</td>
+                            <td style="width: 16px;">:</td>
+                            <td>{{ $payload['project'] }}</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
 
             {{-- Details Table --}}
