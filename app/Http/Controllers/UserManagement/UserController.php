@@ -113,6 +113,7 @@ class UserController extends Controller
         $user = User::query()
             ->with('roles:id,name')
             ->with('departments:id,name')
+            ->with('projects:id,name')
             ->findOrFail($id);
 
         $roles = Role::query()->where('id', '>', 1)->orderBy('name')->get(['id', 'name']);
