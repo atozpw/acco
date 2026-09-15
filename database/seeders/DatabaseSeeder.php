@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             CoaSeeder::class,
             ReferenceCoaSeeder::class,
             ProductCategorySeeder::class,
+            BankSeeder::class,
         ]);
     }
 }

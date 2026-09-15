@@ -11,16 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('received_checks', function (Blueprint $table) {
+        Schema::create('giro_outs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('coa_id');
             $table->unsignedBigInteger('bank_id');
             $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('project_id')->nullable();
-            $table->string('reference_no', 10)->index();
+            $table->string('reference_no', 10)->unique();
             $table->string('number', 50);
             $table->date('date');
             $table->date('due_date');
+            $table->string('account_no', 50);
+            $table->string('account_name', 100);
             $table->string('description', 100);
             $table->decimal('amount', 16, 2)->default(0);
             $table->enum('status', ['open', 'cashed', 'canceled'])->default('open');
@@ -41,6 +43,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('received_checks');
+        Schema::dropIfExists('giro_outs');
     }
 };

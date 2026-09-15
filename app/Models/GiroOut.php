@@ -3,16 +3,16 @@
 namespace App\Models;
 
 use App\Models\Scopes\DataVisibilityScope;
-use App\Observers\ReceivedCheckObserver;
+use App\Observers\GiroOutObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-#[ObservedBy([ReceivedCheckObserver::class])]
+#[ObservedBy([GiroOutObserver::class])]
 #[ScopedBy([DataVisibilityScope::class])]
-class ReceivedCheck extends Model
+class GiroOut extends Model
 {
     use SoftDeletes;
 
@@ -25,6 +25,8 @@ class ReceivedCheck extends Model
         'number',
         'date',
         'due_date',
+        'account_no',
+        'account_name',
         'description',
         'amount',
         'status',

@@ -405,4 +405,46 @@ class ReferenceNumber
 
         $referenceNumber->save();
     }
+
+    public static function getGiroIn(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('giro-in')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updateGiroIn(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('giro-in')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
+
+        $referenceNumber->save();
+    }
+
+    public static function getGiroOut(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('giro-out')
+            ->select('code', 'value')
+            ->first();
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updateGiroOut(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('giro-out')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
+
+        $referenceNumber->save();
+    }
 }
