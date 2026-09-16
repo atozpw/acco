@@ -19,6 +19,10 @@ Route::middleware('auth')->prefix('print')->group(function () {
         ->name('print.profit-loss-comparison')
         ->middleware(['permission:financial-statement.profit-loss']);
 
+    Route::get('cash-flow', [PrintController::class, 'cashFlow'])
+        ->name('print.cash-flow')
+        ->middleware(['permission:financial-statement.cash-flow']);
+
     Route::get('journal-voucher/{id}', [PrintController::class, 'voucher'])
         ->name('print.voucher')
         ->middleware(['permission:general-journal.index']);

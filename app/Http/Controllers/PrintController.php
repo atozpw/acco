@@ -19,6 +19,7 @@ use App\Models\SalesInvoice;
 use App\Models\JournalDetail;
 use App\Models\Coa;
 use App\Services\Report\Finance\BalanceSheetService;
+use App\Services\Report\Finance\CashFlowService;
 use App\Services\Report\Finance\ProfitLossService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -990,6 +991,53 @@ class PrintController extends Controller
         ];
 
         return view('print.profit-loss-comparison', compact('payload'));
+    }
+
+    public function cashFlow(Request $request, CashFlowService $cashFlowService)
+    {
+        $filters = [
+            'date_from' => (string) $request->input('date_from', Carbon::now()->startOfMonth()->toDateString()),
+            'date_to' => (string) $request->input('date_to', Carbon::now()->toDateString()),
+            'department_id' => $request->filled('department_id') ? (int) $request->input('department_id') : null,
+            'project_id' => $request->filled('project_id') ? (int) $request->input('project_id') : null,
+        ];
+
+        $report = $cashFlowService->generate($filters);
+
+        $formatDateLabel = function ($value) {
+            if (!$value) {
+                return '-';
+            }
+            try {
+                return Carbon::parse($value)->translatedFormat('d M Y');
+            } catch (\Exception $e) {
+                return $value;
+            }
+        };
+
+        $periodLabel = ($filters['date_from'] || $filters['date_to'])
+            ? $formatDateLabel($filters['date_from']) . ' - ' . $formatDateLabel($filters['date_to'])
+            : 'Semua periode';
+
+        $departmentName = $filters['department_id']
+            ? (Department::find($filters['department_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $projectName = $filters['project_id']
+            ? (Project::find($filters['project_id'])?->name ?? 'Semua')
+            : 'Semua';
+
+        $payload = [
+            'report' => $report,
+            'period' => $periodLabel,
+            'department' => $departmentName,
+            'project' => $projectName,
+            'created_by' => [
+                'name' => $request->user()?->name ?? '-',
+            ],
+        ];
+
+        return view('print.cash-flow', compact('payload'));
     }
 
     public function ledger(Request $request)
