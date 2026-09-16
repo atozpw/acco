@@ -26,6 +26,7 @@ class Expense extends Model
         'date',
         'description',
         'amount',
+        'is_giro_out',
         'created_by',
     ];
 

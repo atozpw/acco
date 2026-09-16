@@ -26,6 +26,7 @@ class Income extends Model
         'date',
         'description',
         'amount',
+        'is_giro_in',
         'created_by',
     ];
 
