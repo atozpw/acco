@@ -103,6 +103,16 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'cash-transfers.update']);
         Permission::create(['name' => 'cash-transfers.destroy']);
 
+        Permission::create(['name' => 'giro-ins.index']);
+        Permission::create(['name' => 'giro-ins.store']);
+        Permission::create(['name' => 'giro-ins.update']);
+        Permission::create(['name' => 'giro-ins.destroy']);
+
+        Permission::create(['name' => 'giro-outs.index']);
+        Permission::create(['name' => 'giro-outs.store']);
+        Permission::create(['name' => 'giro-outs.update']);
+        Permission::create(['name' => 'giro-outs.destroy']);
+
         Permission::create(['name' => 'sales-deliveries.index']);
         Permission::create(['name' => 'sales-deliveries.store']);
         Permission::create(['name' => 'sales-deliveries.update']);
