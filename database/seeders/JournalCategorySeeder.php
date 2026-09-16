@@ -69,5 +69,15 @@ class JournalCategorySeeder extends Seeder
             'code' => 'PP',
             'name' => 'Payable Payment',
         ]);
+
+        JournalCategory::create([
+            'code' => 'GI',
+            'name' => 'Giro In',
+        ]);
+
+        JournalCategory::create([
+            'code' => 'GO',
+            'name' => 'Giro Out',
+        ]);
     }
 }

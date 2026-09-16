@@ -147,5 +147,19 @@ class ReferenceNumberSeeder extends Seeder
             'code' => 'PP',
             'value' => '000001',
         ]);
+
+        ReferenceNumber::create([
+            'name' => 'Giro Masuk',
+            'module' => 'giro-in',
+            'code' => 'GI',
+            'value' => '000001',
+        ]);
+
+        ReferenceNumber::create([
+            'name' => 'Giro Keluar',
+            'module' => 'giro-out',
+            'code' => 'GO',
+            'value' => '000001',
+        ]);
     }
 }
