@@ -13,6 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
 import financialStatement from '@/routes/financial-statement';
+import print from '@/routes/print';
 import report from '@/routes/report';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
@@ -260,6 +261,16 @@ export default function CashFlowReportPage({
             ? `${formatDateLabel(filters.date_from)} - ${formatDateLabel(filters.date_to)}`
             : 'Semua periode';
 
+    const printUrl = useMemo(() => {
+        const query: Record<string, string | number> = {};
+        if (filters.date_from) query.date_from = filters.date_from;
+        if (filters.date_to) query.date_to = filters.date_to;
+        if (filters.department_id) query.department_id = filters.department_id;
+        if (filters.project_id) query.project_id = filters.project_id;
+
+        return print.cashFlow.url({ query });
+    }, [filters]);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Laporan Arus Kas" />
@@ -310,9 +321,15 @@ export default function CashFlowReportPage({
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                                 <DropdownMenuGroup>
-                                    <DropdownMenuItem>
-                                        <Printer />
-                                        Cetak
+                                    <DropdownMenuItem asChild>
+                                        <a
+                                            href={printUrl}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            <Printer />
+                                            Cetak
+                                        </a>
                                     </DropdownMenuItem>
                                 </DropdownMenuGroup>
                             </DropdownMenuContent>
