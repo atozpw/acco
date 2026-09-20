@@ -3,6 +3,7 @@
 use App\Http\Controllers\Master\CoaController;
 use App\Http\Controllers\Master\ContactController;
 use App\Http\Controllers\Master\DepartmentController;
+use App\Http\Controllers\Master\PayrollComponentController;
 use App\Http\Controllers\Master\ProductCategoryController;
 use App\Http\Controllers\Master\ProductController;
 use App\Http\Controllers\Master\ProjectController;
@@ -204,4 +205,23 @@ Route::middleware('auth')->prefix('data-store')->group(function () {
     Route::delete('salary-category-data/{id}', [SalaryCategoryController::class, 'destroy'])
         ->name('salary-category-data.destroy')
         ->middleware(['permission:salary-categories.destroy']);
+
+    Route::get('payroll-component-data', [PayrollComponentController::class, 'index'])
+        ->name('payroll-component-data.index')
+        ->middleware(['permission:payroll-components.index']);
+    Route::get('payroll-component-data/create', [PayrollComponentController::class, 'create'])
+        ->name('payroll-component-data.create')
+        ->middleware(['permission:payroll-components.store']);
+    Route::post('payroll-component-data', [PayrollComponentController::class, 'store'])
+        ->name('payroll-component-data.store')
+        ->middleware(['permission:payroll-components.store']);
+    Route::get('payroll-component-data/{id}/edit', [PayrollComponentController::class, 'edit'])
+        ->name('payroll-component-data.edit')
+        ->middleware(['permission:payroll-components.update']);
+    Route::put('payroll-component-data/{id}', [PayrollComponentController::class, 'update'])
+        ->name('payroll-component-data.update')
+        ->middleware(['permission:payroll-components.update']);
+    Route::delete('payroll-component-data/{id}', [PayrollComponentController::class, 'destroy'])
+        ->name('payroll-component-data.destroy')
+        ->middleware(['permission:payroll-components.destroy']);
 });

@@ -13,6 +13,7 @@ import generalJournal from '@/routes/general-journal';
 import income from '@/routes/income';
 import ledgerData from '@/routes/ledger-data';
 import payablePayment from '@/routes/payable-payment';
+import payrollComponentData from '@/routes/payroll-component-data';
 import permissions from '@/routes/permissions';
 import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
@@ -110,6 +111,11 @@ export const mainNavItems: NavItem[] = [
                 title: 'Kategori Gaji',
                 href: salaryCategoryData.index(),
                 permissions: ['salary-categories.index'],
+            },
+            {
+                title: 'Komponen Gaji',
+                href: payrollComponentData.index(),
+                permissions: ['payroll-components.index'],
             },
         ],
     },
