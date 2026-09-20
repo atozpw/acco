@@ -2,6 +2,7 @@ import { dashboard } from '@/routes';
 import accountPayable from '@/routes/account-payable';
 import accountReceivable from '@/routes/account-receivable';
 import { edit as editAppearance } from '@/routes/appearance';
+import assetCategoryData from '@/routes/asset-category-data';
 import beginningBalance from '@/routes/beginning-balance';
 import cashTransfer from '@/routes/cash-transfer';
 import coa from '@/routes/coa';
@@ -58,8 +59,13 @@ export const mainNavItems: NavItem[] = [
             'products.index',
             'product-categories.index',
             'unit-measurements.index',
+            'asset-categories.index',
             'taxes.index',
             'departments.index',
+            'warehouses.index',
+            'projects.index',
+            'salary-categories.index',
+            'payroll-components.index',
         ],
         children: [
             {
@@ -86,6 +92,11 @@ export const mainNavItems: NavItem[] = [
                 title: 'Satuan Pengukuran',
                 href: unitMeasurement.index(),
                 permissions: ['unit-measurements.index'],
+            },
+            {
+                title: 'Kategori Aset',
+                href: assetCategoryData.index(),
+                permissions: ['asset-categories.index'],
             },
             {
                 title: 'Data Pajak',

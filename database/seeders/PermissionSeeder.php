@@ -58,6 +58,11 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'payroll-components.update']);
         Permission::create(['name' => 'payroll-components.destroy']);
 
+        Permission::create(['name' => 'asset-categories.index']);
+        Permission::create(['name' => 'asset-categories.store']);
+        Permission::create(['name' => 'asset-categories.update']);
+        Permission::create(['name' => 'asset-categories.destroy']);
+
         Permission::create(['name' => 'coas.index']);
         Permission::create(['name' => 'coas.store']);
         Permission::create(['name' => 'coas.update']);

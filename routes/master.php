@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Master\AssetCategoryController;
 use App\Http\Controllers\Master\CoaController;
 use App\Http\Controllers\Master\ContactController;
 use App\Http\Controllers\Master\DepartmentController;
@@ -224,4 +225,23 @@ Route::middleware('auth')->prefix('data-store')->group(function () {
     Route::delete('payroll-component-data/{id}', [PayrollComponentController::class, 'destroy'])
         ->name('payroll-component-data.destroy')
         ->middleware(['permission:payroll-components.destroy']);
+
+    Route::get('asset-category-data', [AssetCategoryController::class, 'index'])
+        ->name('asset-category-data.index')
+        ->middleware(['permission:asset-categories.index']);
+    Route::get('asset-category-data/create', [AssetCategoryController::class, 'create'])
+        ->name('asset-category-data.create')
+        ->middleware(['permission:asset-categories.store']);
+    Route::post('asset-category-data', [AssetCategoryController::class, 'store'])
+        ->name('asset-category-data.store')
+        ->middleware(['permission:asset-categories.store']);
+    Route::get('asset-category-data/{id}/edit', [AssetCategoryController::class, 'edit'])
+        ->name('asset-category-data.edit')
+        ->middleware(['permission:asset-categories.update']);
+    Route::put('asset-category-data/{id}', [AssetCategoryController::class, 'update'])
+        ->name('asset-category-data.update')
+        ->middleware(['permission:asset-categories.update']);
+    Route::delete('asset-category-data/{id}', [AssetCategoryController::class, 'destroy'])
+        ->name('asset-category-data.destroy')
+        ->middleware(['permission:asset-categories.destroy']);
 });
