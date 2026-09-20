@@ -21,6 +21,7 @@ import purchaseInvoice from '@/routes/purchase-invoice';
 import purchaseReceipt from '@/routes/purchase-receipt';
 import receivablePayment from '@/routes/receivable-payment';
 import roles from '@/routes/roles';
+import salaryCategoryData from '@/routes/salary-category-data';
 import salesDelivery from '@/routes/sales-delivery';
 import salesInvoice from '@/routes/sales-invoice';
 import taxData from '@/routes/tax-data';
@@ -104,6 +105,11 @@ export const mainNavItems: NavItem[] = [
                 title: 'Data Proyek',
                 href: projectData.index(),
                 permissions: ['projects.index'],
+            },
+            {
+                title: 'Kategori Gaji',
+                href: salaryCategoryData.index(),
+                permissions: ['salary-categories.index'],
             },
         ],
     },

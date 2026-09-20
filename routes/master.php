@@ -6,6 +6,7 @@ use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\ProductCategoryController;
 use App\Http\Controllers\Master\ProductController;
 use App\Http\Controllers\Master\ProjectController;
+use App\Http\Controllers\Master\SalaryCategoryController;
 use App\Http\Controllers\Master\TaxController;
 use App\Http\Controllers\Master\UnitMeasurementController;
 use App\Http\Controllers\Master\WarehouseController;
@@ -184,4 +185,23 @@ Route::middleware('auth')->prefix('data-store')->group(function () {
     Route::delete('project-data/{id}', [ProjectController::class, 'destroy'])
         ->name('project-data.destroy')
         ->middleware(['permission:projects.destroy']);
+
+    Route::get('salary-category-data', [SalaryCategoryController::class, 'index'])
+        ->name('salary-category-data.index')
+        ->middleware(['permission:salary-categories.index']);
+    Route::get('salary-category-data/create', [SalaryCategoryController::class, 'create'])
+        ->name('salary-category-data.create')
+        ->middleware(['permission:salary-categories.store']);
+    Route::post('salary-category-data', [SalaryCategoryController::class, 'store'])
+        ->name('salary-category-data.store')
+        ->middleware(['permission:salary-categories.store']);
+    Route::get('salary-category-data/{id}/edit', [SalaryCategoryController::class, 'edit'])
+        ->name('salary-category-data.edit')
+        ->middleware(['permission:salary-categories.update']);
+    Route::put('salary-category-data/{id}', [SalaryCategoryController::class, 'update'])
+        ->name('salary-category-data.update')
+        ->middleware(['permission:salary-categories.update']);
+    Route::delete('salary-category-data/{id}', [SalaryCategoryController::class, 'destroy'])
+        ->name('salary-category-data.destroy')
+        ->middleware(['permission:salary-categories.destroy']);
 });
