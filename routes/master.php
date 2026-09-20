@@ -3,6 +3,7 @@
 use App\Http\Controllers\Master\AssetCategoryController;
 use App\Http\Controllers\Master\CoaController;
 use App\Http\Controllers\Master\ContactController;
+use App\Http\Controllers\Master\CashAdvanceClassificationController;
 use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\PayrollComponentController;
 use App\Http\Controllers\Master\ProductCategoryController;
@@ -225,6 +226,25 @@ Route::middleware('auth')->prefix('data-store')->group(function () {
     Route::delete('payroll-component-data/{id}', [PayrollComponentController::class, 'destroy'])
         ->name('payroll-component-data.destroy')
         ->middleware(['permission:payroll-components.destroy']);
+
+    Route::get('cash-advance-classification', [CashAdvanceClassificationController::class, 'index'])
+        ->name('cash-advance-classification.index')
+        ->middleware(['permission:cash-advance-classifications.index']);
+    Route::get('cash-advance-classification/create', [CashAdvanceClassificationController::class, 'create'])
+        ->name('cash-advance-classification.create')
+        ->middleware(['permission:cash-advance-classifications.store']);
+    Route::post('cash-advance-classification', [CashAdvanceClassificationController::class, 'store'])
+        ->name('cash-advance-classification.store')
+        ->middleware(['permission:cash-advance-classifications.store']);
+    Route::get('cash-advance-classification/{id}/edit', [CashAdvanceClassificationController::class, 'edit'])
+        ->name('cash-advance-classification.edit')
+        ->middleware(['permission:cash-advance-classifications.update']);
+    Route::put('cash-advance-classification/{id}', [CashAdvanceClassificationController::class, 'update'])
+        ->name('cash-advance-classification.update')
+        ->middleware(['permission:cash-advance-classifications.update']);
+    Route::delete('cash-advance-classification/{id}', [CashAdvanceClassificationController::class, 'destroy'])
+        ->name('cash-advance-classification.destroy')
+        ->middleware(['permission:cash-advance-classifications.destroy']);
 
     Route::get('asset-category-data', [AssetCategoryController::class, 'index'])
         ->name('asset-category-data.index')

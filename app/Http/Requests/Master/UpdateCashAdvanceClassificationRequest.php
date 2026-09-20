@@ -21,7 +21,16 @@ class UpdateCashAdvanceClassificationRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('id');
+
         return [
+            'code' => [
+                'required',
+                'string',
+                'max:6',
+                'unique:cash_advance_classifications,code,' . $id,
+            ],
+
             'name' => [
                 'required',
                 'string',

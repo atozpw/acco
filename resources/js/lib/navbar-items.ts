@@ -15,6 +15,7 @@ import income from '@/routes/income';
 import ledgerData from '@/routes/ledger-data';
 import payablePayment from '@/routes/payable-payment';
 import payrollComponentData from '@/routes/payroll-component-data';
+import cashAdvanceClassification from '@/routes/cash-advance-classification';
 import permissions from '@/routes/permissions';
 import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
@@ -66,6 +67,7 @@ export const mainNavItems: NavItem[] = [
             'projects.index',
             'salary-categories.index',
             'payroll-components.index',
+            'cash-advance-classifications.index',
         ],
         children: [
             {
@@ -127,6 +129,11 @@ export const mainNavItems: NavItem[] = [
                 title: 'Komponen Gaji',
                 href: payrollComponentData.index(),
                 permissions: ['payroll-components.index'],
+            },
+            {
+                title: 'Kategori Uang Muka',
+                href: cashAdvanceClassification.index(),
+                permissions: ['cash-advance-classifications.index'],
             },
         ],
     },
