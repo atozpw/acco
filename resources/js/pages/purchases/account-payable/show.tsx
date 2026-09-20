@@ -453,7 +453,7 @@ export default function AccountPayableShowPage({
                                     <TableRow>
                                         <TableCell
                                             colSpan={7}
-                                            className="text-center text-muted-foreground"
+                                            className="text-muted-foreground text-center"
                                         >
                                             Tidak ada data ditemukan.
                                         </TableCell>
@@ -533,7 +533,7 @@ export default function AccountPayableShowPage({
                                             <TableRow>
                                                 <TableCell
                                                     colSpan={7}
-                                                    className="text-center text-muted-foreground"
+                                                    className="text-muted-foreground text-center"
                                                 >
                                                     <div className="flex items-center justify-center gap-3">
                                                         <Spinner /> Memuat
@@ -546,7 +546,7 @@ export default function AccountPayableShowPage({
                                             <TableRow>
                                                 <TableCell
                                                     colSpan={7}
-                                                    className="text-center text-muted-foreground"
+                                                    className="text-muted-foreground text-center"
                                                 >
                                                     Detail utang tidak
                                                     ditemukan.

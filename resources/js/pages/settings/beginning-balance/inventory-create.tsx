@@ -298,10 +298,10 @@ export default function BeginningBalanceInventoryCreate({
                             </div>
                         </div>
 
-                        <div className="rounded-md border p-4 text-sm text-muted-foreground">
+                        <div className="text-muted-foreground rounded-md border p-4 text-sm">
                             <div className="flex items-center justify-between">
                                 <span>Total Nilai</span>
-                                <span className="font-semibold text-foreground">
+                                <span className="text-foreground font-semibold">
                                     {formatCurrency(totalAmount)}
                                 </span>
                             </div>

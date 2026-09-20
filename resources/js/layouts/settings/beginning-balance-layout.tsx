@@ -1,8 +1,8 @@
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { cn, resolveUrl } from '@/lib/utils';
 import { usePermission } from '@/hooks/use-permission';
+import { cn, resolveUrl } from '@/lib/utils';
 import beginningBalance from '@/routes/beginning-balance';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
@@ -69,7 +69,10 @@ export default function BeginningBalanceLayout({
 }: PropsWithChildren) {
     const page = usePage();
     const { hasPermission } = usePermission();
-    const filteredItems = filterNavItemsByPermission(sidebarNavItems, hasPermission);
+    const filteredItems = filterNavItemsByPermission(
+        sidebarNavItems,
+        hasPermission,
+    );
 
     return (
         <div className="px-4 py-6">
@@ -77,7 +80,7 @@ export default function BeginningBalanceLayout({
 
             <div className="flex flex-col lg:flex-row lg:space-x-12">
                 <aside className="w-full max-w-xl lg:w-48">
-                    <nav className="flex flex-col space-y-1 space-x-0">
+                    <nav className="flex flex-col space-x-0 space-y-1">
                         {filteredItems.map((item, index) => (
                             <Button
                                 key={`${resolveUrl(item.href)}-${index}`}

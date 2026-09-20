@@ -769,7 +769,7 @@ export default function DetailExpensePage({
                             <ButtonGroupSeparator />
                             <Button
                                 type="button"
-                                className="text-xs text-muted-foreground"
+                                className="text-muted-foreground text-xs"
                                 variant="outline"
                                 size="sm"
                             >
@@ -800,7 +800,7 @@ export default function DetailExpensePage({
                                     <TrendingDown className="size-5" />
                                 </div>
                                 <div>
-                                    <p className="text-sm text-muted-foreground">
+                                    <p className="text-muted-foreground text-sm">
                                         Total Pengeluaran
                                     </p>
                                     <p className="text-2xl font-semibold tracking-tight">
@@ -810,13 +810,13 @@ export default function DetailExpensePage({
                                     </p>
                                 </div>
                             </div>
-                            <ShoppingCartIcon className="size-8 text-muted-foreground" />
+                            <ShoppingCartIcon className="text-muted-foreground size-8" />
                         </div>
                         <Separator />
                         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                             <div className="flex flex-col flex-wrap gap-6 text-sm md:flex-row lg:gap-12">
                                 <div>
-                                    <p className="text-xs text-muted-foreground">
+                                    <p className="text-muted-foreground text-xs">
                                         COGS
                                     </p>
                                     <p className="font-semibold">
@@ -826,7 +826,7 @@ export default function DetailExpensePage({
                                     </p>
                                 </div>
                                 <div>
-                                    <p className="text-xs text-muted-foreground">
+                                    <p className="text-muted-foreground text-xs">
                                         Biaya Operasional
                                     </p>
                                     <p className="font-semibold">
@@ -837,7 +837,7 @@ export default function DetailExpensePage({
                                     </p>
                                 </div>
                                 <div>
-                                    <p className="text-xs text-muted-foreground">
+                                    <p className="text-muted-foreground text-xs">
                                         Biaya Lain
                                     </p>
                                     <p className="font-semibold">
@@ -849,7 +849,7 @@ export default function DetailExpensePage({
                             </div>
                             <Button
                                 size="sm"
-                                className="w-full text-xs sm:w-50"
+                                className="sm:w-50 w-full text-xs"
                                 asChild
                             >
                                 <Link
@@ -998,7 +998,7 @@ export default function DetailExpensePage({
                     </CardHeader>
                     <CardContent className="me-6">
                         {activeChartRows.length === 0 ? (
-                            <p className="py-16 text-center text-sm text-muted-foreground">
+                            <p className="text-muted-foreground py-16 text-center text-sm">
                                 Belum ada data untuk mode ini.
                             </p>
                         ) : (
@@ -1079,7 +1079,7 @@ export default function DetailExpensePage({
                     </CardContent>
                 </Card>
 
-                <Card className="mt-6 dark:bg-sidebar/50">
+                <Card className="dark:bg-sidebar/50 mt-6">
                     <CardHeader>
                         <CardTitle>Sumber Pengeluaran</CardTitle>
                         <CardDescription>
@@ -1164,7 +1164,7 @@ export default function DetailExpensePage({
                                 </div>
                             </div>
                         ) : (
-                            <p className="py-8 text-center text-sm text-muted-foreground">
+                            <p className="text-muted-foreground py-8 text-center text-sm">
                                 Belum ada data.
                             </p>
                         )}
@@ -1186,7 +1186,7 @@ export default function DetailExpensePage({
                             {departmentChartData.length ? (
                                 <ChartContainer
                                     config={departmentChartConfig}
-                                    className="mx-auto aspect-square max-h-[300px] w-full [&_.recharts-pie-label-text]:fill-foreground"
+                                    className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[300px] w-full"
                                 >
                                     <PieChart>
                                         <ChartTooltip
@@ -1226,7 +1226,7 @@ export default function DetailExpensePage({
                                     </PieChart>
                                 </ChartContainer>
                             ) : (
-                                <p className="py-8 text-center text-sm text-muted-foreground">
+                                <p className="text-muted-foreground py-8 text-center text-sm">
                                     Belum ada data.
                                 </p>
                             )}
@@ -1286,7 +1286,7 @@ export default function DetailExpensePage({
                                     </PieChart>
                                 </ChartContainer>
                             ) : (
-                                <p className="py-8 text-center text-sm text-muted-foreground">
+                                <p className="text-muted-foreground py-8 text-center text-sm">
                                     Belum ada data.
                                 </p>
                             )}

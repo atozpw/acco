@@ -470,7 +470,7 @@ export default function PurchaseReceiptEditScreen({
         updateDetail(index, (detail) => {
             const nextPrice =
                 product?.purchase_price !== null &&
-                    product?.purchase_price !== undefined
+                product?.purchase_price !== undefined
                     ? toNumber(product.purchase_price).toFixed(2)
                     : toNumber(detail.price ?? '0.00').toFixed(2);
 
@@ -587,7 +587,7 @@ export default function PurchaseReceiptEditScreen({
                         </aside>
                         <Separator className="my-6 lg:hidden" />
                         <div className="flex-1 space-y-6 md:max-w-2xl">
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-1/3">
                                     <Label htmlFor="reference_no">
                                         No. Referensi
@@ -639,7 +639,7 @@ export default function PurchaseReceiptEditScreen({
                                 </div>
                             </div>
 
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-1/2">
                                     <Label>Pemasok</Label>
                                     <InputCombobox
@@ -668,7 +668,7 @@ export default function PurchaseReceiptEditScreen({
                                 </div>
                             </div>
 
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-1/2">
                                     <Label>Departemen</Label>
                                     <InputCombobox
@@ -680,7 +680,9 @@ export default function PurchaseReceiptEditScreen({
                                             setData('department_id', value)
                                         }
                                     />
-                                    <InputError message={errors.department_id} />
+                                    <InputError
+                                        message={errors.department_id}
+                                    />
                                 </div>
                                 <div className="grid gap-2 lg:basis-1/2">
                                     <Label>Proyek</Label>
@@ -760,9 +762,9 @@ export default function PurchaseReceiptEditScreen({
                                                 toNumber(
                                                     computedDetail.amount,
                                                 ) -
-                                                toNumber(
-                                                    computedDetail.discount_amount,
-                                                ),
+                                                    toNumber(
+                                                        computedDetail.discount_amount,
+                                                    ),
                                             );
 
                                             return (
@@ -815,7 +817,7 @@ export default function PurchaseReceiptEditScreen({
                                                                 )}
                                                             />
                                                             {productDefault?.purchase_tax && (
-                                                                <p className="mt-1 text-xs text-muted-foreground">
+                                                                <p className="text-muted-foreground mt-1 text-xs">
                                                                     Pajak
                                                                     default:{' '}
                                                                     {
@@ -831,7 +833,7 @@ export default function PurchaseReceiptEditScreen({
                                                                 name={`details.${index}.qty`}
                                                                 value={
                                                                     formattedDetailQty[
-                                                                    index
+                                                                        index
                                                                     ] ?? ''
                                                                 }
                                                                 onValueChange={(
@@ -874,7 +876,7 @@ export default function PurchaseReceiptEditScreen({
                                                                 )}
                                                             />
                                                             {productDefault && (
-                                                                <p className="mt-1 text-xs text-muted-foreground">
+                                                                <p className="text-muted-foreground mt-1 text-xs">
                                                                     Stok:{' '}
                                                                     {getProductStockLabel(
                                                                         detail.product_id,
@@ -888,7 +890,7 @@ export default function PurchaseReceiptEditScreen({
                                                                 name={`details.${index}.price`}
                                                                 value={
                                                                     formattedDetailPrice[
-                                                                    index
+                                                                        index
                                                                     ] ?? ''
                                                                 }
                                                                 onValueChange={(
@@ -959,7 +961,7 @@ export default function PurchaseReceiptEditScreen({
                                                         </td>
                                                     </tr>
                                                     {isExpanded && (
-                                                        <tr className="border-t bg-muted/40">
+                                                        <tr className="bg-muted/40 border-t">
                                                             <td />
                                                             <td
                                                                 colSpan={5}
@@ -972,12 +974,12 @@ export default function PurchaseReceiptEditScreen({
                                                                         </Label>
                                                                         <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
                                                                             {detail.discount_type ===
-                                                                                'amount' ? (
+                                                                            'amount' ? (
                                                                                 <InputDecimal
                                                                                     name={`details.${index}.discount_amount`}
                                                                                     value={
                                                                                         formattedDetailDiscountAmount[
-                                                                                        index
+                                                                                            index
                                                                                         ] ??
                                                                                         ''
                                                                                     }
@@ -1020,7 +1022,7 @@ export default function PurchaseReceiptEditScreen({
                                                                                     name={`details.${index}.discount_percent`}
                                                                                     value={
                                                                                         formattedDetailDiscountPercent[
-                                                                                        index
+                                                                                            index
                                                                                         ] ??
                                                                                         ''
                                                                                     }
@@ -1114,17 +1116,17 @@ export default function PurchaseReceiptEditScreen({
                                                                         <InputError
                                                                             message={
                                                                                 detail.discount_type ===
-                                                                                    'amount'
+                                                                                'amount'
                                                                                     ? errorAt(
-                                                                                        'details',
-                                                                                        index,
-                                                                                        'discount_amount',
-                                                                                    )
+                                                                                          'details',
+                                                                                          index,
+                                                                                          'discount_amount',
+                                                                                      )
                                                                                     : errorAt(
-                                                                                        'details',
-                                                                                        index,
-                                                                                        'discount_percent',
-                                                                                    )
+                                                                                          'details',
+                                                                                          index,
+                                                                                          'discount_percent',
+                                                                                      )
                                                                             }
                                                                         />
                                                                     </div>

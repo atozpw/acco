@@ -16,10 +16,7 @@ interface LoginProps {
 
 export default function Login({ status }: LoginProps) {
     return (
-        <AuthLayout
-            title="Acco"
-            description="Financial System"
-        >
+        <AuthLayout title="Acco" description="Financial System">
             <Head title="Log in" />
 
             <Form

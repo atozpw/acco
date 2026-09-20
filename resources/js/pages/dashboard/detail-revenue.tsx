@@ -769,7 +769,7 @@ export default function DetailRevenuePage({
                             <ButtonGroupSeparator />
                             <Button
                                 type="button"
-                                className="text-xs text-muted-foreground"
+                                className="text-muted-foreground text-xs"
                                 variant="outline"
                                 size="sm"
                             >
@@ -800,7 +800,7 @@ export default function DetailRevenuePage({
                                     <TrendingUp className="size-5" />
                                 </div>
                                 <div>
-                                    <p className="text-sm text-muted-foreground">
+                                    <p className="text-muted-foreground text-sm">
                                         Total Penerimaan
                                     </p>
                                     <p className="text-2xl font-semibold tracking-tight">
@@ -810,13 +810,13 @@ export default function DetailRevenuePage({
                                     </p>
                                 </div>
                             </div>
-                            <ShoppingBag className="size-8 text-muted-foreground" />
+                            <ShoppingBag className="text-muted-foreground size-8" />
                         </div>
                         <Separator />
                         <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                             <div className="flex flex-col flex-wrap gap-6 text-sm md:flex-row">
                                 <div>
-                                    <p className="text-xs text-muted-foreground">
+                                    <p className="text-muted-foreground text-xs">
                                         Jumlah Pelanggan
                                     </p>
                                     <p className="font-semibold">
@@ -824,7 +824,7 @@ export default function DetailRevenuePage({
                                     </p>
                                 </div>
                                 <div>
-                                    <p className="text-xs text-muted-foreground">
+                                    <p className="text-muted-foreground text-xs">
                                         Jumlah Transaksi
                                     </p>
                                     <p className="font-semibold">
@@ -832,7 +832,7 @@ export default function DetailRevenuePage({
                                     </p>
                                 </div>
                                 <div>
-                                    <p className="text-xs text-muted-foreground">
+                                    <p className="text-muted-foreground text-xs">
                                         Rata-rata Transaksi
                                     </p>
                                     <p className="font-semibold">
@@ -844,7 +844,7 @@ export default function DetailRevenuePage({
                             </div>
                             <Button
                                 size="sm"
-                                className="w-full text-xs sm:w-50"
+                                className="sm:w-50 w-full text-xs"
                                 asChild
                             >
                                 <Link
@@ -993,7 +993,7 @@ export default function DetailRevenuePage({
                     </CardHeader>
                     <CardContent className="me-6">
                         {activeChartRows.length === 0 ? (
-                            <p className="py-16 text-center text-sm text-muted-foreground">
+                            <p className="text-muted-foreground py-16 text-center text-sm">
                                 Belum ada data untuk mode ini.
                             </p>
                         ) : (
@@ -1074,7 +1074,7 @@ export default function DetailRevenuePage({
                     </CardContent>
                 </Card>
 
-                <Card className="mt-6 dark:bg-sidebar/50">
+                <Card className="dark:bg-sidebar/50 mt-6">
                     <CardHeader>
                         <CardTitle>Sumber Penerimaan</CardTitle>
                         <CardDescription>
@@ -1159,7 +1159,7 @@ export default function DetailRevenuePage({
                                 </div>
                             </div>
                         ) : (
-                            <p className="py-8 text-center text-sm text-muted-foreground">
+                            <p className="text-muted-foreground py-8 text-center text-sm">
                                 Belum ada data.
                             </p>
                         )}
@@ -1181,7 +1181,7 @@ export default function DetailRevenuePage({
                             {departmentChartData.length ? (
                                 <ChartContainer
                                     config={departmentChartConfig}
-                                    className="mx-auto aspect-square max-h-[300px] w-full [&_.recharts-pie-label-text]:fill-foreground"
+                                    className="[&_.recharts-pie-label-text]:fill-foreground mx-auto aspect-square max-h-[300px] w-full"
                                 >
                                     <PieChart>
                                         <ChartTooltip
@@ -1221,7 +1221,7 @@ export default function DetailRevenuePage({
                                     </PieChart>
                                 </ChartContainer>
                             ) : (
-                                <p className="py-8 text-center text-sm text-muted-foreground">
+                                <p className="text-muted-foreground py-8 text-center text-sm">
                                     Belum ada data.
                                 </p>
                             )}
@@ -1281,7 +1281,7 @@ export default function DetailRevenuePage({
                                     </PieChart>
                                 </ChartContainer>
                             ) : (
-                                <p className="py-8 text-center text-sm text-muted-foreground">
+                                <p className="text-muted-foreground py-8 text-center text-sm">
                                     Belum ada data.
                                 </p>
                             )}

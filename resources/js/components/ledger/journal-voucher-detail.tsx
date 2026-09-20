@@ -118,16 +118,16 @@ export function JournalVoucherDetail({
             label: 'Departemen',
             value: details.some((d) => d.department)
                 ? Array.from(
-                    new Set(details.map((d) => d.department?.name ?? 'N/A')),
-                ).join(', ')
+                      new Set(details.map((d) => d.department?.name ?? 'N/A')),
+                  ).join(', ')
                 : 'N/A',
         },
         {
             label: 'Proyek',
             value: details.some((d) => d.project)
                 ? Array.from(
-                    new Set(details.map((d) => d.project?.name ?? 'N/A')),
-                ).join(', ')
+                      new Set(details.map((d) => d.project?.name ?? 'N/A')),
+                  ).join(', ')
                 : 'N/A',
         },
     ];

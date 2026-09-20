@@ -288,7 +288,7 @@ export default function ProductIndexScreen({
                                     <TableRow>
                                         <TableCell
                                             colSpan={7}
-                                            className="text-center text-muted-foreground"
+                                            className="text-muted-foreground text-center"
                                         >
                                             Tidak ada data ditemukan.
                                         </TableCell>
@@ -318,7 +318,7 @@ export default function ProductIndexScreen({
                                                     Number(
                                                         item.minimum_stock || 0,
                                                     )
-                                                        ? 'text-right align-baseline text-destructive'
+                                                        ? 'text-destructive text-right align-baseline'
                                                         : 'text-right align-baseline'
                                                 }
                                             >

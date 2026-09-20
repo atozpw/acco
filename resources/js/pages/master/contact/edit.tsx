@@ -130,7 +130,7 @@ export default function KontakEditScreen({
                 <Separator className="mb-8" />
                 <form onSubmit={submit} className="space-y-8 xl:px-12">
                     <div className="flex flex-col lg:flex-row lg:space-x-12">
-                        <aside className="w-full max-w-xl lg:w-[250px] xl:w-[350px] 2xl:w-md">
+                        <aside className="2xl:w-md w-full max-w-xl lg:w-[250px] xl:w-[350px]">
                             <HeadingSmall
                                 title="Data Umum"
                                 description="Perbarui nama, email dan data umum"
@@ -138,7 +138,7 @@ export default function KontakEditScreen({
                         </aside>
                         <Separator className="my-6 lg:hidden" />
                         <div className="flex-1 space-y-6 md:max-w-2xl">
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-1/3">
                                     <Label htmlFor="code">Kode</Label>
                                     <Input
@@ -171,7 +171,7 @@ export default function KontakEditScreen({
                                     <InputError message={errors.name} />
                                 </div>
                             </div>
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-1/2">
                                     <Label htmlFor="email">Email</Label>
                                     <Input
@@ -222,7 +222,7 @@ export default function KontakEditScreen({
                     </div>
 
                     <div className="flex flex-col lg:flex-row lg:space-x-12">
-                        <aside className="w-full max-w-xl lg:w-[250px] xl:w-[350px] 2xl:w-md">
+                        <aside className="2xl:w-md w-full max-w-xl lg:w-[250px] xl:w-[350px]">
                             <HeadingSmall
                                 title="Detail Kontak"
                                 description="Atur avatar dan detail kontak"
@@ -230,7 +230,7 @@ export default function KontakEditScreen({
                         </aside>
                         <Separator className="my-6 lg:hidden" />
                         <div className="flex-1 space-y-6 md:max-w-2xl">
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-2/3">
                                     <Label htmlFor="avatar">Avatar</Label>
                                     <Input

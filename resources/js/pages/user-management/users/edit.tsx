@@ -105,9 +105,15 @@ export default function UserEditScreen({
         }
     };
 
-    const toggleDepartment = (departmentId: number, checked: boolean | 'indeterminate') => {
+    const toggleDepartment = (
+        departmentId: number,
+        checked: boolean | 'indeterminate',
+    ) => {
         if (checked === true) {
-            setData('departments', Array.from(new Set([...data.departments, departmentId])));
+            setData(
+                'departments',
+                Array.from(new Set([...data.departments, departmentId])),
+            );
         } else {
             setData(
                 'departments',
@@ -116,9 +122,15 @@ export default function UserEditScreen({
         }
     };
 
-    const toggleProject = (projectId: number, checked: boolean | 'indeterminate') => {
+    const toggleProject = (
+        projectId: number,
+        checked: boolean | 'indeterminate',
+    ) => {
         if (checked === true) {
-            setData('projects', Array.from(new Set([...data.projects, projectId])));
+            setData(
+                'projects',
+                Array.from(new Set([...data.projects, projectId])),
+            );
         } else {
             setData(
                 'projects',
@@ -159,7 +171,7 @@ export default function UserEditScreen({
                 <Separator className="mb-8" />
                 <form onSubmit={submit} className="space-y-8 xl:px-12">
                     <div className="flex flex-col lg:flex-row lg:space-x-12">
-                        <aside className="w-full max-w-xl lg:w-[250px] xl:w-[350px] 2xl:w-md">
+                        <aside className="2xl:w-md w-full max-w-xl lg:w-[250px] xl:w-[350px]">
                             <HeadingSmall
                                 title="Data User"
                                 description="Perbarui identitas dan status user"
@@ -236,13 +248,13 @@ export default function UserEditScreen({
                                         <Label htmlFor="is_active">
                                             Status
                                         </Label>
-                                        <p className="text-xs text-muted-foreground">
+                                        <p className="text-muted-foreground text-xs">
                                             Nonaktifkan untuk mencegah user
                                             login.
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <span className="text-xs text-muted-foreground">
+                                        <span className="text-muted-foreground text-xs">
                                             Nonaktif
                                         </span>
                                         <Switch
@@ -255,7 +267,7 @@ export default function UserEditScreen({
                                                 )
                                             }
                                         />
-                                        <span className="text-xs text-muted-foreground">
+                                        <span className="text-muted-foreground text-xs">
                                             Aktif
                                         </span>
                                     </div>
@@ -265,13 +277,13 @@ export default function UserEditScreen({
                                         <Label htmlFor="is_only_mine">
                                             Visibilitas Data
                                         </Label>
-                                        <p className="text-xs text-muted-foreground">
+                                        <p className="text-muted-foreground text-xs">
                                             Jika diaktifkan, user hanya bisa
                                             melihat data miliknya sendiri.
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <span className="text-xs text-muted-foreground">
+                                        <span className="text-muted-foreground text-xs">
                                             Nonaktif
                                         </span>
                                         <Switch
@@ -284,7 +296,7 @@ export default function UserEditScreen({
                                                 )
                                             }
                                         />
-                                        <span className="text-xs text-muted-foreground">
+                                        <span className="text-muted-foreground text-xs">
                                             Aktif
                                         </span>
                                     </div>
@@ -295,25 +307,25 @@ export default function UserEditScreen({
                                 <div className="flex items-center justify-between">
                                     <div className="space-y-1">
                                         <Label>Pilih Role</Label>
-                                        <p className="text-xs text-muted-foreground">
+                                        <p className="text-muted-foreground text-xs">
                                             Berikan role untuk mengatur akses.
                                         </p>
                                     </div>
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-muted-foreground text-xs">
                                         {roles.length} tersedia
                                     </span>
                                 </div>
 
                                 <div className="grid gap-3 sm:grid-cols-2">
                                     {roles.length === 0 && (
-                                        <p className="col-span-2 text-sm text-muted-foreground">
+                                        <p className="text-muted-foreground col-span-2 text-sm">
                                             Belum ada role yang tersedia.
                                         </p>
                                     )}
                                     {roles.map((role) => (
                                         <label
                                             key={role.id}
-                                            className="flex cursor-pointer items-start gap-3 rounded-md border p-3 hover:bg-muted/60"
+                                            className="hover:bg-muted/60 flex cursor-pointer items-start gap-3 rounded-md border p-3"
                                         >
                                             <Checkbox
                                                 checked={data.roles.includes(
@@ -338,32 +350,36 @@ export default function UserEditScreen({
                                 <div className="flex items-center justify-between">
                                     <div className="space-y-1">
                                         <Label>Pilih Departemen</Label>
-                                        <p className="text-xs text-muted-foreground">
-                                            Berikan departemen untuk mengatur akses.
+                                        <p className="text-muted-foreground text-xs">
+                                            Berikan departemen untuk mengatur
+                                            akses.
                                         </p>
                                     </div>
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-muted-foreground text-xs">
                                         {departments.length} tersedia
                                     </span>
                                 </div>
 
                                 <div className="grid gap-3 sm:grid-cols-2">
                                     {departments.length === 0 && (
-                                        <p className="col-span-2 text-sm text-muted-foreground">
+                                        <p className="text-muted-foreground col-span-2 text-sm">
                                             Belum ada departemen yang tersedia.
                                         </p>
                                     )}
                                     {departments.map((department) => (
                                         <label
                                             key={department.id}
-                                            className="flex cursor-pointer items-start gap-3 rounded-md border p-3 hover:bg-muted/60"
+                                            className="hover:bg-muted/60 flex cursor-pointer items-start gap-3 rounded-md border p-3"
                                         >
                                             <Checkbox
                                                 checked={data.departments.includes(
                                                     department.id,
                                                 )}
                                                 onCheckedChange={(checked) =>
-                                                    toggleDepartment(department.id, checked)
+                                                    toggleDepartment(
+                                                        department.id,
+                                                        checked,
+                                                    )
                                                 }
                                             />
                                             <div className="space-y-1">
@@ -381,32 +397,35 @@ export default function UserEditScreen({
                                 <div className="flex items-center justify-between">
                                     <div className="space-y-1">
                                         <Label>Pilih Proyek</Label>
-                                        <p className="text-xs text-muted-foreground">
+                                        <p className="text-muted-foreground text-xs">
                                             Berikan proyek untuk mengatur akses.
                                         </p>
                                     </div>
-                                    <span className="text-xs text-muted-foreground">
+                                    <span className="text-muted-foreground text-xs">
                                         {projects.length} tersedia
                                     </span>
                                 </div>
 
                                 <div className="grid gap-3 sm:grid-cols-2">
                                     {projects.length === 0 && (
-                                        <p className="col-span-2 text-sm text-muted-foreground">
+                                        <p className="text-muted-foreground col-span-2 text-sm">
                                             Belum ada proyek yang tersedia.
                                         </p>
                                     )}
                                     {projects.map((project) => (
                                         <label
                                             key={project.id}
-                                            className="flex cursor-pointer items-start gap-3 rounded-md border p-3 hover:bg-muted/60"
+                                            className="hover:bg-muted/60 flex cursor-pointer items-start gap-3 rounded-md border p-3"
                                         >
                                             <Checkbox
                                                 checked={data.projects.includes(
                                                     project.id,
                                                 )}
                                                 onCheckedChange={(checked) =>
-                                                    toggleProject(project.id, checked)
+                                                    toggleProject(
+                                                        project.id,
+                                                        checked,
+                                                    )
                                                 }
                                             />
                                             <div className="space-y-1">

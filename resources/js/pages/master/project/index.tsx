@@ -98,11 +98,10 @@ export default function ProjectIndexScreen({
         String(filters.perPage ?? 15),
     );
     const [detailOpen, setDetailOpen] = useState(false);
-    const [selectedProject, setSelectedProject] =
-        useState<ProjectItem | null>(null);
-    const [deleteTarget, setDeleteTarget] = useState<ProjectItem | null>(
+    const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(
         null,
     );
+    const [deleteTarget, setDeleteTarget] = useState<ProjectItem | null>(null);
 
     useEffect(() => {
         if (
@@ -174,7 +173,7 @@ export default function ProjectIndexScreen({
                                     <TableRow>
                                         <TableCell
                                             colSpan={4}
-                                            className="text-center text-muted-foreground"
+                                            className="text-muted-foreground text-center"
                                         >
                                             Tidak ada data ditemukan.
                                         </TableCell>
@@ -244,39 +243,39 @@ export default function ProjectIndexScreen({
                                                             {hasPermission([
                                                                 'projects.update',
                                                             ]) && (
-                                                                    <DropdownMenuItem
-                                                                        asChild
+                                                                <DropdownMenuItem
+                                                                    asChild
+                                                                >
+                                                                    <Link
+                                                                        href={
+                                                                            projectRoute.edit(
+                                                                                item.id,
+                                                                            )
+                                                                                .url
+                                                                        }
                                                                     >
-                                                                        <Link
-                                                                            href={
-                                                                                projectRoute.edit(
-                                                                                    item.id,
-                                                                                )
-                                                                                    .url
-                                                                            }
-                                                                        >
-                                                                            <Settings2Icon />
-                                                                            Perbarui
-                                                                        </Link>
-                                                                    </DropdownMenuItem>
-                                                                )}
+                                                                        <Settings2Icon />
+                                                                        Perbarui
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                            )}
                                                             {hasPermission([
                                                                 'projects.destroy',
                                                             ]) && (
-                                                                    <DropdownMenuItem
-                                                                        onSelect={(
-                                                                            event,
-                                                                        ) => {
-                                                                            event.preventDefault();
-                                                                            setDeleteTarget(
-                                                                                item,
-                                                                            );
-                                                                        }}
-                                                                    >
-                                                                        <Trash2 />
-                                                                        Hapus
-                                                                    </DropdownMenuItem>
-                                                                )}
+                                                                <DropdownMenuItem
+                                                                    onSelect={(
+                                                                        event,
+                                                                    ) => {
+                                                                        event.preventDefault();
+                                                                        setDeleteTarget(
+                                                                            item,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Trash2 />
+                                                                    Hapus
+                                                                </DropdownMenuItem>
+                                                            )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>

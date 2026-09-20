@@ -639,7 +639,7 @@ export default function DetailProfitLossPage({
                             <ButtonGroupSeparator />
                             <Button
                                 type="button"
-                                className="text-xs text-muted-foreground"
+                                className="text-muted-foreground text-xs"
                                 variant="outline"
                                 size="sm"
                             >
@@ -664,7 +664,7 @@ export default function DetailProfitLossPage({
 
                 <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                     <div className="grid gap-6 md:grid-cols-2 lg:col-span-2">
-                        <Card className="px-0 py-0 md:col-span-2 dark:bg-sidebar/50">
+                        <Card className="dark:bg-sidebar/50 px-0 py-0 md:col-span-2">
                             <CardContent className="my-auto p-6">
                                 <div className="flex items-center justify-between gap-6">
                                     <div className="flex flex-row items-start gap-4">
@@ -672,7 +672,7 @@ export default function DetailProfitLossPage({
                                             <DollarSign className="size-5" />
                                         </div>
                                         <div className="flex flex-1 flex-col">
-                                            <div className="text-sm text-muted-foreground">
+                                            <div className="text-muted-foreground text-sm">
                                                 Keuntungan
                                             </div>
                                             <p className="text-2xl font-semibold tracking-tight">
@@ -682,7 +682,7 @@ export default function DetailProfitLossPage({
                                             </p>
                                         </div>
                                     </div>
-                                    <ChartNoAxesCombined className="size-8 text-muted-foreground" />
+                                    <ChartNoAxesCombined className="text-muted-foreground size-8" />
                                 </div>
                             </CardContent>
                         </Card>
@@ -692,7 +692,7 @@ export default function DetailProfitLossPage({
                             return (
                                 <Card
                                     key={card.key}
-                                    className="px-0 py-0 dark:bg-sidebar/50"
+                                    className="dark:bg-sidebar/50 px-0 py-0"
                                 >
                                     <CardContent className="my-auto p-6">
                                         <div className="flex items-center justify-between gap-6">
@@ -703,7 +703,7 @@ export default function DetailProfitLossPage({
                                                     <IconComponent className="size-5" />
                                                 </div>
                                                 <div className="flex flex-1 flex-col">
-                                                    <div className="text-sm text-muted-foreground">
+                                                    <div className="text-muted-foreground text-sm">
                                                         {card.label}
                                                     </div>
                                                     <p className="text-lg font-semibold tracking-tight">
@@ -713,14 +713,14 @@ export default function DetailProfitLossPage({
                                                     </p>
                                                 </div>
                                             </div>
-                                            <SeconIconComponent className="size-6 text-muted-foreground" />
+                                            <SeconIconComponent className="text-muted-foreground size-6" />
                                         </div>
                                     </CardContent>
                                 </Card>
                             );
                         })}
                     </div>
-                    <Card className="gap-4 bg-secondary/50">
+                    <Card className="bg-secondary/50 gap-4">
                         <CardHeader>
                             <CardTitle>Margin Ringkas</CardTitle>
                             <CardDescription className="text-xs">
@@ -748,7 +748,7 @@ export default function DetailProfitLossPage({
                                         key={item.label}
                                         className="flex justify-between gap-4"
                                     >
-                                        <p className="text-xs text-muted-foreground">
+                                        <p className="text-muted-foreground text-xs">
                                             {item.label}
                                         </p>
                                         <p className="text-end text-sm font-medium">
@@ -923,7 +923,7 @@ export default function DetailProfitLossPage({
                     </CardHeader>
                     <CardContent className="me-6">
                         {activeChartRows.length === 0 ? (
-                            <p className="py-16 text-center text-sm text-muted-foreground">
+                            <p className="text-muted-foreground py-16 text-center text-sm">
                                 Belum ada data untuk mode ini.
                             </p>
                         ) : chartMode === 'daily' ? (

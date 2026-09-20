@@ -175,7 +175,7 @@ export default function UserIndexScreen({
                                     <TableRow>
                                         <TableCell
                                             colSpan={6}
-                                            className="text-center text-muted-foreground"
+                                            className="text-muted-foreground text-center"
                                         >
                                             Tidak ada data ditemukan.
                                         </TableCell>
@@ -193,7 +193,7 @@ export default function UserIndexScreen({
                                             </TableCell>
                                             <TableCell className="align-baseline">
                                                 {item.roles.length === 0 ? (
-                                                    <span className="text-sm text-muted-foreground">
+                                                    <span className="text-muted-foreground text-sm">
                                                         -
                                                     </span>
                                                 ) : (
@@ -214,8 +214,9 @@ export default function UserIndexScreen({
                                                 )}
                                             </TableCell>
                                             <TableCell className="align-baseline">
-                                                {item.departments.length === 0 ? (
-                                                    <span className="text-sm text-muted-foreground">
+                                                {item.departments.length ===
+                                                0 ? (
+                                                    <span className="text-muted-foreground text-sm">
                                                         -
                                                     </span>
                                                 ) : (
@@ -228,7 +229,9 @@ export default function UserIndexScreen({
                                                                     }
                                                                     variant="secondary"
                                                                 >
-                                                                    {department.name}
+                                                                    {
+                                                                        department.name
+                                                                    }
                                                                 </Badge>
                                                             ),
                                                         )}
@@ -270,36 +273,36 @@ export default function UserIndexScreen({
                                                             {hasPermission([
                                                                 'users.update',
                                                             ]) && (
-                                                                    <DropdownMenuItem
-                                                                        asChild
+                                                                <DropdownMenuItem
+                                                                    asChild
+                                                                >
+                                                                    <Link
+                                                                        href={userRoute.edit(
+                                                                            item.id,
+                                                                        )}
                                                                     >
-                                                                        <Link
-                                                                            href={userRoute.edit(
-                                                                                item.id,
-                                                                            )}
-                                                                        >
-                                                                            <Settings2Icon />
-                                                                            Perbarui
-                                                                        </Link>
-                                                                    </DropdownMenuItem>
-                                                                )}
+                                                                        <Settings2Icon />
+                                                                        Perbarui
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                            )}
                                                             {hasPermission([
                                                                 'users.destroy',
                                                             ]) && (
-                                                                    <DropdownMenuItem
-                                                                        onSelect={(
-                                                                            event,
-                                                                        ) => {
-                                                                            event.preventDefault();
-                                                                            setDeleteTarget(
-                                                                                item,
-                                                                            );
-                                                                        }}
-                                                                    >
-                                                                        <Trash2 />
-                                                                        Hapus
-                                                                    </DropdownMenuItem>
-                                                                )}
+                                                                <DropdownMenuItem
+                                                                    onSelect={(
+                                                                        event,
+                                                                    ) => {
+                                                                        event.preventDefault();
+                                                                        setDeleteTarget(
+                                                                            item,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Trash2 />
+                                                                    Hapus
+                                                                </DropdownMenuItem>
+                                                            )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
