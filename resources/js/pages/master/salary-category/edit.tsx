@@ -90,7 +90,7 @@ export default function SalaryCategoryEditScreen({
                         <aside className="2xl:w-md w-full max-w-xl lg:w-[250px] xl:w-[350px]">
                             <HeadingSmall
                                 title="Data Umum"
-                                description="Perbarui kode, nama, dan status kategori gaji"
+                                description="Perbarui kode, nama, dan status kategori"
                             />
                         </aside>
                         <Separator className="my-6 lg:hidden" />
@@ -104,7 +104,7 @@ export default function SalaryCategoryEditScreen({
                                         type="text"
                                         autoFocus
                                         autoComplete="off"
-                                        placeholder="Kode kategori gaji"
+                                        placeholder="Kode kategori"
                                         value={data.code}
                                         onChange={(e) =>
                                             setData('code', e.target.value)
@@ -119,7 +119,7 @@ export default function SalaryCategoryEditScreen({
                                         name="name"
                                         type="text"
                                         autoComplete="off"
-                                        placeholder="Masukkan nama kategori gaji"
+                                        placeholder="Masukkan nama kategori"
                                         value={data.name}
                                         onChange={(e) =>
                                             setData('name', e.target.value)
@@ -135,7 +135,7 @@ export default function SalaryCategoryEditScreen({
                                             Status
                                         </Label>
                                         <p className="text-muted-foreground text-xs">
-                                            Tentukan apakah kategori gaji ini
+                                            Tentukan apakah kategori ini
                                             aktif digunakan.
                                         </p>
                                     </div>

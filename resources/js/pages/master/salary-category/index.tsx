@@ -244,36 +244,36 @@ export default function SalaryCategoryIndexScreen({
                                                             {hasPermission([
                                                                 'salary_categories.update',
                                                             ]) && (
-                                                                    <DropdownMenuItem
-                                                                        asChild
+                                                                <DropdownMenuItem
+                                                                    asChild
+                                                                >
+                                                                    <Link
+                                                                        href={salaryCategoryRoute.edit(
+                                                                            item.id,
+                                                                        )}
                                                                     >
-                                                                        <Link
-                                                                            href={salaryCategoryRoute.edit(
-                                                                                item.id,
-                                                                            )}
-                                                                        >
-                                                                            <Settings2Icon />
-                                                                            Perbarui
-                                                                        </Link>
-                                                                    </DropdownMenuItem>
-                                                                )}
+                                                                        <Settings2Icon />
+                                                                        Perbarui
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                            )}
                                                             {hasPermission([
                                                                 'salary_categories.destroy',
                                                             ]) && (
-                                                                    <DropdownMenuItem
-                                                                        onSelect={(
-                                                                            event,
-                                                                        ) => {
-                                                                            event.preventDefault();
-                                                                            setDeleteTarget(
-                                                                                item,
-                                                                            );
-                                                                        }}
-                                                                    >
-                                                                        <Trash2 />
-                                                                        Hapus
-                                                                    </DropdownMenuItem>
-                                                                )}
+                                                                <DropdownMenuItem
+                                                                    onSelect={(
+                                                                        event,
+                                                                    ) => {
+                                                                        event.preventDefault();
+                                                                        setDeleteTarget(
+                                                                            item,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Trash2 />
+                                                                    Hapus
+                                                                </DropdownMenuItem>
+                                                            )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
