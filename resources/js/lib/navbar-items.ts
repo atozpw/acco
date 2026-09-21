@@ -38,10 +38,12 @@ import {
     Landmark,
     LayoutGrid,
     NotebookText,
+    Package,
     Settings2,
     ShoppingBag,
     ShoppingCart,
     UserCog2,
+    Wallet,
 } from 'lucide-react';
 
 export const mainNavItems: NavItem[] = [
@@ -245,6 +247,51 @@ export const mainNavItems: NavItem[] = [
                 title: 'Transfer Kas',
                 href: cashTransfer.index(),
                 permissions: ['cash-transfers.index'],
+            },
+        ],
+    },
+    {
+        title: 'Penggajian',
+        href: '#',
+        icon: Wallet,
+        permissions: [
+            'payrolls.index',
+        ],
+        children: [
+            {
+                title: 'Perhitungan',
+                href: '#',
+                permissions: ['payrolls.index'],
+            },
+            {
+                title: 'Daftar Gaji / Tunjangan',
+                href: '#',
+                permissions: ['payrolls.index'],
+            },
+            {
+                title: 'Pembayaran',
+                href: '#',
+                permissions: ['payrolls.index'],
+            },
+        ],
+    },
+    {
+        title: 'Persediaan',
+        href: '#',
+        icon: Package,
+        permissions: [
+            'inventories.index',
+        ],
+        children: [
+            {
+                title: 'Stok Opname',
+                href: '#',
+                permissions: ['inventories.index'],
+            },
+            {
+                title: 'Pindah Gudang',
+                href: '#',
+                permissions: ['inventories.index'],
             },
         ],
     },
