@@ -3,6 +3,7 @@
 use App\Http\Controllers\Master\AssetCategoryController;
 use App\Http\Controllers\Master\CoaController;
 use App\Http\Controllers\Master\ContactController;
+use App\Http\Controllers\Master\BankController;
 use App\Http\Controllers\Master\CashAdvanceClassificationController;
 use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\PayrollComponentController;
@@ -245,6 +246,25 @@ Route::middleware('auth')->prefix('data-store')->group(function () {
     Route::delete('cash-advance-classification/{id}', [CashAdvanceClassificationController::class, 'destroy'])
         ->name('cash-advance-classification.destroy')
         ->middleware(['permission:cash-advance-classifications.destroy']);
+
+    Route::get('bank-data', [BankController::class, 'index'])
+        ->name('bank-data.index')
+        ->middleware(['permission:banks.index']);
+    Route::get('bank-data/create', [BankController::class, 'create'])
+        ->name('bank-data.create')
+        ->middleware(['permission:banks.store']);
+    Route::post('bank-data', [BankController::class, 'store'])
+        ->name('bank-data.store')
+        ->middleware(['permission:banks.store']);
+    Route::get('bank-data/{id}/edit', [BankController::class, 'edit'])
+        ->name('bank-data.edit')
+        ->middleware(['permission:banks.update']);
+    Route::put('bank-data/{id}', [BankController::class, 'update'])
+        ->name('bank-data.update')
+        ->middleware(['permission:banks.update']);
+    Route::delete('bank-data/{id}', [BankController::class, 'destroy'])
+        ->name('bank-data.destroy')
+        ->middleware(['permission:banks.destroy']);
 
     Route::get('asset-category-data', [AssetCategoryController::class, 'index'])
         ->name('asset-category-data.index')

@@ -38,6 +38,11 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'departments.update']);
         Permission::create(['name' => 'departments.destroy']);
 
+        Permission::create(['name' => 'banks.index']);
+        Permission::create(['name' => 'banks.store']);
+        Permission::create(['name' => 'banks.update']);
+        Permission::create(['name' => 'banks.destroy']);
+
         Permission::create(['name' => 'warehouses.index']);
         Permission::create(['name' => 'warehouses.store']);
         Permission::create(['name' => 'warehouses.update']);

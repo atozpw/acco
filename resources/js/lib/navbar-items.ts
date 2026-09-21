@@ -16,6 +16,7 @@ import ledgerData from '@/routes/ledger-data';
 import payablePayment from '@/routes/payable-payment';
 import payrollComponentData from '@/routes/payroll-component-data';
 import cashAdvanceClassification from '@/routes/cash-advance-classification';
+import bankData from '@/routes/bank-data';
 import permissions from '@/routes/permissions';
 import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
@@ -70,6 +71,7 @@ export const mainNavItems: NavItem[] = [
             'salary-categories.index',
             'payroll-components.index',
             'cash-advance-classifications.index',
+            'banks.index',
         ],
         children: [
             {
@@ -136,6 +138,11 @@ export const mainNavItems: NavItem[] = [
                 title: 'Kategori Uang Muka',
                 href: cashAdvanceClassification.index(),
                 permissions: ['cash-advance-classifications.index'],
+            },
+            {
+                title: 'Data Bank',
+                href: bankData.index(),
+                permissions: ['banks.index'],
             },
         ],
     },
