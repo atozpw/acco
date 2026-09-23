@@ -14,9 +14,10 @@ import generalJournal from '@/routes/general-journal';
 import income from '@/routes/income';
 import ledgerData from '@/routes/ledger-data';
 import payablePayment from '@/routes/payable-payment';
-import payrollComponentData from '@/routes/payroll-component-data';
 import cashAdvanceClassification from '@/routes/cash-advance-classification';
 import bankData from '@/routes/bank-data';
+import payrollComponentData from '@/routes/payroll-component-data';
+import payrollFormulas from '@/routes/payroll-formulas';
 import permissions from '@/routes/permissions';
 import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
@@ -262,13 +263,14 @@ export const mainNavItems: NavItem[] = [
         href: '#',
         icon: Wallet,
         permissions: [
+            'payroll-formulas.index',
             'payrolls.index',
         ],
         children: [
             {
                 title: 'Perhitungan',
-                href: '#',
-                permissions: ['payrolls.index'],
+                href: payrollFormulas.index(),
+                permissions: ['payroll-formulas.index'],
             },
             {
                 title: 'Daftar Gaji / Tunjangan',

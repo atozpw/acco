@@ -19,12 +19,12 @@ class PayrollFormulaDetail extends Model
 
     public function formula(): BelongsTo
     {
-        return $this->belongsTo(PayrollFormula::class);
+        return $this->belongsTo(PayrollFormula::class, 'payroll_formula_id', 'id');
     }
 
     public function component(): BelongsTo
     {
-        return $this->belongsTo(PayrollComponent::class);
+        return $this->belongsTo(PayrollComponent::class, 'payroll_component_id', 'id');
     }
 
     public function createdBy(): BelongsTo
