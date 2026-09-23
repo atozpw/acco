@@ -13,14 +13,18 @@ return new class extends Migration
     {
         Schema::create('payroll_periodes', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 8)->unique();
-            $table->string('name', 50);
-            $table->date('debt_date');
+            $table->unsignedBigInteger('payroll_category_id');
+            $table->string('reference_no', 10)->unique();
+            $table->date('date');
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
+            $table->string('description', 100);
             $table->unsignedBigInteger('created_by');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('payroll_category_id')->references('id')->on('payroll_categories')->onUpdate('cascade');
+            $table->foreign('created_by')->references('id')->on('users')->onUpdate('cascade');
         });
     }
 

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PayrollPeriode extends Model
@@ -10,11 +11,22 @@ class PayrollPeriode extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'code',
-        'name',
-        'debt_date',
+        'payroll_category_id',
+        'reference_no',
+        'date',
         'start_date',
         'end_date',
+        'description',
         'created_by',
     ];
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(PayrollCategory::class);
+    }
+
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }
