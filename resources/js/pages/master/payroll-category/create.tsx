@@ -9,20 +9,13 @@ import { Spinner } from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
 import AppLayout from '@/layouts/app-layout';
 import dataStore from '@/routes/data-store';
-import salaryCategoryRoute from '@/routes/salary-category-data';
+import payrollCategoryRoute from '@/routes/payroll-category-data';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import type { FormEventHandler } from 'react';
 import { toast } from 'sonner';
 
-type SalaryCategoryProps = {
-    id: number;
-    code: string;
-    name: string;
-    is_active: boolean;
-};
-
-type SalaryCategoryFormData = {
+type PayrollCategoryFormData = {
     code: string;
     name: string;
     is_active: boolean;
@@ -35,40 +28,36 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
     {
         title: 'Kategori Gaji',
-        href: salaryCategoryRoute.index().url,
+        href: payrollCategoryRoute.index().url,
     },
     {
-        title: 'Perbarui',
+        title: 'Buat Baru',
         href: '',
     },
 ];
 
-export default function SalaryCategoryEditScreen({
-    category,
-}: {
-    category: SalaryCategoryProps;
-}) {
-    const { data, setData, put, processing, errors } =
-        useForm<SalaryCategoryFormData>({
-            code: category.code ?? '',
-            name: category.name ?? '',
-            is_active: Boolean(category.is_active),
+export default function PayrollCategoryCreateScreen() {
+    const { data, setData, post, processing, errors } =
+        useForm<PayrollCategoryFormData>({
+            code: '',
+            name: '',
+            is_active: true,
         });
 
     const submit: FormEventHandler<HTMLFormElement> = (e) => {
         e.preventDefault();
 
-        put(salaryCategoryRoute.update(category.id).url, {
+        post(payrollCategoryRoute.store().url, {
             preserveScroll: true,
             onSuccess: () => {
                 toast.success('Berhasil', {
-                    description: 'Data kategori gaji berhasil diperbarui.',
+                    description: 'Data kategori gaji berhasil dibuat.',
                 });
             },
             onError: () => {
                 toast.error('Gagal', {
                     description:
-                        'Terjadi kesalahan saat memperbarui kategori gaji.',
+                        'Terjadi kesalahan saat membuat kategori gaji.',
                 });
             },
         });
@@ -76,12 +65,12 @@ export default function SalaryCategoryEditScreen({
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Perbarui kategori gaji" />
+            <Head title="Buat kategori gaji" />
 
             <div className="px-5 py-6">
                 <Heading
-                    title="Perbarui Kategori Gaji"
-                    description="Memperbarui kategori gaji"
+                    title="Tambah Kategori Gaji"
+                    description="Buat baru kategori gaji"
                 />
 
                 <Separator className="mb-8" />
@@ -90,7 +79,7 @@ export default function SalaryCategoryEditScreen({
                         <aside className="2xl:w-md w-full max-w-xl lg:w-[250px] xl:w-[350px]">
                             <HeadingSmall
                                 title="Data Umum"
-                                description="Perbarui kode, nama, dan status kategori"
+                                description="Masukkan kode, nama, dan status kategori"
                             />
                         </aside>
                         <Separator className="my-6 lg:hidden" />
@@ -170,7 +159,7 @@ export default function SalaryCategoryEditScreen({
                             variant="outline"
                             className="mr-3"
                         >
-                            <Link href={salaryCategoryRoute.index().url}>
+                            <Link href={payrollCategoryRoute.index().url}>
                                 Batal
                             </Link>
                         </Button>
@@ -182,7 +171,7 @@ export default function SalaryCategoryEditScreen({
                                     Menyimpan...
                                 </>
                             ) : (
-                                'Simpan Perubahan'
+                                'Simpan Kategori'
                             )}
                         </Button>
                     </div>

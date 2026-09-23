@@ -25,7 +25,7 @@ import purchaseInvoice from '@/routes/purchase-invoice';
 import purchaseReceipt from '@/routes/purchase-receipt';
 import receivablePayment from '@/routes/receivable-payment';
 import roles from '@/routes/roles';
-import salaryCategoryData from '@/routes/salary-category-data';
+import payrollCategoryData from '@/routes/payroll-category-data';
 import salesDelivery from '@/routes/sales-delivery';
 import salesInvoice from '@/routes/sales-invoice';
 import taxData from '@/routes/tax-data';
@@ -68,7 +68,7 @@ export const mainNavItems: NavItem[] = [
             'departments.index',
             'warehouses.index',
             'projects.index',
-            'salary-categories.index',
+            'payroll-categories.index',
             'payroll-components.index',
             'cash-advance-classifications.index',
             'banks.index',
@@ -126,8 +126,8 @@ export const mainNavItems: NavItem[] = [
             },
             {
                 title: 'Kategori Gaji',
-                href: salaryCategoryData.index(),
-                permissions: ['salary-categories.index'],
+                href: payrollCategoryData.index(),
+                permissions: ['payroll-categories.index'],
             },
             {
                 title: 'Komponen Gaji',

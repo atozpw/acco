@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Master\StoreSalaryCategoryRequest;
-use App\Http\Requests\Master\UpdateSalaryCategoryRequest;
-use App\Models\SalaryCategory;
+use App\Http\Requests\Master\StorePayrollCategoryRequest;
+use App\Http\Requests\Master\UpdatePayrollCategoryRequest;
+use App\Models\PayrollCategory;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
 
-class SalaryCategoryController extends Controller
+class PayrollCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,7 +20,7 @@ class SalaryCategoryController extends Controller
         $search = (string) $request->input('search');
         $perPage = (int) $request->input('perPage', 15);
 
-        $categories = SalaryCategory::query()
+        $categories = PayrollCategory::query()
             ->when($search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('code', 'like', '%' . $search . '%')
@@ -31,7 +31,7 @@ class SalaryCategoryController extends Controller
             ->simplePaginate($perPage)
             ->withQueryString();
 
-        return inertia('master/salary-category/index', [
+        return inertia('master/payroll-category/index', [
             'categories' => $categories,
             'filters' => [
                 'search' => $search,
@@ -45,19 +45,19 @@ class SalaryCategoryController extends Controller
      */
     public function create(): Response
     {
-        return inertia('master/salary-category/create');
+        return inertia('master/payroll-category/create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSalaryCategoryRequest $request): RedirectResponse
+    public function store(StorePayrollCategoryRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
-        SalaryCategory::create($validated);
+        PayrollCategory::create($validated);
 
-        return redirect()->route('salary-category-data.index');
+        return redirect()->route('payroll-category-data.index');
     }
 
     /**
@@ -73,9 +73,9 @@ class SalaryCategoryController extends Controller
      */
     public function edit(string $id): Response
     {
-        $category = SalaryCategory::query()->findOrFail($id);
+        $category = PayrollCategory::query()->findOrFail($id);
 
-        return inertia('master/salary-category/edit', [
+        return inertia('master/payroll-category/edit', [
             'category' => $category,
         ]);
     }
@@ -83,15 +83,15 @@ class SalaryCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSalaryCategoryRequest $request, string $id): RedirectResponse
+    public function update(UpdatePayrollCategoryRequest $request, string $id): RedirectResponse
     {
-        $category = SalaryCategory::query()->findOrFail($id);
+        $category = PayrollCategory::query()->findOrFail($id);
 
         $validated = $request->validated();
 
         $category->update($validated);
 
-        return redirect()->route('salary-category-data.index');
+        return redirect()->route('payroll-category-data.index');
     }
 
     /**
@@ -99,10 +99,10 @@ class SalaryCategoryController extends Controller
      */
     public function destroy(string $id): RedirectResponse
     {
-        $category = SalaryCategory::query()->findOrFail($id);
+        $category = PayrollCategory::query()->findOrFail($id);
 
         $category->delete();
 
-        return redirect()->route('salary-category-data.index');
+        return redirect()->route('payroll-category-data.index');
     }
 }

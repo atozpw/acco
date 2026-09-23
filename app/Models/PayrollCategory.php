@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SalaryCategory extends Model
+class PayrollCategory extends Model
 {
     use SoftDeletes;
 

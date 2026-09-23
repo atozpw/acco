@@ -45,7 +45,7 @@ import { useDebounceValue } from '@/hooks/use-debounce';
 import { usePermission } from '@/hooks/use-permission';
 import AppLayout from '@/layouts/app-layout';
 import dataStore from '@/routes/data-store';
-import salaryCategoryRoute from '@/routes/salary-category-data';
+import payrollCategoryRoute from '@/routes/payroll-category-data';
 import { BreadcrumbItem, CursorPagination } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
@@ -68,7 +68,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-type SalaryCategoryProps = {
+type PayrollCategoryProps = {
     id: number;
     code: string;
     name: string;
@@ -83,11 +83,11 @@ const listPerPage: { item: string; value: string }[] = [
     { item: '25', value: '25' },
 ];
 
-export default function SalaryCategoryIndexScreen({
+export default function PayrollCategoryIndexScreen({
     categories,
     filters,
 }: {
-    categories: CursorPagination<SalaryCategoryProps>;
+    categories: CursorPagination<PayrollCategoryProps>;
     filters: { search: string; perPage: number };
 }) {
     const { hasPermission } = usePermission();
@@ -98,10 +98,10 @@ export default function SalaryCategoryIndexScreen({
         String(filters.perPage ?? 15),
     );
     const [detailOpen, setDetailOpen] = useState(false);
-    const [selectedSalaryCategory, setSelectedSalaryCategory] =
-        useState<SalaryCategoryProps | null>(null);
+    const [selectedPayrollCategory, setSelectedPayrollCategory] =
+        useState<PayrollCategoryProps | null>(null);
     const [deleteTarget, setDeleteTarget] =
-        useState<SalaryCategoryProps | null>(null);
+        useState<PayrollCategoryProps | null>(null);
 
     useEffect(() => {
         if (
@@ -109,7 +109,7 @@ export default function SalaryCategoryIndexScreen({
             Number(itemsPage) !== filters.perPage
         ) {
             router.get(
-                salaryCategoryRoute.index(),
+                payrollCategoryRoute.index(),
                 {
                     search: searchBounce,
                     perPage: Number(itemsPage),
@@ -145,7 +145,7 @@ export default function SalaryCategoryIndexScreen({
                             {hasPermission(['salary_categories.store']) && (
                                 <Button asChild>
                                     <Link
-                                        href={salaryCategoryRoute.create().url}
+                                        href={payrollCategoryRoute.create().url}
                                     >
                                         <CirclePlusIcon /> Buat Baru
                                     </Link>
@@ -230,7 +230,7 @@ export default function SalaryCategoryIndexScreen({
                                                                     event,
                                                                 ) => {
                                                                     event.preventDefault();
-                                                                    setSelectedSalaryCategory(
+                                                                    setSelectedPayrollCategory(
                                                                         item,
                                                                     );
                                                                     setDetailOpen(
@@ -244,36 +244,36 @@ export default function SalaryCategoryIndexScreen({
                                                             {hasPermission([
                                                                 'salary_categories.update',
                                                             ]) && (
-                                                                <DropdownMenuItem
-                                                                    asChild
-                                                                >
-                                                                    <Link
-                                                                        href={salaryCategoryRoute.edit(
-                                                                            item.id,
-                                                                        )}
+                                                                    <DropdownMenuItem
+                                                                        asChild
                                                                     >
-                                                                        <Settings2Icon />
-                                                                        Perbarui
-                                                                    </Link>
-                                                                </DropdownMenuItem>
-                                                            )}
+                                                                        <Link
+                                                                            href={payrollCategoryRoute.edit(
+                                                                                item.id,
+                                                                            )}
+                                                                        >
+                                                                            <Settings2Icon />
+                                                                            Perbarui
+                                                                        </Link>
+                                                                    </DropdownMenuItem>
+                                                                )}
                                                             {hasPermission([
                                                                 'salary_categories.destroy',
                                                             ]) && (
-                                                                <DropdownMenuItem
-                                                                    onSelect={(
-                                                                        event,
-                                                                    ) => {
-                                                                        event.preventDefault();
-                                                                        setDeleteTarget(
-                                                                            item,
-                                                                        );
-                                                                    }}
-                                                                >
-                                                                    <Trash2 />
-                                                                    Hapus
-                                                                </DropdownMenuItem>
-                                                            )}
+                                                                    <DropdownMenuItem
+                                                                        onSelect={(
+                                                                            event,
+                                                                        ) => {
+                                                                            event.preventDefault();
+                                                                            setDeleteTarget(
+                                                                                item,
+                                                                            );
+                                                                        }}
+                                                                    >
+                                                                        <Trash2 />
+                                                                        Hapus
+                                                                    </DropdownMenuItem>
+                                                                )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
@@ -330,14 +330,14 @@ export default function SalaryCategoryIndexScreen({
                                 Informasi kategori gaji yang dipilih.
                             </DialogDescription>
                         </DialogHeader>
-                        {selectedSalaryCategory && (
+                        {selectedPayrollCategory && (
                             <div className="space-y-4 text-sm">
                                 <div className="flex justify-between">
                                     <span className="text-muted-foreground">
                                         Kode
                                     </span>
                                     <span className="font-medium">
-                                        {selectedSalaryCategory.code}
+                                        {selectedPayrollCategory.code}
                                     </span>
                                 </div>
                                 <div className="flex justify-between">
@@ -345,7 +345,7 @@ export default function SalaryCategoryIndexScreen({
                                         Nama
                                     </span>
                                     <span className="font-medium">
-                                        {selectedSalaryCategory.name}
+                                        {selectedPayrollCategory.name}
                                     </span>
                                 </div>
                                 <div className="flex justify-between">
@@ -353,7 +353,7 @@ export default function SalaryCategoryIndexScreen({
                                         Status
                                     </span>
                                     <span className="font-medium">
-                                        {selectedSalaryCategory.is_active
+                                        {selectedPayrollCategory.is_active
                                             ? 'Aktif'
                                             : 'Nonaktif'}
                                     </span>
@@ -388,7 +388,7 @@ export default function SalaryCategoryIndexScreen({
                                     if (!deleteTarget) return;
 
                                     router.delete(
-                                        salaryCategoryRoute.destroy(
+                                        payrollCategoryRoute.destroy(
                                             deleteTarget.id,
                                         ),
                                         {

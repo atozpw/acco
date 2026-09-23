@@ -3,9 +3,8 @@
 namespace App\Http\Requests\Master;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class UpdateSalaryCategoryRequest extends FormRequest
+class StorePayrollCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +26,7 @@ class UpdateSalaryCategoryRequest extends FormRequest
                 'required',
                 'string',
                 'max:6',
-                Rule::unique('salary_categories', 'code')->ignore($this->route('id')),
+                'unique:payroll_categories,code',
             ],
 
             'name' => [
