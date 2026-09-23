@@ -53,10 +53,10 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'projects.update']);
         Permission::create(['name' => 'projects.destroy']);
 
-        Permission::create(['name' => 'salary-categories.index']);
-        Permission::create(['name' => 'salary-categories.store']);
-        Permission::create(['name' => 'salary-categories.update']);
-        Permission::create(['name' => 'salary-categories.destroy']);
+        Permission::create(['name' => 'payroll-categories.index']);
+        Permission::create(['name' => 'payroll-categories.store']);
+        Permission::create(['name' => 'payroll-categories.update']);
+        Permission::create(['name' => 'payroll-categories.destroy']);
 
         Permission::create(['name' => 'payroll-components.index']);
         Permission::create(['name' => 'payroll-components.store']);
@@ -173,6 +173,11 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'product-transfers.store']);
         Permission::create(['name' => 'product-transfers.update']);
         Permission::create(['name' => 'product-transfers.destroy']);
+
+        Permission::create(['name' => 'payroll-formulas.index']);
+        Permission::create(['name' => 'payroll-formulas.store']);
+        Permission::create(['name' => 'payroll-formulas.update']);
+        Permission::create(['name' => 'payroll-formulas.destroy']);
 
         Permission::create(['name' => 'reports.index']);
         Permission::create(['name' => 'financial-statement.index']);
