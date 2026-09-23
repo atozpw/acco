@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('salaries', function (Blueprint $table) {
+        Schema::create('payroll_formulas', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('salary_category_id');
+            $table->unsignedBigInteger('payroll_category_id');
             $table->unsignedBigInteger('contact_id');
             $table->unsignedBigInteger('department_id');
             $table->unsignedBigInteger('project_id')->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('salary_category_id')->references('id')->on('salary_categories')->onUpdate('cascade');
+            $table->foreign('payroll_category_id')->references('id')->on('payroll_categories')->onUpdate('cascade');
             $table->foreign('contact_id')->references('id')->on('contacts')->onUpdate('cascade');
             $table->foreign('department_id')->references('id')->on('departments')->onUpdate('cascade');
             $table->foreign('project_id')->references('id')->on('projects')->onUpdate('cascade');
@@ -37,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('salaries');
+        Schema::dropIfExists('payroll_formulas');
     }
 };

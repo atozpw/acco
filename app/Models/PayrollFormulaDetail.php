@@ -6,20 +6,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class SalaryDetail extends Model
+class PayrollFormulaDetail extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'salary_id',
+        'payroll_formula_id',
         'payroll_component_id',
         'amount',
         'created_by',
     ];
 
-    public function salary(): BelongsTo
+    public function formula(): BelongsTo
     {
-        return $this->belongsTo(Salary::class);
+        return $this->belongsTo(PayrollFormula::class);
     }
 
     public function component(): BelongsTo

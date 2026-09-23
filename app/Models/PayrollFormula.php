@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Salary extends Model
+class PayrollFormula extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'salary_category_id',
+        'payroll_category_id',
         'contact_id',
         'department_id',
         'project_id',
@@ -24,7 +24,7 @@ class Salary extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(SalaryCategory::class);
+        return $this->belongsTo(PayrollCategory::class);
     }
 
     public function contact(): BelongsTo
@@ -49,6 +49,6 @@ class Salary extends Model
 
     public function details(): HasMany
     {
-        return $this->hasMany(SalaryDetail::class);
+        return $this->hasMany(PayrollFormulaDetail::class);
     }
 }

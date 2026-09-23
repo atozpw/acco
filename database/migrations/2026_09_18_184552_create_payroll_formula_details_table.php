@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('salary_details', function (Blueprint $table) {
+        Schema::create('payroll_formula_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('salary_id');
+            $table->unsignedBigInteger('payroll_formula_id');
             $table->unsignedBigInteger('payroll_component_id');
             $table->decimal('amount', 16, 2)->default(0);
             $table->unsignedBigInteger('created_by');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('salary_id')->references('id')->on('salaries')->onUpdate('cascade');
+            $table->foreign('payroll_formula_id')->references('id')->on('payroll_formulas')->onUpdate('cascade');
             $table->foreign('payroll_component_id')->references('id')->on('payroll_components')->onUpdate('cascade');
             $table->foreign('created_by')->references('id')->on('users')->onUpdate('cascade');
         });
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('salary_details');
+        Schema::dropIfExists('payroll_formula_details');
     }
 };
