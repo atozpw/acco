@@ -15,183 +15,188 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        Permission::create(['name' => 'users.index']);
-        Permission::create(['name' => 'users.store']);
-        Permission::create(['name' => 'users.update']);
-        Permission::create(['name' => 'users.destroy']);
+        Permission::updateOrCreate(['name' => 'users.index'], ['name' => 'users.index']);
+        Permission::updateOrCreate(['name' => 'users.store'], ['name' => 'users.store']);
+        Permission::updateOrCreate(['name' => 'users.update'], ['name' => 'users.update']);
+        Permission::updateOrCreate(['name' => 'users.destroy'], ['name' => 'users.destroy']);
 
-        Permission::create(['name' => 'roles.index']);
-        Permission::create(['name' => 'roles.store']);
-        Permission::create(['name' => 'roles.update']);
-        Permission::create(['name' => 'roles.destroy']);
+        Permission::updateOrCreate(['name' => 'roles.index'], ['name' => 'roles.index']);
+        Permission::updateOrCreate(['name' => 'roles.store'], ['name' => 'roles.store']);
+        Permission::updateOrCreate(['name' => 'roles.update'], ['name' => 'roles.update']);
+        Permission::updateOrCreate(['name' => 'roles.destroy'], ['name' => 'roles.destroy']);
 
-        Permission::create(['name' => 'permissions.index']);
-        Permission::create(['name' => 'permissions.store']);
-        Permission::create(['name' => 'permissions.update']);
-        Permission::create(['name' => 'permissions.destroy']);
+        Permission::updateOrCreate(['name' => 'permissions.index'], ['name' => 'permissions.index']);
+        Permission::updateOrCreate(['name' => 'permissions.store'], ['name' => 'permissions.store']);
+        Permission::updateOrCreate(['name' => 'permissions.update'], ['name' => 'permissions.update']);
+        Permission::updateOrCreate(['name' => 'permissions.destroy'], ['name' => 'permissions.destroy']);
 
-        Permission::create(['name' => 'companies.index']);
-        Permission::create(['name' => 'companies.update']);
+        Permission::updateOrCreate(['name' => 'companies.index'], ['name' => 'companies.index']);
+        Permission::updateOrCreate(['name' => 'companies.update'], ['name' => 'companies.update']);
 
-        Permission::create(['name' => 'departments.index']);
-        Permission::create(['name' => 'departments.store']);
-        Permission::create(['name' => 'departments.update']);
-        Permission::create(['name' => 'departments.destroy']);
+        Permission::updateOrCreate(['name' => 'departments.index'], ['name' => 'departments.index']);
+        Permission::updateOrCreate(['name' => 'departments.store'], ['name' => 'departments.store']);
+        Permission::updateOrCreate(['name' => 'departments.update'], ['name' => 'departments.update']);
+        Permission::updateOrCreate(['name' => 'departments.destroy'], ['name' => 'departments.destroy']);
 
-        Permission::create(['name' => 'banks.index']);
-        Permission::create(['name' => 'banks.store']);
-        Permission::create(['name' => 'banks.update']);
-        Permission::create(['name' => 'banks.destroy']);
+        Permission::updateOrCreate(['name' => 'banks.index'], ['name' => 'banks.index']);
+        Permission::updateOrCreate(['name' => 'banks.store'], ['name' => 'banks.store']);
+        Permission::updateOrCreate(['name' => 'banks.update'], ['name' => 'banks.update']);
+        Permission::updateOrCreate(['name' => 'banks.destroy'], ['name' => 'banks.destroy']);
 
-        Permission::create(['name' => 'warehouses.index']);
-        Permission::create(['name' => 'warehouses.store']);
-        Permission::create(['name' => 'warehouses.update']);
-        Permission::create(['name' => 'warehouses.destroy']);
+        Permission::updateOrCreate(['name' => 'warehouses.index'], ['name' => 'warehouses.index']);
+        Permission::updateOrCreate(['name' => 'warehouses.store'], ['name' => 'warehouses.store']);
+        Permission::updateOrCreate(['name' => 'warehouses.update'], ['name' => 'warehouses.update']);
+        Permission::updateOrCreate(['name' => 'warehouses.destroy'], ['name' => 'warehouses.destroy']);
 
-        Permission::create(['name' => 'projects.index']);
-        Permission::create(['name' => 'projects.store']);
-        Permission::create(['name' => 'projects.update']);
-        Permission::create(['name' => 'projects.destroy']);
+        Permission::updateOrCreate(['name' => 'projects.index'], ['name' => 'projects.index']);
+        Permission::updateOrCreate(['name' => 'projects.store'], ['name' => 'projects.store']);
+        Permission::updateOrCreate(['name' => 'projects.update'], ['name' => 'projects.update']);
+        Permission::updateOrCreate(['name' => 'projects.destroy'], ['name' => 'projects.destroy']);
 
-        Permission::create(['name' => 'payroll-categories.index']);
-        Permission::create(['name' => 'payroll-categories.store']);
-        Permission::create(['name' => 'payroll-categories.update']);
-        Permission::create(['name' => 'payroll-categories.destroy']);
+        Permission::updateOrCreate(['name' => 'payroll-categories.index'], ['name' => 'payroll-categories.index']);
+        Permission::updateOrCreate(['name' => 'payroll-categories.store'], ['name' => 'payroll-categories.store']);
+        Permission::updateOrCreate(['name' => 'payroll-categories.update'], ['name' => 'payroll-categories.update']);
+        Permission::updateOrCreate(['name' => 'payroll-categories.destroy'], ['name' => 'payroll-categories.destroy']);
 
-        Permission::create(['name' => 'payroll-components.index']);
-        Permission::create(['name' => 'payroll-components.store']);
-        Permission::create(['name' => 'payroll-components.update']);
-        Permission::create(['name' => 'payroll-components.destroy']);
+        Permission::updateOrCreate(['name' => 'payroll-components.index'], ['name' => 'payroll-components.index']);
+        Permission::updateOrCreate(['name' => 'payroll-components.store'], ['name' => 'payroll-components.store']);
+        Permission::updateOrCreate(['name' => 'payroll-components.update'], ['name' => 'payroll-components.update']);
+        Permission::updateOrCreate(['name' => 'payroll-components.destroy'], ['name' => 'payroll-components.destroy']);
 
-        Permission::create(['name' => 'asset-categories.index']);
-        Permission::create(['name' => 'asset-categories.store']);
-        Permission::create(['name' => 'asset-categories.update']);
-        Permission::create(['name' => 'asset-categories.destroy']);
+        Permission::updateOrCreate(['name' => 'asset-categories.index'], ['name' => 'asset-categories.index']);
+        Permission::updateOrCreate(['name' => 'asset-categories.store'], ['name' => 'asset-categories.store']);
+        Permission::updateOrCreate(['name' => 'asset-categories.update'], ['name' => 'asset-categories.update']);
+        Permission::updateOrCreate(['name' => 'asset-categories.destroy'], ['name' => 'asset-categories.destroy']);
 
-        Permission::create(['name' => 'coas.index']);
-        Permission::create(['name' => 'coas.store']);
-        Permission::create(['name' => 'coas.update']);
-        Permission::create(['name' => 'coas.destroy']);
+        Permission::updateOrCreate(['name' => 'coas.index'], ['name' => 'coas.index']);
+        Permission::updateOrCreate(['name' => 'coas.store'], ['name' => 'coas.store']);
+        Permission::updateOrCreate(['name' => 'coas.update'], ['name' => 'coas.update']);
+        Permission::updateOrCreate(['name' => 'coas.destroy'], ['name' => 'coas.destroy']);
 
-        Permission::create(['name' => 'contacts.index']);
-        Permission::create(['name' => 'contacts.store']);
-        Permission::create(['name' => 'contacts.update']);
-        Permission::create(['name' => 'contacts.destroy']);
+        Permission::updateOrCreate(['name' => 'contacts.index'], ['name' => 'contacts.index']);
+        Permission::updateOrCreate(['name' => 'contacts.store'], ['name' => 'contacts.store']);
+        Permission::updateOrCreate(['name' => 'contacts.update'], ['name' => 'contacts.update']);
+        Permission::updateOrCreate(['name' => 'contacts.destroy'], ['name' => 'contacts.destroy']);
 
-        Permission::create(['name' => 'product-categories.index']);
-        Permission::create(['name' => 'product-categories.store']);
-        Permission::create(['name' => 'product-categories.update']);
-        Permission::create(['name' => 'product-categories.destroy']);
+        Permission::updateOrCreate(['name' => 'product-categories.index'], ['name' => 'product-categories.index']);
+        Permission::updateOrCreate(['name' => 'product-categories.store'], ['name' => 'product-categories.store']);
+        Permission::updateOrCreate(['name' => 'product-categories.update'], ['name' => 'product-categories.update']);
+        Permission::updateOrCreate(['name' => 'product-categories.destroy'], ['name' => 'product-categories.destroy']);
 
-        Permission::create(['name' => 'products.index']);
-        Permission::create(['name' => 'products.store']);
-        Permission::create(['name' => 'products.update']);
-        Permission::create(['name' => 'products.destroy']);
+        Permission::updateOrCreate(['name' => 'products.index'], ['name' => 'products.index']);
+        Permission::updateOrCreate(['name' => 'products.store'], ['name' => 'products.store']);
+        Permission::updateOrCreate(['name' => 'products.update'], ['name' => 'products.update']);
+        Permission::updateOrCreate(['name' => 'products.destroy'], ['name' => 'products.destroy']);
 
-        Permission::create(['name' => 'taxes.index']);
-        Permission::create(['name' => 'taxes.store']);
-        Permission::create(['name' => 'taxes.update']);
-        Permission::create(['name' => 'taxes.destroy']);
+        Permission::updateOrCreate(['name' => 'taxes.index'], ['name' => 'taxes.index']);
+        Permission::updateOrCreate(['name' => 'taxes.store'], ['name' => 'taxes.store']);
+        Permission::updateOrCreate(['name' => 'taxes.update'], ['name' => 'taxes.update']);
+        Permission::updateOrCreate(['name' => 'taxes.destroy'], ['name' => 'taxes.destroy']);
 
-        Permission::create(['name' => 'unit-measurements.index']);
-        Permission::create(['name' => 'unit-measurements.store']);
-        Permission::create(['name' => 'unit-measurements.update']);
-        Permission::create(['name' => 'unit-measurements.destroy']);
+        Permission::updateOrCreate(['name' => 'unit-measurements.index'], ['name' => 'unit-measurements.index']);
+        Permission::updateOrCreate(['name' => 'unit-measurements.store'], ['name' => 'unit-measurements.store']);
+        Permission::updateOrCreate(['name' => 'unit-measurements.update'], ['name' => 'unit-measurements.update']);
+        Permission::updateOrCreate(['name' => 'unit-measurements.destroy'], ['name' => 'unit-measurements.destroy']);
 
-        Permission::create(['name' => 'general-journal.index']);
-        Permission::create(['name' => 'general-journal.store']);
-        Permission::create(['name' => 'general-journal.update']);
-        Permission::create(['name' => 'general-journal.destroy']);
+        Permission::updateOrCreate(['name' => 'general-journal.index'], ['name' => 'general-journal.index']);
+        Permission::updateOrCreate(['name' => 'general-journal.store'], ['name' => 'general-journal.store']);
+        Permission::updateOrCreate(['name' => 'general-journal.update'], ['name' => 'general-journal.update']);
+        Permission::updateOrCreate(['name' => 'general-journal.destroy'], ['name' => 'general-journal.destroy']);
 
-        Permission::create(['name' => 'ledgers.index']);
-        Permission::create(['name' => 'ledgers.store']);
-        Permission::create(['name' => 'ledgers.update']);
-        Permission::create(['name' => 'ledgers.destroy']);
+        Permission::updateOrCreate(['name' => 'ledgers.index'], ['name' => 'ledgers.index']);
+        Permission::updateOrCreate(['name' => 'ledgers.store'], ['name' => 'ledgers.store']);
+        Permission::updateOrCreate(['name' => 'ledgers.update'], ['name' => 'ledgers.update']);
+        Permission::updateOrCreate(['name' => 'ledgers.destroy'], ['name' => 'ledgers.destroy']);
 
-        Permission::create(['name' => 'incomes.index']);
-        Permission::create(['name' => 'incomes.store']);
-        Permission::create(['name' => 'incomes.update']);
-        Permission::create(['name' => 'incomes.destroy']);
+        Permission::updateOrCreate(['name' => 'incomes.index'], ['name' => 'incomes.index']);
+        Permission::updateOrCreate(['name' => 'incomes.store'], ['name' => 'incomes.store']);
+        Permission::updateOrCreate(['name' => 'incomes.update'], ['name' => 'incomes.update']);
+        Permission::updateOrCreate(['name' => 'incomes.destroy'], ['name' => 'incomes.destroy']);
 
-        Permission::create(['name' => 'expenses.index']);
-        Permission::create(['name' => 'expenses.store']);
-        Permission::create(['name' => 'expenses.update']);
-        Permission::create(['name' => 'expenses.destroy']);
+        Permission::updateOrCreate(['name' => 'expenses.index'], ['name' => 'expenses.index']);
+        Permission::updateOrCreate(['name' => 'expenses.store'], ['name' => 'expenses.store']);
+        Permission::updateOrCreate(['name' => 'expenses.update'], ['name' => 'expenses.update']);
+        Permission::updateOrCreate(['name' => 'expenses.destroy'], ['name' => 'expenses.destroy']);
 
-        Permission::create(['name' => 'cash-transfers.index']);
-        Permission::create(['name' => 'cash-transfers.store']);
-        Permission::create(['name' => 'cash-transfers.update']);
-        Permission::create(['name' => 'cash-transfers.destroy']);
+        Permission::updateOrCreate(['name' => 'cash-transfers.index'], ['name' => 'cash-transfers.index']);
+        Permission::updateOrCreate(['name' => 'cash-transfers.store'], ['name' => 'cash-transfers.store']);
+        Permission::updateOrCreate(['name' => 'cash-transfers.update'], ['name' => 'cash-transfers.update']);
+        Permission::updateOrCreate(['name' => 'cash-transfers.destroy'], ['name' => 'cash-transfers.destroy']);
 
-        Permission::create(['name' => 'giro-ins.index']);
-        Permission::create(['name' => 'giro-ins.store']);
-        Permission::create(['name' => 'giro-ins.update']);
-        Permission::create(['name' => 'giro-ins.destroy']);
+        Permission::updateOrCreate(['name' => 'giro-ins.index'], ['name' => 'giro-ins.index']);
+        Permission::updateOrCreate(['name' => 'giro-ins.store'], ['name' => 'giro-ins.store']);
+        Permission::updateOrCreate(['name' => 'giro-ins.update'], ['name' => 'giro-ins.update']);
+        Permission::updateOrCreate(['name' => 'giro-ins.destroy'], ['name' => 'giro-ins.destroy']);
 
-        Permission::create(['name' => 'giro-outs.index']);
-        Permission::create(['name' => 'giro-outs.store']);
-        Permission::create(['name' => 'giro-outs.update']);
-        Permission::create(['name' => 'giro-outs.destroy']);
+        Permission::updateOrCreate(['name' => 'giro-outs.index'], ['name' => 'giro-outs.index']);
+        Permission::updateOrCreate(['name' => 'giro-outs.store'], ['name' => 'giro-outs.store']);
+        Permission::updateOrCreate(['name' => 'giro-outs.update'], ['name' => 'giro-outs.update']);
+        Permission::updateOrCreate(['name' => 'giro-outs.destroy'], ['name' => 'giro-outs.destroy']);
 
-        Permission::create(['name' => 'sales-deliveries.index']);
-        Permission::create(['name' => 'sales-deliveries.store']);
-        Permission::create(['name' => 'sales-deliveries.update']);
-        Permission::create(['name' => 'sales-deliveries.destroy']);
+        Permission::updateOrCreate(['name' => 'sales-deliveries.index'], ['name' => 'sales-deliveries.index']);
+        Permission::updateOrCreate(['name' => 'sales-deliveries.store'], ['name' => 'sales-deliveries.store']);
+        Permission::updateOrCreate(['name' => 'sales-deliveries.update'], ['name' => 'sales-deliveries.update']);
+        Permission::updateOrCreate(['name' => 'sales-deliveries.destroy'], ['name' => 'sales-deliveries.destroy']);
 
-        Permission::create(['name' => 'sales-invoices.index']);
-        Permission::create(['name' => 'sales-invoices.store']);
-        Permission::create(['name' => 'sales-invoices.update']);
-        Permission::create(['name' => 'sales-invoices.destroy']);
+        Permission::updateOrCreate(['name' => 'sales-invoices.index'], ['name' => 'sales-invoices.index']);
+        Permission::updateOrCreate(['name' => 'sales-invoices.store'], ['name' => 'sales-invoices.store']);
+        Permission::updateOrCreate(['name' => 'sales-invoices.update'], ['name' => 'sales-invoices.update']);
+        Permission::updateOrCreate(['name' => 'sales-invoices.destroy'], ['name' => 'sales-invoices.destroy']);
 
-        Permission::create(['name' => 'account-receivables.index']);
-        Permission::create(['name' => 'account-receivables.show']);
+        Permission::updateOrCreate(['name' => 'account-receivables.index'], ['name' => 'account-receivables.index']);
+        Permission::updateOrCreate(['name' => 'account-receivables.show'], ['name' => 'account-receivables.show']);
 
-        Permission::create(['name' => 'receivable-payments.index']);
-        Permission::create(['name' => 'receivable-payments.store']);
-        Permission::create(['name' => 'receivable-payments.update']);
-        Permission::create(['name' => 'receivable-payments.destroy']);
+        Permission::updateOrCreate(['name' => 'receivable-payments.index'], ['name' => 'receivable-payments.index']);
+        Permission::updateOrCreate(['name' => 'receivable-payments.store'], ['name' => 'receivable-payments.store']);
+        Permission::updateOrCreate(['name' => 'receivable-payments.update'], ['name' => 'receivable-payments.update']);
+        Permission::updateOrCreate(['name' => 'receivable-payments.destroy'], ['name' => 'receivable-payments.destroy']);
 
-        Permission::create(['name' => 'purchase-receipts.index']);
-        Permission::create(['name' => 'purchase-receipts.store']);
-        Permission::create(['name' => 'purchase-receipts.update']);
-        Permission::create(['name' => 'purchase-receipts.destroy']);
+        Permission::updateOrCreate(['name' => 'purchase-receipts.index'], ['name' => 'purchase-receipts.index']);
+        Permission::updateOrCreate(['name' => 'purchase-receipts.store'], ['name' => 'purchase-receipts.store']);
+        Permission::updateOrCreate(['name' => 'purchase-receipts.update'], ['name' => 'purchase-receipts.update']);
+        Permission::updateOrCreate(['name' => 'purchase-receipts.destroy'], ['name' => 'purchase-receipts.destroy']);
 
-        Permission::create(['name' => 'purchase-invoices.index']);
-        Permission::create(['name' => 'purchase-invoices.store']);
-        Permission::create(['name' => 'purchase-invoices.update']);
-        Permission::create(['name' => 'purchase-invoices.destroy']);
+        Permission::updateOrCreate(['name' => 'purchase-invoices.index'], ['name' => 'purchase-invoices.index']);
+        Permission::updateOrCreate(['name' => 'purchase-invoices.store'], ['name' => 'purchase-invoices.store']);
+        Permission::updateOrCreate(['name' => 'purchase-invoices.update'], ['name' => 'purchase-invoices.update']);
+        Permission::updateOrCreate(['name' => 'purchase-invoices.destroy'], ['name' => 'purchase-invoices.destroy']);
 
-        Permission::create(['name' => 'account-payables.index']);
-        Permission::create(['name' => 'account-payables.show']);
+        Permission::updateOrCreate(['name' => 'account-payables.index'], ['name' => 'account-payables.index']);
+        Permission::updateOrCreate(['name' => 'account-payables.show'], ['name' => 'account-payables.show']);
 
-        Permission::create(['name' => 'payable-payments.index']);
-        Permission::create(['name' => 'payable-payments.store']);
-        Permission::create(['name' => 'payable-payments.update']);
-        Permission::create(['name' => 'payable-payments.destroy']);
+        Permission::updateOrCreate(['name' => 'payable-payments.index'], ['name' => 'payable-payments.index']);
+        Permission::updateOrCreate(['name' => 'payable-payments.store'], ['name' => 'payable-payments.store']);
+        Permission::updateOrCreate(['name' => 'payable-payments.update'], ['name' => 'payable-payments.update']);
+        Permission::updateOrCreate(['name' => 'payable-payments.destroy'], ['name' => 'payable-payments.destroy']);
 
-        Permission::create(['name' => 'product-transfers.index']);
-        Permission::create(['name' => 'product-transfers.store']);
-        Permission::create(['name' => 'product-transfers.update']);
-        Permission::create(['name' => 'product-transfers.destroy']);
+        Permission::updateOrCreate(['name' => 'product-transfers.index'], ['name' => 'product-transfers.index']);
+        Permission::updateOrCreate(['name' => 'product-transfers.store'], ['name' => 'product-transfers.store']);
+        Permission::updateOrCreate(['name' => 'product-transfers.update'], ['name' => 'product-transfers.update']);
+        Permission::updateOrCreate(['name' => 'product-transfers.destroy'], ['name' => 'product-transfers.destroy']);
 
-        Permission::create(['name' => 'payroll-formulas.index']);
-        Permission::create(['name' => 'payroll-formulas.store']);
-        Permission::create(['name' => 'payroll-formulas.update']);
-        Permission::create(['name' => 'payroll-formulas.destroy']);
+        Permission::updateOrCreate(['name' => 'payroll-formulas.index'], ['name' => 'payroll-formulas.index']);
+        Permission::updateOrCreate(['name' => 'payroll-formulas.store'], ['name' => 'payroll-formulas.store']);
+        Permission::updateOrCreate(['name' => 'payroll-formulas.update'], ['name' => 'payroll-formulas.update']);
+        Permission::updateOrCreate(['name' => 'payroll-formulas.destroy'], ['name' => 'payroll-formulas.destroy']);
 
-        Permission::create(['name' => 'reports.index']);
-        Permission::create(['name' => 'financial-statement.index']);
-        Permission::create(['name' => 'financial-statement.profit-loss']);
-        Permission::create(['name' => 'financial-statement.balance-sheet']);
-        Permission::create(['name' => 'financial-statement.cash-flow']);
+        Permission::updateOrCreate(['name' => 'payroll-periods.index'], ['name' => 'payroll-periods.index']);
+        Permission::updateOrCreate(['name' => 'payroll-periods.store'], ['name' => 'payroll-periods.store']);
+        Permission::updateOrCreate(['name' => 'payroll-periods.update'], ['name' => 'payroll-periods.update']);
+        Permission::updateOrCreate(['name' => 'payroll-periods.destroy'], ['name' => 'payroll-periods.destroy']);
 
-        Permission::create(['name' => 'account-beginning-balance.index']);
-        Permission::create(['name' => 'account-beginning-balance.update']);
-        Permission::create(['name' => 'receivable-beginning-balance.index']);
-        Permission::create(['name' => 'receivable-beginning-balance.store']);
-        Permission::create(['name' => 'payable-beginning-balance.index']);
-        Permission::create(['name' => 'payable-beginning-balance.store']);
-        Permission::create(['name' => 'inventory-beginning-balance.index']);
-        Permission::create(['name' => 'inventory-beginning-balance.store']);
+        Permission::updateOrCreate(['name' => 'reports.index'], ['name' => 'reports.index']);
+        Permission::updateOrCreate(['name' => 'financial-statement.index'], ['name' => 'financial-statement.index']);
+        Permission::updateOrCreate(['name' => 'financial-statement.profit-loss'], ['name' => 'financial-statement.profit-loss']);
+        Permission::updateOrCreate(['name' => 'financial-statement.balance-sheet'], ['name' => 'financial-statement.balance-sheet']);
+        Permission::updateOrCreate(['name' => 'financial-statement.cash-flow'], ['name' => 'financial-statement.cash-flow']);
+
+        Permission::updateOrCreate(['name' => 'account-beginning-balance.index'], ['name' => 'account-beginning-balance.index']);
+        Permission::updateOrCreate(['name' => 'account-beginning-balance.update'], ['name' => 'account-beginning-balance.update']);
+        Permission::updateOrCreate(['name' => 'receivable-beginning-balance.index'], ['name' => 'receivable-beginning-balance.index']);
+        Permission::updateOrCreate(['name' => 'receivable-beginning-balance.store'], ['name' => 'receivable-beginning-balance.store']);
+        Permission::updateOrCreate(['name' => 'payable-beginning-balance.index'], ['name' => 'payable-beginning-balance.index']);
+        Permission::updateOrCreate(['name' => 'payable-beginning-balance.store'], ['name' => 'payable-beginning-balance.store']);
+        Permission::updateOrCreate(['name' => 'inventory-beginning-balance.index'], ['name' => 'inventory-beginning-balance.index']);
+        Permission::updateOrCreate(['name' => 'inventory-beginning-balance.store'], ['name' => 'inventory-beginning-balance.store']);
     }
 }
