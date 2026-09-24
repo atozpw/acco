@@ -13,7 +13,8 @@ class PayrollDetail extends Model
     protected $fillable = [
         'payroll_id',
         'payroll_component_id',
-        'coa_id',
+        'payable_coa_id',
+        'expense_coa_id',
         'amount',
         'created_by',
     ];
@@ -28,9 +29,14 @@ class PayrollDetail extends Model
         return $this->belongsTo(PayrollComponent::class);
     }
 
-    public function coa(): BelongsTo
+    public function payableCoa(): BelongsTo
     {
-        return $this->belongsTo(Coa::class);
+        return $this->belongsTo(Coa::class, 'payable_coa_id');
+    }
+
+    public function expenseCoa(): BelongsTo
+    {
+        return $this->belongsTo(Coa::class, 'expense_coa_id');
     }
 
     public function createdBy(): BelongsTo
