@@ -172,7 +172,7 @@ export default function PayrollFormulaCreateScreen({
     const updateEarningRow = (
         index: number,
         field: keyof DetailItem,
-        value: any,
+        value: string | number,
     ) => {
         setEarnings((prev) => {
             const next = [...prev];
@@ -206,7 +206,7 @@ export default function PayrollFormulaCreateScreen({
     const updateDeductionRow = (
         index: number,
         field: keyof DetailItem,
-        value: any,
+        value: string | number,
     ) => {
         setDeductions((prev) => {
             const next = [...prev];

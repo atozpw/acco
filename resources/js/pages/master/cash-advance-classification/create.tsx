@@ -7,19 +7,12 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 import { Switch } from '@/components/ui/switch';
 import AppLayout from '@/layouts/app-layout';
-import dataStore from '@/routes/data-store';
 import cashAdvanceClassification from '@/routes/cash-advance-classification';
+import dataStore from '@/routes/data-store';
 import { BreadcrumbItem } from '@/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import type { FormEventHandler } from 'react';
@@ -105,7 +98,7 @@ export default function CashAdvanceClassificationCreateScreen({
                 <Separator className="mb-8" />
                 <form onSubmit={submit} className="space-y-8 xl:px-12">
                     <div className="flex flex-col lg:flex-row lg:space-x-12">
-                        <aside className="2xl:w-md w-full max-w-xl lg:w-[250px] xl:w-[350px]">
+                        <aside className="w-full max-w-xl lg:w-[250px] xl:w-[350px] 2xl:w-md">
                             <HeadingSmall
                                 title="Data Umum"
                                 description="Masukkan nama dan status"
@@ -113,7 +106,7 @@ export default function CashAdvanceClassificationCreateScreen({
                         </aside>
                         <Separator className="my-6 lg:hidden" />
                         <div className="flex-1 space-y-6 md:max-w-2xl">
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-x-6 lg:space-y-0">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
                                 <div className="grid gap-2 lg:basis-1/3">
                                     <Label htmlFor="code">Kode</Label>
                                     <Input
@@ -157,11 +150,16 @@ export default function CashAdvanceClassificationCreateScreen({
                                         placeholder="Pilih akun penerimaan"
                                         value={data.cash_advance_income_coa_id}
                                         onValueChange={(value) =>
-                                            setData('cash_advance_income_coa_id', value)
+                                            setData(
+                                                'cash_advance_income_coa_id',
+                                                value,
+                                            )
                                         }
                                     />
                                     <InputError
-                                        message={errors.cash_advance_income_coa_id}
+                                        message={
+                                            errors.cash_advance_income_coa_id
+                                        }
                                     />
                                 </div>
                                 <div className="grid gap-2">
@@ -174,11 +172,16 @@ export default function CashAdvanceClassificationCreateScreen({
                                         placeholder="Pilih akun pengeluaran"
                                         value={data.cash_advance_expense_coa_id}
                                         onValueChange={(value) =>
-                                            setData('cash_advance_expense_coa_id', value)
+                                            setData(
+                                                'cash_advance_expense_coa_id',
+                                                value,
+                                            )
                                         }
                                     />
                                     <InputError
-                                        message={errors.cash_advance_expense_coa_id}
+                                        message={
+                                            errors.cash_advance_expense_coa_id
+                                        }
                                     />
                                 </div>
                             </div>
@@ -188,12 +191,13 @@ export default function CashAdvanceClassificationCreateScreen({
                                         <Label htmlFor="is_active">
                                             Status
                                         </Label>
-                                        <p className="text-muted-foreground text-xs">
-                                            Tentukan apakah kategori aktif digunakan.
+                                        <p className="text-xs text-muted-foreground">
+                                            Tentukan apakah kategori aktif
+                                            digunakan.
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <span className="text-muted-foreground text-xs">
+                                        <span className="text-xs text-muted-foreground">
                                             Nonaktif
                                         </span>
                                         <Switch
@@ -206,13 +210,11 @@ export default function CashAdvanceClassificationCreateScreen({
                                                 )
                                             }
                                         />
-                                        <span className="text-muted-foreground text-xs">
+                                        <span className="text-xs text-muted-foreground">
                                             Aktif
                                         </span>
                                     </div>
-                                    <InputError
-                                        message={errors.is_active}
-                                    />
+                                    <InputError message={errors.is_active} />
                                 </div>
                             </div>
                         </div>

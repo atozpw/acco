@@ -77,7 +77,7 @@ const formatCurrency = (value: number | string | null | undefined) => {
 export default function PayrollPeriodShow({ period }: Props) {
     const [search, setSearch] = useState<string>('');
 
-    const payrolls = period.payrolls ?? [];
+    const payrolls = useMemo(() => period.payrolls ?? [], [period.payrolls]);
 
     const filteredPayrolls = useMemo(() => {
         if (!search.trim()) return payrolls;

@@ -18,7 +18,7 @@ import { Spinner } from '@/components/ui/spinner';
 import payrollPeriods from '@/routes/payroll-periods';
 import { router } from '@inertiajs/react';
 import { Sparkles } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 export type GeneratePeriodDialogProps = {
@@ -38,6 +38,7 @@ export default function GeneratePeriodDialog({
     referenceNo,
     today,
 }: GeneratePeriodDialogProps) {
+    const [prevOpen, setPrevOpen] = useState(open);
     const [formData, setFormData] = useState({
         reference_no: referenceNo || '',
         payroll_category_id: defaultPayrollCategoryId || '',
@@ -50,7 +51,8 @@ export default function GeneratePeriodDialog({
     const [generating, setGenerating] = useState<boolean>(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
 
-    useEffect(() => {
+    if (open !== prevOpen) {
+        setPrevOpen(open);
         if (open) {
             setFormData({
                 reference_no: referenceNo || '',
@@ -62,7 +64,7 @@ export default function GeneratePeriodDialog({
             });
             setErrors({});
         }
-    }, [open, referenceNo, defaultPayrollCategoryId, today]);
+    }
 
     const handleGenerate = () => {
         if (!formData.payroll_category_id) {
