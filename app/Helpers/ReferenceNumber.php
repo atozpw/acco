@@ -447,4 +447,34 @@ class ReferenceNumber
 
         $referenceNumber->save();
     }
+
+    public static function getPayrollPeriod(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('payroll-period')
+            ->select('code', 'value')
+            ->first();
+
+        if (! $referenceNumber) {
+            $referenceNumber = ReferenceNumberModel::create([
+                'name' => 'Periode Penggajian',
+                'module' => 'payroll-period',
+                'code' => 'PY',
+                'value' => '000001',
+            ]);
+        }
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updatePayrollPeriod(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('payroll-period')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
+
+        $referenceNumber->save();
+    }
 }

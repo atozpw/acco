@@ -161,5 +161,12 @@ class ReferenceNumberSeeder extends Seeder
             'code' => 'GO',
             'value' => '000001',
         ]);
+
+        ReferenceNumber::create([
+            'name' => 'Periode Penggajian',
+            'module' => 'payroll-period',
+            'code' => 'PY',
+            'value' => '000001',
+        ]);
     }
 }
