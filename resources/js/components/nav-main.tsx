@@ -60,6 +60,25 @@ export function NavMain({
     const page = usePage<SharedData>();
     const { hasPermission } = usePermission();
     const filteredItems = filterNavItemsByPermission(items, hasPermission);
+
+    const isUrlActive = (href: NonNullable<NavItem['href']>) => {
+        const itemUrl = resolveUrl(href);
+        if (!itemUrl || itemUrl === '#') return false;
+
+        if (itemUrl === '/' || itemUrl === '') {
+            const currentPath = page.url.split('?')[0];
+            return (
+                currentPath === '/' ||
+                currentPath === '' ||
+                currentPath === '/profit-loss' ||
+                currentPath === '/detail-revenue' ||
+                currentPath === '/detail-expense'
+            );
+        }
+
+        return page.url.startsWith(itemUrl);
+    };
+
     return (
         <SidebarGroup className="px-2 py-0">
             {showLabel && labelGroup && (
@@ -67,11 +86,9 @@ export function NavMain({
             )}
             <SidebarMenu>
                 {filteredItems.map((item) => {
-                    const isParentActive = page.url.startsWith(
-                        resolveUrl(item.href),
-                    );
+                    const isParentActive = isUrlActive(item.href);
                     const isAnyChildActive = item.children?.some((subItem) =>
-                        page.url.startsWith(resolveUrl(subItem.href)),
+                        isUrlActive(subItem.href),
                     );
                     const isGroupActive = Boolean(
                         isParentActive || isAnyChildActive,
@@ -100,10 +117,8 @@ export function NavMain({
                                             >
                                                 <SidebarMenuSubButton
                                                     asChild
-                                                    isActive={page.url.startsWith(
-                                                        resolveUrl(
-                                                            subItem.href,
-                                                        ),
+                                                    isActive={isUrlActive(
+                                                        subItem.href,
                                                     )}
                                                 >
                                                     <Link
@@ -123,9 +138,7 @@ export function NavMain({
                         <SidebarMenuItem key={item.title}>
                             <SidebarMenuButton
                                 asChild
-                                isActive={page.url.startsWith(
-                                    resolveUrl(item.href),
-                                )}
+                                isActive={isUrlActive(item.href)}
                                 tooltip={{ children: item.title }}
                             >
                                 <Link href={item.href} prefetch>
