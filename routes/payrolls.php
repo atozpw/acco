@@ -5,6 +5,8 @@ use App\Http\Controllers\Payrolls\PayrollPeriodController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->prefix('payrolls')->group(function () {
+    Route::redirect('', 'payrolls/payroll-periods')->name('payrolls');
+
     Route::get('payroll-formulas', [PayrollFormulaController::class, 'index'])
         ->name('payroll-formulas.index')
         ->middleware('permission:payroll-formulas.index');
@@ -35,6 +37,9 @@ Route::middleware('auth')->prefix('payrolls')->group(function () {
         ->middleware('permission:payroll-periods.store');
     Route::get('payroll-periods/{id}', [PayrollPeriodController::class, 'show'])
         ->name('payroll-periods.show')
+        ->middleware('permission:payroll-periods.index');
+    Route::get('payroll-periods/{period}/detail-payroll/{payroll}', [PayrollPeriodController::class, 'payroll'])
+        ->name('payroll-periods.payroll')
         ->middleware('permission:payroll-periods.index');
     Route::delete('payroll-periods/{id}', [PayrollPeriodController::class, 'destroy'])
         ->name('payroll-periods.destroy')

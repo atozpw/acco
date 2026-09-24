@@ -3,7 +3,9 @@ import accountPayable from '@/routes/account-payable';
 import accountReceivable from '@/routes/account-receivable';
 import { edit as editAppearance } from '@/routes/appearance';
 import assetCategoryData from '@/routes/asset-category-data';
+import bankData from '@/routes/bank-data';
 import beginningBalance from '@/routes/beginning-balance';
+import cashAdvanceClassification from '@/routes/cash-advance-classification';
 import cashTransfer from '@/routes/cash-transfer';
 import coa from '@/routes/coa';
 import contactData from '@/routes/contact-data';
@@ -14,10 +16,10 @@ import generalJournal from '@/routes/general-journal';
 import income from '@/routes/income';
 import ledgerData from '@/routes/ledger-data';
 import payablePayment from '@/routes/payable-payment';
-import cashAdvanceClassification from '@/routes/cash-advance-classification';
-import bankData from '@/routes/bank-data';
+import payrollCategoryData from '@/routes/payroll-category-data';
 import payrollComponentData from '@/routes/payroll-component-data';
 import payrollFormulas from '@/routes/payroll-formulas';
+import payrollPeriods from '@/routes/payroll-periods';
 import permissions from '@/routes/permissions';
 import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
@@ -26,7 +28,6 @@ import purchaseInvoice from '@/routes/purchase-invoice';
 import purchaseReceipt from '@/routes/purchase-receipt';
 import receivablePayment from '@/routes/receivable-payment';
 import roles from '@/routes/roles';
-import payrollCategoryData from '@/routes/payroll-category-data';
 import salesDelivery from '@/routes/sales-delivery';
 import salesInvoice from '@/routes/sales-invoice';
 import taxData from '@/routes/tax-data';
@@ -264,6 +265,7 @@ export const mainNavItems: NavItem[] = [
         icon: Wallet,
         permissions: [
             'payroll-formulas.index',
+            'payroll-periods.index',
             'payrolls.index',
         ],
         children: [
@@ -273,9 +275,9 @@ export const mainNavItems: NavItem[] = [
                 permissions: ['payroll-formulas.index'],
             },
             {
-                title: 'Daftar Gaji / Tunjangan',
-                href: '#',
-                permissions: ['payrolls.index'],
+                title: 'Daftar Gaji & Tunjangan',
+                href: payrollPeriods.index(),
+                permissions: ['payroll-periods.index'],
             },
             {
                 title: 'Pembayaran',
@@ -288,9 +290,7 @@ export const mainNavItems: NavItem[] = [
         title: 'Persediaan',
         href: '#',
         icon: Package,
-        permissions: [
-            'inventories.index',
-        ],
+        permissions: ['inventories.index'],
         children: [
             {
                 title: 'Stok Opname',

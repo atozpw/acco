@@ -23,7 +23,7 @@ class PayrollPeriode extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(PayrollCategory::class);
+        return $this->belongsTo(PayrollCategory::class, 'payroll_category_id', 'id');
     }
 
     public function createdBy(): BelongsTo

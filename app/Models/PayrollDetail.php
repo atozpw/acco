@@ -26,7 +26,7 @@ class PayrollDetail extends Model
 
     public function component(): BelongsTo
     {
-        return $this->belongsTo(PayrollComponent::class);
+        return $this->belongsTo(PayrollComponent::class, 'payroll_component_id', 'id');
     }
 
     public function payableCoa(): BelongsTo

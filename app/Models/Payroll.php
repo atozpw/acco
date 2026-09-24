@@ -24,7 +24,7 @@ class Payroll extends Model
 
     public function periode(): BelongsTo
     {
-        return $this->belongsTo(PayrollPeriode::class);
+        return $this->belongsTo(PayrollPeriode::class, 'payroll_periode_id', 'id');
     }
 
     public function contact(): BelongsTo
