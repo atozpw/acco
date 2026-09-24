@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Payrolls\PayrollFormulaController;
+use App\Http\Controllers\Payrolls\PayrollPeriodController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->prefix('payrolls')->group(function () {
@@ -25,4 +26,17 @@ Route::middleware('auth')->prefix('payrolls')->group(function () {
     Route::delete('payroll-formulas/{id}', [PayrollFormulaController::class, 'destroy'])
         ->name('payroll-formulas.destroy')
         ->middleware('permission:payroll-formulas.destroy');
+
+    Route::get('payroll-periods', [PayrollPeriodController::class, 'index'])
+        ->name('payroll-periods.index')
+        ->middleware('permission:payroll-periods.index');
+    Route::post('payroll-periods', [PayrollPeriodController::class, 'store'])
+        ->name('payroll-periods.store')
+        ->middleware('permission:payroll-periods.store');
+    Route::get('payroll-periods/{id}', [PayrollPeriodController::class, 'show'])
+        ->name('payroll-periods.show')
+        ->middleware('permission:payroll-periods.index');
+    Route::delete('payroll-periods/{id}', [PayrollPeriodController::class, 'destroy'])
+        ->name('payroll-periods.destroy')
+        ->middleware('permission:payroll-periods.destroy');
 });

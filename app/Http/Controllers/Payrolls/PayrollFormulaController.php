@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Payrolls;
 
+use App\Helpers\ReferenceNumber;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Payrolls\StorePayrollFormulaRequest;
 use App\Http\Requests\Payrolls\UpdatePayrollFormulaRequest;
@@ -82,6 +83,8 @@ class PayrollFormulaController extends Controller
             'payrollCategories' => $payrollCategories,
             'departments' => $departments,
             'projects' => $projects,
+            'referenceNo' => ReferenceNumber::getPayrollPeriod(),
+            'today' => now()->format('Y-m-d'),
             'filters' => [
                 'search' => $search,
                 'perPage' => $perPage,

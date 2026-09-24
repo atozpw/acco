@@ -60,10 +60,12 @@ import {
     RotateCcw,
     Search,
     Settings2,
+    Sparkles,
     Trash2,
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import GeneratePeriodDialog from './partials/generate-period-dialog';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -142,12 +144,16 @@ export default function PayrollFormulaIndexScreen({
     payrollCategories = [],
     departments = [],
     projects = [],
+    referenceNo = '',
+    today = '',
     filters,
 }: {
     formulas: CursorPagination<PayrollFormulaProps>;
     payrollCategories?: OptionItem[];
     departments?: OptionItem[];
     projects?: OptionItem[];
+    referenceNo?: string;
+    today?: string;
     filters: PayrollFormulaFilters;
 }) {
     const { hasPermission } = usePermission();
@@ -198,6 +204,9 @@ export default function PayrollFormulaIndexScreen({
     const [departmentId, setDepartmentId] = useState<string>(filtersDepartment);
     const [projectId, setProjectId] = useState<string>(filtersProject);
     const [filtersDialogOpen, setFiltersDialogOpen] = useState<boolean>(false);
+    const [generateDialogOpen, setGenerateDialogOpen] =
+        useState<boolean>(false);
+
     const [deleteTarget, setDeleteTarget] =
         useState<PayrollFormulaProps | null>(null);
 
@@ -384,13 +393,25 @@ export default function PayrollFormulaIndexScreen({
                             </Dialog>
                         </div>
 
-                        {hasPermission(['payroll-formulas.store']) && (
-                            <Button asChild>
-                                <Link href={payrollFormulas.create().url}>
-                                    <CirclePlusIcon /> Buat Baru
-                                </Link>
-                            </Button>
-                        )}
+                        <div className="flex items-center gap-2">
+                            {hasPermission(['payroll-periods.store']) && (
+                                <Button
+                                    variant="outline"
+                                    onClick={() => setGenerateDialogOpen(true)}
+                                >
+                                    <Sparkles />
+                                    Buat Daftar Gaji
+                                </Button>
+                            )}
+
+                            {hasPermission(['payroll-formulas.store']) && (
+                                <Button asChild>
+                                    <Link href={payrollFormulas.create().url}>
+                                        <CirclePlusIcon /> Buat Baru
+                                    </Link>
+                                </Button>
+                            )}
+                        </div>
                     </div>
 
                     <div className="overflow-hidden rounded-md border">
@@ -615,6 +636,15 @@ export default function PayrollFormulaIndexScreen({
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialog>
+
+                <GeneratePeriodDialog
+                    open={generateDialogOpen}
+                    onOpenChange={setGenerateDialogOpen}
+                    payrollCategoryItems={payrollCategoryItems}
+                    defaultPayrollCategoryId={payrollCategoryId}
+                    referenceNo={referenceNo}
+                    today={today}
+                />
             </div>
         </AppLayout>
     );
