@@ -168,5 +168,12 @@ class ReferenceNumberSeeder extends Seeder
             'code' => 'PY',
             'value' => '000001',
         ]);
+
+        ReferenceNumber::create([
+            'name' => 'Pembayaran Gaji',
+            'module' => 'payroll-payment',
+            'code' => 'PM',
+            'value' => '000001',
+        ]);
     }
 }

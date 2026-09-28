@@ -18,6 +18,7 @@ class PayrollPeriode extends Model
         'start_date',
         'end_date',
         'description',
+        'is_paid',
         'created_by',
     ];
 

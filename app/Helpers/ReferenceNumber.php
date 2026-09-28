@@ -477,4 +477,34 @@ class ReferenceNumber
 
         $referenceNumber->save();
     }
+
+    public static function getPayrollPayment(): string
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('payroll-payment')
+            ->select('code', 'value')
+            ->first();
+
+        if (! $referenceNumber) {
+            $referenceNumber = ReferenceNumberModel::create([
+                'name' => 'Pembayaran Gaji',
+                'module' => 'payroll-payment',
+                'code' => 'PM',
+                'value' => '000001',
+            ]);
+        }
+
+        return ($referenceNumber) ? $referenceNumber->code . '-' . $referenceNumber->value : '';
+    }
+
+    public static function updatePayrollPayment(): void
+    {
+        $referenceNumber = ReferenceNumberModel::query()
+            ->ofModule('payroll-payment')
+            ->first();
+
+        $referenceNumber->value = Str::padLeft($referenceNumber->value + 1, 6, '0');
+
+        $referenceNumber->save();
+    }
 }
