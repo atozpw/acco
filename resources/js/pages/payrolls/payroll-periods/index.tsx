@@ -51,6 +51,7 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import GeneratePeriodDialog from '../payroll-formulas/partials/generate-period-dialog';
+import { Badge } from '@/components/ui/badge';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -79,6 +80,7 @@ type PayrollPeriodProps = {
     end_date: string | null;
     description: string;
     total_amount?: string | number;
+    is_paid: boolean;
     created_at: string;
     category?: PeriodCategory | null;
 };
@@ -179,8 +181,8 @@ export default function Index({
                     <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
                         <div className="flex items-center gap-2">
                             <Input
-                                className="text-sm lg:w-[280px]"
-                                placeholder="Cari nomor atau keterangan..."
+                                className="text-sm lg:w-[250px]"
+                                placeholder="Cari ..."
                                 autoComplete="off"
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
@@ -215,7 +217,7 @@ export default function Index({
                         <Table>
                             <TableHeader>
                                 <TableRow className="bg-muted/50">
-                                    <TableHead className="w-[180px]">
+                                    <TableHead className="w-[150px] ps-4">
                                         Nomor
                                     </TableHead>
                                     <TableHead className="w-[140px]">
@@ -225,6 +227,9 @@ export default function Index({
                                     <TableHead className="w-[180px] text-right">
                                         Nilai (Rp)
                                     </TableHead>
+                                    <TableHead className="w-[140px] text-center">
+                                        Status
+                                    </TableHead>
                                     <TableHead className="w-[80px]" />
                                 </TableRow>
                             </TableHeader>
@@ -232,7 +237,7 @@ export default function Index({
                                 {periods.data.length === 0 ? (
                                     <TableRow>
                                         <TableCell
-                                            colSpan={5}
+                                            colSpan={6}
                                             className="py-8 text-center text-muted-foreground"
                                         >
                                             Belum ada data periode penggajian.
@@ -241,7 +246,7 @@ export default function Index({
                                 ) : (
                                     periods.data.map((item) => (
                                         <TableRow key={item.id}>
-                                            <TableCell className="font-medium text-foreground">
+                                            <TableCell className="font-medium text-foreground ps-4">
                                                 {item.reference_no}
                                             </TableCell>
                                             <TableCell>
@@ -257,6 +262,17 @@ export default function Index({
                                             <TableCell className="text-right font-medium">
                                                 {formatCurrency(
                                                     item.total_amount,
+                                                )}
+                                            </TableCell>
+                                            <TableCell className="text-center">
+                                                {item.is_paid ? (
+                                                    <Badge variant="default">
+                                                        Lunas
+                                                    </Badge>
+                                                ) : (
+                                                    <Badge variant="secondary">
+                                                        Belum Lunas
+                                                    </Badge>
                                                 )}
                                             </TableCell>
                                             <TableCell className="text-center">
