@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Payrolls\PayrollFormulaController;
+use App\Http\Controllers\Payrolls\PayrollPaymentController;
 use App\Http\Controllers\Payrolls\PayrollPeriodController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,4 +45,26 @@ Route::middleware('auth')->prefix('payrolls')->group(function () {
     Route::delete('payroll-periods/{id}', [PayrollPeriodController::class, 'destroy'])
         ->name('payroll-periods.destroy')
         ->middleware('permission:payroll-periods.destroy');
+
+    Route::get('payroll-payments', [PayrollPaymentController::class, 'index'])
+        ->name('payroll-payments.index')
+        ->middleware('permission:payroll-payments.index');
+    Route::get('payroll-payments/create', [PayrollPaymentController::class, 'create'])
+        ->name('payroll-payments.create')
+        ->middleware('permission:payroll-payments.store');
+    Route::post('payroll-payments', [PayrollPaymentController::class, 'store'])
+        ->name('payroll-payments.store')
+        ->middleware('permission:payroll-payments.store');
+    Route::get('payroll-payments/payroll/{payroll}', [PayrollPaymentController::class, 'payroll'])
+        ->name('payroll-payments.payroll')
+        ->middleware('permission:payroll-payments.index');
+    Route::get('payroll-payments/{id}', [PayrollPaymentController::class, 'show'])
+        ->name('payroll-payments.show')
+        ->middleware('permission:payroll-payments.index');
+    Route::delete('payroll-payments/{id}', [PayrollPaymentController::class, 'destroy'])
+        ->name('payroll-payments.destroy')
+        ->middleware('permission:payroll-payments.destroy');
+    Route::get('payroll-payments/journal-voucher/{nomor}', [PayrollPaymentController::class, 'voucher'])
+        ->name('payroll-payments.voucher')
+        ->middleware('permission:payroll-payments.index');
 });

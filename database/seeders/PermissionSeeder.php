@@ -184,6 +184,11 @@ class PermissionSeeder extends Seeder
         Permission::updateOrCreate(['name' => 'payroll-periods.update'], ['name' => 'payroll-periods.update']);
         Permission::updateOrCreate(['name' => 'payroll-periods.destroy'], ['name' => 'payroll-periods.destroy']);
 
+        Permission::updateOrCreate(['name' => 'payroll-payments.index'], ['name' => 'payroll-payments.index']);
+        Permission::updateOrCreate(['name' => 'payroll-payments.store'], ['name' => 'payroll-payments.store']);
+        Permission::updateOrCreate(['name' => 'payroll-payments.update'], ['name' => 'payroll-payments.update']);
+        Permission::updateOrCreate(['name' => 'payroll-payments.destroy'], ['name' => 'payroll-payments.destroy']);
+
         Permission::updateOrCreate(['name' => 'reports.index'], ['name' => 'reports.index']);
         Permission::updateOrCreate(['name' => 'financial-statement.index'], ['name' => 'financial-statement.index']);
         Permission::updateOrCreate(['name' => 'financial-statement.profit-loss'], ['name' => 'financial-statement.profit-loss']);

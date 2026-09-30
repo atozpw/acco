@@ -19,6 +19,7 @@ import payablePayment from '@/routes/payable-payment';
 import payrollCategoryData from '@/routes/payroll-category-data';
 import payrollComponentData from '@/routes/payroll-component-data';
 import payrollFormulas from '@/routes/payroll-formulas';
+import payrollPayments from '@/routes/payroll-payments';
 import payrollPeriods from '@/routes/payroll-periods';
 import permissions from '@/routes/permissions';
 import productCategory from '@/routes/product-category';
@@ -281,8 +282,8 @@ export const mainNavItems: NavItem[] = [
             },
             {
                 title: 'Pembayaran',
-                href: '#',
-                permissions: ['payrolls.index'],
+                href: payrollPayments.index(),
+                permissions: ['payroll-payments.index'],
             },
         ],
     },
