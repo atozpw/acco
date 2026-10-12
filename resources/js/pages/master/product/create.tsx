@@ -75,7 +75,7 @@ export default function ProductCreateScreen({
     units,
     taxes,
 }: {
-    referenceNumber: string,
+    referenceNumber: string;
     categories: ProductCategoryProps[];
     units: UnitProps[];
     taxes: TaxProps[];
@@ -167,7 +167,7 @@ export default function ProductCreateScreen({
                 <Separator className="mb-8" />
                 <form onSubmit={submit} className="space-y-8 xl:px-12">
                     <div className="flex flex-col lg:flex-row lg:space-x-12">
-                        <aside className="w-full max-w-xl lg:w-[250px] xl:w-[350px] 2xl:w-md">
+                        <aside className="2xl:w-md w-full max-w-xl lg:w-[250px] xl:w-[350px]">
                             <HeadingSmall
                                 title="Data Umum"
                                 description="Masukkan kode, nama, kategori dan satuan"
@@ -175,7 +175,7 @@ export default function ProductCreateScreen({
                         </aside>
                         <Separator className="my-6 lg:hidden" />
                         <div className="flex-1 space-y-6 md:max-w-2xl">
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-1/3">
                                     <Label htmlFor="code">Kode</Label>
                                     <Input
@@ -208,7 +208,7 @@ export default function ProductCreateScreen({
                                     <InputError message={errors.name} />
                                 </div>
                             </div>
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-1/2">
                                     <Label htmlFor="product_category_id">
                                         Kategori
@@ -254,7 +254,7 @@ export default function ProductCreateScreen({
                     </div>
 
                     <div className="flex flex-col lg:flex-row lg:space-x-12">
-                        <aside className="w-full max-w-xl lg:w-[250px] xl:w-[350px] 2xl:w-md">
+                        <aside className="2xl:w-md w-full max-w-xl lg:w-[250px] xl:w-[350px]">
                             <HeadingSmall
                                 title="Harga & Stok"
                                 description="Atur harga jual/beli, pajak dan minimum stok"
@@ -262,7 +262,7 @@ export default function ProductCreateScreen({
                         </aside>
                         <Separator className="my-6 lg:hidden" />
                         <div className="flex-1 space-y-6 md:max-w-2xl">
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-1/2">
                                     <Label htmlFor="sales_price">
                                         Harga Jual
@@ -306,7 +306,7 @@ export default function ProductCreateScreen({
                                     />
                                 </div>
                             </div>
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-1/2">
                                     <Label htmlFor="sales_tax_id">
                                         Pajak Penjualan
@@ -340,7 +340,7 @@ export default function ProductCreateScreen({
                                     />
                                 </div>
                             </div>
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-1/2">
                                     <Label htmlFor="minimum_stock">
                                         Minimum Stok
@@ -368,7 +368,7 @@ export default function ProductCreateScreen({
                                         Lacak persediaan/ kontrol stok
                                     </Label>
                                     <div className="flex items-center gap-3">
-                                        <span className="text-xs text-muted-foreground">
+                                        <span className="text-muted-foreground text-xs">
                                             Nonaktif
                                         </span>
                                         <Switch
@@ -381,7 +381,7 @@ export default function ProductCreateScreen({
                                                 )
                                             }
                                         />
-                                        <span className="text-xs text-muted-foreground">
+                                        <span className="text-muted-foreground text-xs">
                                             Aktif
                                         </span>
                                     </div>
@@ -394,7 +394,7 @@ export default function ProductCreateScreen({
                     </div>
 
                     <div className="flex flex-col lg:flex-row lg:space-x-12">
-                        <aside className="w-full max-w-xl lg:w-[250px] xl:w-[350px] 2xl:w-md">
+                        <aside className="2xl:w-md w-full max-w-xl lg:w-[250px] xl:w-[350px]">
                             <HeadingSmall
                                 title="Detail Produk"
                                 description="Atur deskripsi, gambar dan status"
@@ -417,7 +417,7 @@ export default function ProductCreateScreen({
                                 />
                                 <InputError message={errors.description} />
                             </div>
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-x-6 lg:space-y-0">
                                 <div className="grid w-full gap-2">
                                     <Label htmlFor="image">Gambar</Label>
                                     <Input
@@ -436,7 +436,7 @@ export default function ProductCreateScreen({
                                 </div>
                                 <div className="grid gap-2">
                                     <Label>Preview</Label>
-                                    <div className="flex h-50 w-50 items-center justify-center overflow-hidden rounded-md border bg-muted">
+                                    <div className="h-50 w-50 bg-muted flex items-center justify-center overflow-hidden rounded-md border">
                                         {imagePreview ? (
                                             <img
                                                 src={imagePreview}
@@ -447,7 +447,7 @@ export default function ProductCreateScreen({
                                             />
                                         ) : (
                                             <div className="p-1 text-center">
-                                                <span className="text-xs text-muted-foreground">
+                                                <span className="text-muted-foreground text-xs">
                                                     Tidak ada gambar
                                                 </span>
                                             </div>
@@ -461,13 +461,13 @@ export default function ProductCreateScreen({
                                         <Label htmlFor="is_active">
                                             Status
                                         </Label>
-                                        <p className="text-xs text-muted-foreground">
+                                        <p className="text-muted-foreground text-xs">
                                             Tentukan apakah produk ini aktif
                                             digunakan.
                                         </p>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <span className="text-xs text-muted-foreground">
+                                        <span className="text-muted-foreground text-xs">
                                             Nonaktif
                                         </span>
                                         <Switch
@@ -480,7 +480,7 @@ export default function ProductCreateScreen({
                                                 )
                                             }
                                         />
-                                        <span className="text-xs text-muted-foreground">
+                                        <span className="text-muted-foreground text-xs">
                                             Aktif
                                         </span>
                                     </div>

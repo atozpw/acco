@@ -105,7 +105,7 @@ export default function BeginningBalanceReceivableCreate({
                         description="Buat baru saldo awal piutang usaha"
                     />
 
-                    <div className="items-baseline space-y-6 lg:flex lg:space-y-0 lg:space-x-6">
+                    <div className="items-baseline space-y-6 lg:flex lg:space-x-6 lg:space-y-0">
                         <div className="grid gap-2 lg:basis-1/2">
                             <Label htmlFor="reference_no">No. Referensi</Label>
                             <Input
@@ -131,7 +131,7 @@ export default function BeginningBalanceReceivableCreate({
                         </div>
                     </div>
 
-                    <div className="items-baseline space-y-6 lg:flex lg:space-y-0 lg:space-x-6">
+                    <div className="items-baseline space-y-6 lg:flex lg:space-x-6 lg:space-y-0">
                         <div className="grid gap-2 lg:basis-1/2">
                             <Label>Pelanggan</Label>
                             <InputCombobox

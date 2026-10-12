@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('cash_advance_classifications', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 6)->unique();
             $table->string('name', 50);
             $table->unsignedBigInteger('cash_advance_income_coa_id')->nullable();
             $table->unsignedBigInteger('cash_advance_expense_coa_id')->nullable();

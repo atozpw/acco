@@ -184,7 +184,7 @@ export default function CoaIndexScreen({
                                     <TableRow>
                                         <TableCell
                                             colSpan={5}
-                                            className="text-center text-muted-foreground"
+                                            className="text-muted-foreground text-center"
                                         >
                                             Tidak ada data ditemukan.
                                         </TableCell>
@@ -361,20 +361,20 @@ export default function CoaIndexScreen({
                                 <div className="space-y-4 text-sm">
                                     <div className="grid gap-4 md:grid-cols-2">
                                         <div className="grid gap-1">
-                                            <div className="text-xs text-muted-foreground">
+                                            <div className="text-muted-foreground text-xs">
                                                 Kode
                                             </div>
                                             <div>{selectedAccount.code}</div>
                                         </div>
                                         <div className="grid gap-1">
-                                            <div className="text-xs text-muted-foreground">
+                                            <div className="text-muted-foreground text-xs">
                                                 Nama
                                             </div>
                                             <div>{selectedAccount.name}</div>
                                         </div>
                                     </div>
                                     <div className="grid gap-1">
-                                        <div className="text-xs text-muted-foreground">
+                                        <div className="text-muted-foreground text-xs">
                                             Subklasifikasi
                                         </div>
                                         <div>
@@ -384,7 +384,7 @@ export default function CoaIndexScreen({
                                     </div>
                                     <div className="grid gap-4 md:grid-cols-2">
                                         <div className="grid gap-1">
-                                            <div className="text-xs text-muted-foreground">
+                                            <div className="text-muted-foreground text-xs">
                                                 Posisi Saldo
                                             </div>
                                             <div>
@@ -394,7 +394,7 @@ export default function CoaIndexScreen({
                                             </div>
                                         </div>
                                         <div className="grid gap-1">
-                                            <div className="text-xs text-muted-foreground">
+                                            <div className="text-muted-foreground text-xs">
                                                 Akun Kas / Bank
                                             </div>
                                             <div>
@@ -405,7 +405,7 @@ export default function CoaIndexScreen({
                                         </div>
                                     </div>
                                     <div className="grid gap-1">
-                                        <div className="text-xs text-muted-foreground">
+                                        <div className="text-muted-foreground text-xs">
                                             Status
                                         </div>
                                         <div>

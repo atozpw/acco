@@ -31,7 +31,7 @@ class SalesInvoiceObserver implements ShouldHandleEventsAfterCommit
         $journalDetails[] = [
             'journal_id' => $journal->id,
             'coa_id' => $salesInvoice->coa_id,
-            'debit' => $salesInvoice->amount,
+            'debit' => $salesInvoice->total,
             'credit' => 0,
             'note' => $salesInvoice->description,
             'department_id' => $salesInvoice->department_id,
@@ -63,6 +63,21 @@ class SalesInvoiceObserver implements ShouldHandleEventsAfterCommit
                     'coa_id' => $salesInvoiceDetail->product->category->sales_coa_id,
                     'debit' => 0,
                     'credit' => $salesInvoiceDetail->amount,
+                    'note' => $salesInvoiceDetail->note ?? $salesInvoice->description,
+                    'department_id' => $salesInvoiceDetail->department_id,
+                    'project_id' => $salesInvoiceDetail->project_id,
+                    'created_by' => $salesInvoiceDetail->created_by,
+                    'created_at' => $salesInvoiceDetail->created_at,
+                    'updated_at' => $salesInvoiceDetail->updated_at,
+                ];
+            }
+
+            if ($salesInvoiceDetail->tax && $salesInvoiceDetail->tax->sales_coa_id) {
+                $journalDetails[] = [
+                    'journal_id' => $journal->id,
+                    'coa_id' => $salesInvoiceDetail->tax->sales_coa_id,
+                    'debit' => 0,
+                    'credit' => $salesInvoiceDetail->tax_amount,
                     'note' => $salesInvoiceDetail->note ?? $salesInvoice->description,
                     'department_id' => $salesInvoiceDetail->department_id,
                     'project_id' => $salesInvoiceDetail->project_id,
@@ -124,7 +139,7 @@ class SalesInvoiceObserver implements ShouldHandleEventsAfterCommit
         $journalDetails[] = [
             'journal_id' => $journal->id,
             'coa_id' => $salesInvoice->coa_id,
-            'debit' => $salesInvoice->amount,
+            'debit' => $salesInvoice->total,
             'credit' => 0,
             'note' => $salesInvoice->description,
             'department_id' => $salesInvoice->department_id,
@@ -156,6 +171,21 @@ class SalesInvoiceObserver implements ShouldHandleEventsAfterCommit
                     'coa_id' => $salesInvoiceDetail->product->category->sales_coa_id,
                     'debit' => 0,
                     'credit' => $salesInvoiceDetail->amount,
+                    'note' => $salesInvoiceDetail->note ?? $salesInvoice->description,
+                    'department_id' => $salesInvoiceDetail->department_id,
+                    'project_id' => $salesInvoiceDetail->project_id,
+                    'created_by' => $salesInvoiceDetail->created_by,
+                    'created_at' => $salesInvoiceDetail->created_at,
+                    'updated_at' => $salesInvoiceDetail->updated_at,
+                ];
+            }
+
+            if ($salesInvoiceDetail->tax && $salesInvoiceDetail->tax->sales_coa_id) {
+                $journalDetails[] = [
+                    'journal_id' => $journal->id,
+                    'coa_id' => $salesInvoiceDetail->tax->sales_coa_id,
+                    'debit' => 0,
+                    'credit' => $salesInvoiceDetail->tax_amount,
                     'note' => $salesInvoiceDetail->note ?? $salesInvoice->description,
                     'department_id' => $salesInvoiceDetail->department_id,
                     'project_id' => $salesInvoiceDetail->project_id,

@@ -204,7 +204,7 @@ export default function SalesInvoiceIndexScreen({
                                     <TableRow>
                                         <TableCell
                                             colSpan={6}
-                                            className="text-center text-muted-foreground"
+                                            className="text-muted-foreground text-center"
                                         >
                                             Tidak ada data ditemukan.
                                         </TableCell>
@@ -288,7 +288,8 @@ export default function SalesInvoiceIndexScreen({
                                                                         href={
                                                                             salesInvoice.edit(
                                                                                 item.id,
-                                                                            ).url
+                                                                            )
+                                                                                .url
                                                                         }
                                                                     >
                                                                         <Settings2 />

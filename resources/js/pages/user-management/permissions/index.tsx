@@ -193,7 +193,7 @@ export default function PermissionIndexScreen({
                                     <TableRow>
                                         <TableCell
                                             colSpan={3}
-                                            className="text-center text-muted-foreground"
+                                            className="text-muted-foreground text-center"
                                         >
                                             Tidak ada data ditemukan.
                                         </TableCell>

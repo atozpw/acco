@@ -130,7 +130,7 @@ export default function BeginningBalanceInventoryIndex({
                                     <TableRow>
                                         <TableCell
                                             colSpan={5}
-                                            className="text-center text-muted-foreground"
+                                            className="text-muted-foreground text-center"
                                         >
                                             Tidak ada data ditemukan.
                                         </TableCell>

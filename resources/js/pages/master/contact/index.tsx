@@ -181,7 +181,7 @@ export default function KontakIndexScreen({
                                     <TableRow>
                                         <TableCell
                                             colSpan={5}
-                                            className="text-center text-muted-foreground"
+                                            className="text-muted-foreground text-center"
                                         >
                                             Tidak ada data ditemukan.
                                         </TableCell>
@@ -389,7 +389,7 @@ export default function KontakIndexScreen({
                                             <div className="text-sm font-medium">
                                                 {selectedContact.name}
                                             </div>
-                                            <div className="text-xs text-muted-foreground">
+                                            <div className="text-muted-foreground text-xs">
                                                 Kode: {selectedContact.code}
                                             </div>
                                         </div>
@@ -397,7 +397,7 @@ export default function KontakIndexScreen({
 
                                     <div className="grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
                                         <div>
-                                            <div className="text-xs text-muted-foreground">
+                                            <div className="text-muted-foreground text-xs">
                                                 Email
                                             </div>
                                             <div>
@@ -405,7 +405,7 @@ export default function KontakIndexScreen({
                                             </div>
                                         </div>
                                         <div>
-                                            <div className="text-xs text-muted-foreground">
+                                            <div className="text-muted-foreground text-xs">
                                                 Telepon
                                             </div>
                                             <div>
@@ -413,7 +413,7 @@ export default function KontakIndexScreen({
                                             </div>
                                         </div>
                                         <div className="sm:col-span-2">
-                                            <div className="text-xs text-muted-foreground">
+                                            <div className="text-muted-foreground text-xs">
                                                 Alamat
                                             </div>
                                             <div>
@@ -421,7 +421,7 @@ export default function KontakIndexScreen({
                                             </div>
                                         </div>
                                         <div className="sm:col-span-2">
-                                            <div className="text-xs text-muted-foreground">
+                                            <div className="text-muted-foreground text-xs">
                                                 Tipe Kontak
                                             </div>
                                             <div>
@@ -438,7 +438,7 @@ export default function KontakIndexScreen({
                                             </div>
                                         </div>
                                         <div>
-                                            <div className="text-xs text-muted-foreground">
+                                            <div className="text-muted-foreground text-xs">
                                                 Status
                                             </div>
                                             <div>

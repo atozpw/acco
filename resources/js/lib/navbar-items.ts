@@ -2,7 +2,10 @@ import { dashboard } from '@/routes';
 import accountPayable from '@/routes/account-payable';
 import accountReceivable from '@/routes/account-receivable';
 import { edit as editAppearance } from '@/routes/appearance';
+import assetCategoryData from '@/routes/asset-category-data';
+import bankData from '@/routes/bank-data';
 import beginningBalance from '@/routes/beginning-balance';
+import cashAdvanceClassification from '@/routes/cash-advance-classification';
 import cashTransfer from '@/routes/cash-transfer';
 import coa from '@/routes/coa';
 import contactData from '@/routes/contact-data';
@@ -13,6 +16,11 @@ import generalJournal from '@/routes/general-journal';
 import income from '@/routes/income';
 import ledgerData from '@/routes/ledger-data';
 import payablePayment from '@/routes/payable-payment';
+import payrollCategoryData from '@/routes/payroll-category-data';
+import payrollComponentData from '@/routes/payroll-component-data';
+import payrollFormulas from '@/routes/payroll-formulas';
+import payrollPayments from '@/routes/payroll-payments';
+import payrollPeriods from '@/routes/payroll-periods';
 import permissions from '@/routes/permissions';
 import productCategory from '@/routes/product-category';
 import productData from '@/routes/product-data';
@@ -34,10 +42,12 @@ import {
     Landmark,
     LayoutGrid,
     NotebookText,
+    Package,
     Settings2,
     ShoppingBag,
     ShoppingCart,
     UserCog2,
+    Wallet,
 } from 'lucide-react';
 
 export const mainNavItems: NavItem[] = [
@@ -56,8 +66,15 @@ export const mainNavItems: NavItem[] = [
             'products.index',
             'product-categories.index',
             'unit-measurements.index',
+            'asset-categories.index',
             'taxes.index',
             'departments.index',
+            'warehouses.index',
+            'projects.index',
+            'payroll-categories.index',
+            'payroll-components.index',
+            'cash-advance-classifications.index',
+            'banks.index',
         ],
         children: [
             {
@@ -86,6 +103,11 @@ export const mainNavItems: NavItem[] = [
                 permissions: ['unit-measurements.index'],
             },
             {
+                title: 'Kategori Aset',
+                href: assetCategoryData.index(),
+                permissions: ['asset-categories.index'],
+            },
+            {
                 title: 'Data Pajak',
                 href: taxData.index(),
                 permissions: ['taxes.index'],
@@ -104,6 +126,26 @@ export const mainNavItems: NavItem[] = [
                 title: 'Data Proyek',
                 href: projectData.index(),
                 permissions: ['projects.index'],
+            },
+            {
+                title: 'Kategori Gaji',
+                href: payrollCategoryData.index(),
+                permissions: ['payroll-categories.index'],
+            },
+            {
+                title: 'Komponen Gaji',
+                href: payrollComponentData.index(),
+                permissions: ['payroll-components.index'],
+            },
+            {
+                title: 'Kategori Uang Muka',
+                href: cashAdvanceClassification.index(),
+                permissions: ['cash-advance-classifications.index'],
+            },
+            {
+                title: 'Data Bank',
+                href: bankData.index(),
+                permissions: ['banks.index'],
             },
         ],
     },
@@ -215,6 +257,51 @@ export const mainNavItems: NavItem[] = [
                 title: 'Transfer Kas',
                 href: cashTransfer.index(),
                 permissions: ['cash-transfers.index'],
+            },
+        ],
+    },
+    {
+        title: 'Penggajian',
+        href: '#',
+        icon: Wallet,
+        permissions: [
+            'payroll-formulas.index',
+            'payroll-periods.index',
+            'payrolls.index',
+        ],
+        children: [
+            {
+                title: 'Perhitungan',
+                href: payrollFormulas.index(),
+                permissions: ['payroll-formulas.index'],
+            },
+            {
+                title: 'Daftar Gaji & Tunjangan',
+                href: payrollPeriods.index(),
+                permissions: ['payroll-periods.index'],
+            },
+            {
+                title: 'Pembayaran',
+                href: payrollPayments.index(),
+                permissions: ['payroll-payments.index'],
+            },
+        ],
+    },
+    {
+        title: 'Persediaan',
+        href: '#',
+        icon: Package,
+        permissions: ['inventories.index'],
+        children: [
+            {
+                title: 'Stok Opname',
+                href: '#',
+                permissions: ['inventories.index'],
+            },
+            {
+                title: 'Pindah Gudang',
+                href: '#',
+                permissions: ['inventories.index'],
             },
         ],
     },

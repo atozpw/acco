@@ -174,7 +174,7 @@ export default function WarehouseIndexScreen({
                                     <TableRow>
                                         <TableCell
                                             colSpan={4}
-                                            className="text-center text-muted-foreground"
+                                            className="text-muted-foreground text-center"
                                         >
                                             Tidak ada data ditemukan.
                                         </TableCell>

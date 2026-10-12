@@ -22,6 +22,13 @@ class StoreCashAdvanceClassificationRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'code' => [
+                'required',
+                'string',
+                'max:6',
+                'unique:cash_advance_classifications,code',
+            ],
+
             'name' => [
                 'required',
                 'string',

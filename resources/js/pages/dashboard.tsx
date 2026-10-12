@@ -475,7 +475,7 @@ export default function Dashboard({
                             return (
                                 <Card
                                     key={card.key}
-                                    className="px-0 py-0 dark:bg-sidebar/50"
+                                    className="dark:bg-sidebar/50 px-0 py-0"
                                 >
                                     <CardContent className="flex flex-row items-start justify-between gap-4 p-4">
                                         <div className="flex flex-1 items-start gap-3">
@@ -486,7 +486,7 @@ export default function Dashboard({
                                             </div>
                                             <div className="flex flex-1 flex-col">
                                                 <div className="flex items-start justify-between gap-4">
-                                                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                                                    <div className="text-muted-foreground flex items-center gap-2 text-sm">
                                                         {card.label}
                                                         <Tooltip>
                                                             <TooltipTrigger
@@ -494,7 +494,7 @@ export default function Dashboard({
                                                             >
                                                                 <button
                                                                     type="button"
-                                                                    className="text-muted-foreground transition hover:text-primary"
+                                                                    className="text-muted-foreground hover:text-primary transition"
                                                                     aria-label={
                                                                         card.info
                                                                     }
@@ -509,7 +509,7 @@ export default function Dashboard({
                                                     </div>
                                                     <Link
                                                         href={card.href}
-                                                        className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
+                                                        className="text-muted-foreground hover:text-primary inline-flex items-center gap-1 text-xs"
                                                     >
                                                         Detail
                                                         <ChevronRight className="size-3" />

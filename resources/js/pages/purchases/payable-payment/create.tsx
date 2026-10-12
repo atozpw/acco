@@ -425,7 +425,9 @@ export default function PayablePaymentCreateScreen({
                                             setData('department_id', value)
                                         }
                                     />
-                                    <InputError message={errors.department_id} />
+                                    <InputError
+                                        message={errors.department_id}
+                                    />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label>Proyek</Label>
@@ -496,16 +498,16 @@ export default function PayablePaymentCreateScreen({
                                             const selectedInvoice =
                                                 detail.purchase_invoice_id
                                                     ? invoiceMap[
-                                                    detail
-                                                        .purchase_invoice_id
-                                                    ]
+                                                          detail
+                                                              .purchase_invoice_id
+                                                      ]
                                                     : null;
                                             const outstandingValue =
                                                 selectedInvoice
                                                     ? parseFloat(
-                                                        selectedInvoice.outstanding_amount ??
-                                                        '0',
-                                                    ) || 0
+                                                          selectedInvoice.outstanding_amount ??
+                                                              '0',
+                                                      ) || 0
                                                     : 0;
 
                                             return (
@@ -587,18 +589,18 @@ export default function PayablePaymentCreateScreen({
                                                                 className="text-right"
                                                             />
                                                             {selectedInvoice && (
-                                                                <div className="mt-1 text-xs text-muted-foreground">
+                                                                <div className="text-muted-foreground mt-1 text-xs">
                                                                     <p>
                                                                         Nilai
                                                                         invoice:{' '}
                                                                     </p>
-                                                                    <p className="font-semibold text-foreground">
+                                                                    <p className="text-foreground font-semibold">
                                                                         {formatCurrency(
                                                                             parseFloat(
                                                                                 selectedInvoice?.total ??
-                                                                                '0',
+                                                                                    '0',
                                                                             ) ||
-                                                                            0,
+                                                                                0,
                                                                         )}
                                                                     </p>
                                                                 </div>
@@ -650,7 +652,7 @@ export default function PayablePaymentCreateScreen({
                                                         </td>
                                                     </tr>
                                                     {isExpanded && (
-                                                        <tr className="border-t bg-muted/40">
+                                                        <tr className="bg-muted/40 border-t">
                                                             <td />
                                                             <td
                                                                 colSpan={5}

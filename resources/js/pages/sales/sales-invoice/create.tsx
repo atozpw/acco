@@ -376,9 +376,9 @@ export default function SalesInvoiceCreateScreen({
         const filtered =
             details.length > 1
                 ? details.filter(
-                    (detail) =>
-                        detail.product_id !== '' || detail.source_delivery_id,
-                )
+                      (detail) =>
+                          detail.product_id !== '' || detail.source_delivery_id,
+                  )
                 : details;
 
         return filtered.length ? filtered : [{ ...initialDetail }];
@@ -403,8 +403,8 @@ export default function SalesInvoiceCreateScreen({
             department_id: detail.department_id
                 ? String(detail.department_id)
                 : departments[0]
-                    ? String(departments[0].id)
-                    : '',
+                  ? String(departments[0].id)
+                  : '',
             project_id: detail.project_id ? String(detail.project_id) : '',
             discount_type:
                 Number(detail.discount_percent) <= 0 ? 'amount' : 'percent',
@@ -552,7 +552,7 @@ export default function SalesInvoiceCreateScreen({
         updateDetail(index, (detail) => {
             const nextPrice =
                 product?.sales_price !== null &&
-                    product?.sales_price !== undefined
+                product?.sales_price !== undefined
                     ? toNumber(product.sales_price).toFixed(2)
                     : toNumber(detail.price ?? '0.00').toFixed(2);
             const nextTaxId = product?.sales_tax_id
@@ -774,11 +774,11 @@ export default function SalesInvoiceCreateScreen({
 
             const deliveryPayload = form.is_delivery
                 ? form.deliveries
-                    .filter((d) => d.sales_delivery_id)
-                    .map((d) => ({
-                        sales_delivery_id: Number(d.sales_delivery_id),
-                        note: d.note || null,
-                    }))
+                      .filter((d) => d.sales_delivery_id)
+                      .map((d) => ({
+                          sales_delivery_id: Number(d.sales_delivery_id),
+                          note: d.note || null,
+                      }))
                 : [];
 
             return {
@@ -835,7 +835,7 @@ export default function SalesInvoiceCreateScreen({
                         </aside>
                         <Separator className="my-6 lg:hidden" />
                         <div className="flex-1 space-y-6 md:max-w-2xl">
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-1/3">
                                     <Label htmlFor="reference_no">
                                         No. Referensi
@@ -881,8 +881,8 @@ export default function SalesInvoiceCreateScreen({
                                                         'coa_id',
                                                         referenceCoa
                                                             ? String(
-                                                                referenceCoa,
-                                                            )
+                                                                  referenceCoa,
+                                                              )
                                                             : '',
                                                     );
                                                 }
@@ -950,7 +950,9 @@ export default function SalesInvoiceCreateScreen({
                                             setData('department_id', value)
                                         }
                                     />
-                                    <InputError message={errors.department_id} />
+                                    <InputError
+                                        message={errors.department_id}
+                                    />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label>Proyek</Label>
@@ -1015,8 +1017,8 @@ export default function SalesInvoiceCreateScreen({
                                     const selectedDelivery =
                                         delivery.sales_delivery_id
                                             ? deliveryMap[
-                                            delivery.sales_delivery_id
-                                            ]
+                                                  delivery.sales_delivery_id
+                                              ]
                                             : undefined;
 
                                     return (
@@ -1082,10 +1084,10 @@ export default function SalesInvoiceCreateScreen({
                                                 </div>
                                             </div>
                                             {selectedDelivery && (
-                                                <div className="grid grid-cols-2 gap-3 rounded-md border bg-muted/50 px-3 py-2 text-xs text-muted-foreground md:col-span-2 lg:grid-cols-3">
+                                                <div className="bg-muted/50 text-muted-foreground grid grid-cols-2 gap-3 rounded-md border px-3 py-2 text-xs md:col-span-2 lg:grid-cols-3">
                                                     <div className="grid gap-1">
                                                         <span>Tanggal</span>
-                                                        <span className="font-medium text-foreground">
+                                                        <span className="text-foreground font-medium">
                                                             {formatDateLocal(
                                                                 selectedDelivery.date,
                                                             )}
@@ -1093,7 +1095,7 @@ export default function SalesInvoiceCreateScreen({
                                                     </div>
                                                     <div className="grid gap-1">
                                                         <span>Pelanggan</span>
-                                                        <span className="font-medium text-foreground">
+                                                        <span className="text-foreground font-medium">
                                                             {selectedDelivery
                                                                 .contact
                                                                 ?.name ?? '-'}
@@ -1101,7 +1103,7 @@ export default function SalesInvoiceCreateScreen({
                                                     </div>
                                                     <div className="grid gap-1">
                                                         <span>Nilai</span>
-                                                        <span className="font-semibold text-foreground">
+                                                        <span className="text-foreground font-semibold">
                                                             {formatCurrency(
                                                                 toNumber(
                                                                     selectedDelivery.total,
@@ -1170,9 +1172,9 @@ export default function SalesInvoiceCreateScreen({
                                                 toNumber(
                                                     computedDetail.amount,
                                                 ) -
-                                                toNumber(
-                                                    computedDetail.discount_amount,
-                                                ),
+                                                    toNumber(
+                                                        computedDetail.discount_amount,
+                                                    ),
                                             );
 
                                             return (
@@ -1228,7 +1230,7 @@ export default function SalesInvoiceCreateScreen({
                                                                 )}
                                                             />
                                                             {productDefault?.sales_tax && (
-                                                                <p className="mt-1 text-xs text-muted-foreground">
+                                                                <p className="text-muted-foreground mt-1 text-xs">
                                                                     Pajak
                                                                     default:{' '}
                                                                     {
@@ -1244,7 +1246,7 @@ export default function SalesInvoiceCreateScreen({
                                                                 name={`details.${index}.qty`}
                                                                 value={
                                                                     formattedDetailQty[
-                                                                    index
+                                                                        index
                                                                     ] ?? ''
                                                                 }
                                                                 onValueChange={(
@@ -1290,7 +1292,7 @@ export default function SalesInvoiceCreateScreen({
                                                                 )}
                                                             />
                                                             {productDefault && (
-                                                                <p className="mt-1 text-xs text-muted-foreground">
+                                                                <p className="text-muted-foreground mt-1 text-xs">
                                                                     Stok:{' '}
                                                                     {getProductStockLabel(
                                                                         detail.product_id,
@@ -1304,7 +1306,7 @@ export default function SalesInvoiceCreateScreen({
                                                                 name={`details.${index}.price`}
                                                                 value={
                                                                     formattedDetailPrice[
-                                                                    index
+                                                                        index
                                                                     ] ?? ''
                                                                 }
                                                                 onValueChange={(
@@ -1381,7 +1383,7 @@ export default function SalesInvoiceCreateScreen({
                                                         </td>
                                                     </tr>
                                                     {isExpanded && (
-                                                        <tr className="border-t bg-muted/40">
+                                                        <tr className="bg-muted/40 border-t">
                                                             <td />
                                                             <td
                                                                 colSpan={5}
@@ -1394,12 +1396,12 @@ export default function SalesInvoiceCreateScreen({
                                                                         </Label>
                                                                         <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
                                                                             {detail.discount_type ===
-                                                                                'amount' ? (
+                                                                            'amount' ? (
                                                                                 <InputDecimal
                                                                                     name={`details.${index}.discount_amount`}
                                                                                     value={
                                                                                         formattedDetailDiscountAmount[
-                                                                                        index
+                                                                                            index
                                                                                         ] ??
                                                                                         ''
                                                                                     }
@@ -1445,7 +1447,7 @@ export default function SalesInvoiceCreateScreen({
                                                                                     name={`details.${index}.discount_percent`}
                                                                                     value={
                                                                                         formattedDetailDiscountPercent[
-                                                                                        index
+                                                                                            index
                                                                                         ] ??
                                                                                         ''
                                                                                     }
@@ -1544,17 +1546,17 @@ export default function SalesInvoiceCreateScreen({
                                                                         <InputError
                                                                             message={
                                                                                 detail.discount_type ===
-                                                                                    'amount'
+                                                                                'amount'
                                                                                     ? errorAt(
-                                                                                        'details',
-                                                                                        index,
-                                                                                        'discount_amount',
-                                                                                    )
+                                                                                          'details',
+                                                                                          index,
+                                                                                          'discount_amount',
+                                                                                      )
                                                                                     : errorAt(
-                                                                                        'details',
-                                                                                        index,
-                                                                                        'discount_percent',
-                                                                                    )
+                                                                                          'details',
+                                                                                          index,
+                                                                                          'discount_percent',
+                                                                                      )
                                                                             }
                                                                         />
                                                                     </div>
@@ -1664,10 +1666,11 @@ export default function SalesInvoiceCreateScreen({
                                 )}
 
                                 <div
-                                    className={`grid gap-4 rounded-md border p-4 ${data.is_delivery
-                                        ? 'lg:col-span-3'
-                                        : 'lg:col-span-2'
-                                        } lg:ml-auto lg:w-full lg:max-w-lg`}
+                                    className={`grid gap-4 rounded-md border p-4 ${
+                                        data.is_delivery
+                                            ? 'lg:col-span-3'
+                                            : 'lg:col-span-2'
+                                    } lg:ml-auto lg:w-full lg:max-w-lg`}
                                 >
                                     <div className="flex items-center justify-between text-sm">
                                         <span>Total Barang</span>

@@ -283,7 +283,7 @@ export default function BeginningBalanceAccountIndex({
                                     onValueChange={(value) => {
                                         router.get(
                                             beginningBalance.account.index.url(),
-                                            { department_id: value }
+                                            { department_id: value },
                                         );
                                     }}
                                 >
@@ -329,7 +329,7 @@ export default function BeginningBalanceAccountIndex({
                                         <TableRow>
                                             <TableCell
                                                 colSpan={4}
-                                                className="py-10 text-center text-muted-foreground"
+                                                className="text-muted-foreground py-10 text-center"
                                             >
                                                 Tidak ada akun neraca aktif.
                                             </TableCell>
@@ -453,7 +453,7 @@ export default function BeginningBalanceAccountIndex({
                                 <StatusIcon className="size-4" />
                                 {isBalanced ? 'Balance' : 'Not Balanced'}
                             </Badge>
-                            <p className="text-xs text-muted-foreground">
+                            <p className="text-muted-foreground text-xs">
                                 Selisih: {differenceLabel}
                             </p>
                         </div>

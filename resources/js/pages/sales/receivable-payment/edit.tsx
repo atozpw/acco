@@ -165,23 +165,25 @@ export default function ReceivablePaymentEditScreen({
 
     const formattedDetails = payment.details.length
         ? payment.details.map((detail) => ({
-            sales_invoice_id: detail.sales_invoice_id
-                ? String(detail.sales_invoice_id)
-                : '',
-            amount: formatLocalNumber(parseFloat(detail.amount)),
-            note: detail.note ?? '',
-            department_id: detail.department_id
-                ? String(detail.department_id)
-                : defaultDepartmentId,
-            project_id: detail.project_id ? String(detail.project_id) : '',
-        }))
+              sales_invoice_id: detail.sales_invoice_id
+                  ? String(detail.sales_invoice_id)
+                  : '',
+              amount: formatLocalNumber(parseFloat(detail.amount)),
+              note: detail.note ?? '',
+              department_id: detail.department_id
+                  ? String(detail.department_id)
+                  : defaultDepartmentId,
+              project_id: detail.project_id ? String(detail.project_id) : '',
+          }))
         : [{ ...initialDetail }];
 
     const { data, setData, put, processing, errors, transform } =
         useForm<FormData>({
             contact_id: payment.contact_id ? String(payment.contact_id) : '',
             coa_id: payment.coa_id ? String(payment.coa_id) : '',
-            department_id: payment.department_id ? String(payment.department_id) : '',
+            department_id: payment.department_id
+                ? String(payment.department_id)
+                : '',
             project_id: payment.project_id ? String(payment.project_id) : '',
             reference_no: payment.reference_no,
             date: payment.date,
@@ -459,7 +461,9 @@ export default function ReceivablePaymentEditScreen({
                                             setData('department_id', value)
                                         }
                                     />
-                                    <InputError message={errors.department_id} />
+                                    <InputError
+                                        message={errors.department_id}
+                                    />
                                 </div>
                                 <div className="grid gap-2">
                                     <Label>Proyek</Label>
@@ -530,16 +534,16 @@ export default function ReceivablePaymentEditScreen({
                                             const selectedInvoice =
                                                 detail.sales_invoice_id
                                                     ? invoiceMap[
-                                                    detail
-                                                        .sales_invoice_id
-                                                    ]
+                                                          detail
+                                                              .sales_invoice_id
+                                                      ]
                                                     : null;
                                             const outstandingValue =
                                                 selectedInvoice
                                                     ? parseFloat(
-                                                        selectedInvoice.outstanding_amount ??
-                                                        '0',
-                                                    ) || 0
+                                                          selectedInvoice.outstanding_amount ??
+                                                              '0',
+                                                      ) || 0
                                                     : 0;
 
                                             return (
@@ -621,18 +625,18 @@ export default function ReceivablePaymentEditScreen({
                                                                 className="text-right"
                                                             />
                                                             {selectedInvoice && (
-                                                                <div className="mt-1 text-xs text-muted-foreground">
+                                                                <div className="text-muted-foreground mt-1 text-xs">
                                                                     <p>
                                                                         Nilai
                                                                         invoice:
                                                                     </p>
-                                                                    <p className="font-semibold text-foreground">
+                                                                    <p className="text-foreground font-semibold">
                                                                         {formatCurrency(
                                                                             parseFloat(
                                                                                 selectedInvoice?.total ??
-                                                                                '0',
+                                                                                    '0',
                                                                             ) ||
-                                                                            0,
+                                                                                0,
                                                                         )}
                                                                     </p>
                                                                 </div>
@@ -684,7 +688,7 @@ export default function ReceivablePaymentEditScreen({
                                                         </td>
                                                     </tr>
                                                     {isExpanded && (
-                                                        <tr className="border-t bg-muted/40">
+                                                        <tr className="bg-muted/40 border-t">
                                                             <td />
                                                             <td
                                                                 colSpan={5}

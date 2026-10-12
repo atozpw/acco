@@ -170,7 +170,7 @@ export default function RoleEditScreen({
                 <Separator className="mb-8" />
                 <form onSubmit={submit} className="space-y-8 xl:px-12">
                     <div className="flex flex-col lg:flex-row lg:space-x-12">
-                        <aside className="w-full max-w-xl lg:w-[250px] xl:w-[350px] 2xl:w-md">
+                        <aside className="2xl:w-md w-full max-w-xl lg:w-[250px] xl:w-[350px]">
                             <HeadingSmall
                                 title="Data Role"
                                 description="Perbarui nama role dan pilih guard"
@@ -178,7 +178,7 @@ export default function RoleEditScreen({
                         </aside>
                         <Separator className="my-6 lg:hidden" />
                         <div className="flex-1 space-y-6 md:max-w-2xl">
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-2/3">
                                     <Label htmlFor="name">Nama Role</Label>
                                     <Input
@@ -225,7 +225,7 @@ export default function RoleEditScreen({
                                 title="Pilih Permissions"
                                 description="Centang permission yang ingin diberikan ke role ini"
                             />
-                            <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                            <div className="text-muted-foreground flex items-center gap-3 text-xs">
                                 <span>
                                     {visiblePermissions.length} Filtered
                                 </span>
@@ -254,7 +254,7 @@ export default function RoleEditScreen({
 
                         <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
                             {visiblePermissions.length === 0 ? (
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-muted-foreground text-xs">
                                     Tidak ada permission sesuai pencarian atau
                                     guard ini.
                                 </p>
@@ -278,10 +278,10 @@ export default function RoleEditScreen({
                                                 }
                                             />
                                             <div className="grid gap-1.5 font-normal">
-                                                <p className="text-sm leading-none font-medium">
+                                                <p className="text-sm font-medium leading-none">
                                                     {permission.name}
                                                 </p>
-                                                <p className="text-sm text-muted-foreground">
+                                                <p className="text-muted-foreground text-sm">
                                                     Guard:{' '}
                                                     {permission.guard_name}
                                                 </p>

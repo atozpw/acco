@@ -1,8 +1,13 @@
 <?php
 
+use App\Http\Controllers\Master\AssetCategoryController;
 use App\Http\Controllers\Master\CoaController;
 use App\Http\Controllers\Master\ContactController;
+use App\Http\Controllers\Master\BankController;
+use App\Http\Controllers\Master\CashAdvanceClassificationController;
 use App\Http\Controllers\Master\DepartmentController;
+use App\Http\Controllers\Master\PayrollCategoryController;
+use App\Http\Controllers\Master\PayrollComponentController;
 use App\Http\Controllers\Master\ProductCategoryController;
 use App\Http\Controllers\Master\ProductController;
 use App\Http\Controllers\Master\ProjectController;
@@ -184,4 +189,99 @@ Route::middleware('auth')->prefix('data-store')->group(function () {
     Route::delete('project-data/{id}', [ProjectController::class, 'destroy'])
         ->name('project-data.destroy')
         ->middleware(['permission:projects.destroy']);
+
+    Route::get('payroll-category-data', [PayrollCategoryController::class, 'index'])
+        ->name('payroll-category-data.index')
+        ->middleware(['permission:payroll-categories.index']);
+    Route::get('payroll-category-data/create', [PayrollCategoryController::class, 'create'])
+        ->name('payroll-category-data.create')
+        ->middleware(['permission:payroll-categories.store']);
+    Route::post('payroll-category-data', [PayrollCategoryController::class, 'store'])
+        ->name('payroll-category-data.store')
+        ->middleware(['permission:payroll-categories.store']);
+    Route::get('payroll-category-data/{id}/edit', [PayrollCategoryController::class, 'edit'])
+        ->name('payroll-category-data.edit')
+        ->middleware(['permission:payroll-categories.update']);
+    Route::put('payroll-category-data/{id}', [PayrollCategoryController::class, 'update'])
+        ->name('payroll-category-data.update')
+        ->middleware(['permission:payroll-categories.update']);
+    Route::delete('payroll-category-data/{id}', [PayrollCategoryController::class, 'destroy'])
+        ->name('payroll-category-data.destroy')
+        ->middleware(['permission:payroll-categories.destroy']);
+
+    Route::get('payroll-component-data', [PayrollComponentController::class, 'index'])
+        ->name('payroll-component-data.index')
+        ->middleware(['permission:payroll-components.index']);
+    Route::get('payroll-component-data/create', [PayrollComponentController::class, 'create'])
+        ->name('payroll-component-data.create')
+        ->middleware(['permission:payroll-components.store']);
+    Route::post('payroll-component-data', [PayrollComponentController::class, 'store'])
+        ->name('payroll-component-data.store')
+        ->middleware(['permission:payroll-components.store']);
+    Route::get('payroll-component-data/{id}/edit', [PayrollComponentController::class, 'edit'])
+        ->name('payroll-component-data.edit')
+        ->middleware(['permission:payroll-components.update']);
+    Route::put('payroll-component-data/{id}', [PayrollComponentController::class, 'update'])
+        ->name('payroll-component-data.update')
+        ->middleware(['permission:payroll-components.update']);
+    Route::delete('payroll-component-data/{id}', [PayrollComponentController::class, 'destroy'])
+        ->name('payroll-component-data.destroy')
+        ->middleware(['permission:payroll-components.destroy']);
+
+    Route::get('cash-advance-classification', [CashAdvanceClassificationController::class, 'index'])
+        ->name('cash-advance-classification.index')
+        ->middleware(['permission:cash-advance-classifications.index']);
+    Route::get('cash-advance-classification/create', [CashAdvanceClassificationController::class, 'create'])
+        ->name('cash-advance-classification.create')
+        ->middleware(['permission:cash-advance-classifications.store']);
+    Route::post('cash-advance-classification', [CashAdvanceClassificationController::class, 'store'])
+        ->name('cash-advance-classification.store')
+        ->middleware(['permission:cash-advance-classifications.store']);
+    Route::get('cash-advance-classification/{id}/edit', [CashAdvanceClassificationController::class, 'edit'])
+        ->name('cash-advance-classification.edit')
+        ->middleware(['permission:cash-advance-classifications.update']);
+    Route::put('cash-advance-classification/{id}', [CashAdvanceClassificationController::class, 'update'])
+        ->name('cash-advance-classification.update')
+        ->middleware(['permission:cash-advance-classifications.update']);
+    Route::delete('cash-advance-classification/{id}', [CashAdvanceClassificationController::class, 'destroy'])
+        ->name('cash-advance-classification.destroy')
+        ->middleware(['permission:cash-advance-classifications.destroy']);
+
+    Route::get('bank-data', [BankController::class, 'index'])
+        ->name('bank-data.index')
+        ->middleware(['permission:banks.index']);
+    Route::get('bank-data/create', [BankController::class, 'create'])
+        ->name('bank-data.create')
+        ->middleware(['permission:banks.store']);
+    Route::post('bank-data', [BankController::class, 'store'])
+        ->name('bank-data.store')
+        ->middleware(['permission:banks.store']);
+    Route::get('bank-data/{id}/edit', [BankController::class, 'edit'])
+        ->name('bank-data.edit')
+        ->middleware(['permission:banks.update']);
+    Route::put('bank-data/{id}', [BankController::class, 'update'])
+        ->name('bank-data.update')
+        ->middleware(['permission:banks.update']);
+    Route::delete('bank-data/{id}', [BankController::class, 'destroy'])
+        ->name('bank-data.destroy')
+        ->middleware(['permission:banks.destroy']);
+
+    Route::get('asset-category-data', [AssetCategoryController::class, 'index'])
+        ->name('asset-category-data.index')
+        ->middleware(['permission:asset-categories.index']);
+    Route::get('asset-category-data/create', [AssetCategoryController::class, 'create'])
+        ->name('asset-category-data.create')
+        ->middleware(['permission:asset-categories.store']);
+    Route::post('asset-category-data', [AssetCategoryController::class, 'store'])
+        ->name('asset-category-data.store')
+        ->middleware(['permission:asset-categories.store']);
+    Route::get('asset-category-data/{id}/edit', [AssetCategoryController::class, 'edit'])
+        ->name('asset-category-data.edit')
+        ->middleware(['permission:asset-categories.update']);
+    Route::put('asset-category-data/{id}', [AssetCategoryController::class, 'update'])
+        ->name('asset-category-data.update')
+        ->middleware(['permission:asset-categories.update']);
+    Route::delete('asset-category-data/{id}', [AssetCategoryController::class, 'destroy'])
+        ->name('asset-category-data.destroy')
+        ->middleware(['permission:asset-categories.destroy']);
 });

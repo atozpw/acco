@@ -134,38 +134,36 @@ export default function ExpenseEditScreen({
     const initialDetails: ExpenseDetailForm[] =
         expense.details.length > 0
             ? expense.details.map((d) => ({
-                coa_id: d.coa_id ? String(d.coa_id) : '',
-                amount: d.amount ?? '0.00',
-                note: d.note ?? '',
-                department_id: d.department_id
-                    ? String(d.department_id)
-                    : '1',
-                project_id: d.project_id ? String(d.project_id) : '',
-            }))
+                  coa_id: d.coa_id ? String(d.coa_id) : '',
+                  amount: d.amount ?? '0.00',
+                  note: d.note ?? '',
+                  department_id: d.department_id
+                      ? String(d.department_id)
+                      : '1',
+                  project_id: d.project_id ? String(d.project_id) : '',
+              }))
             : [
-                {
-                    coa_id: '',
-                    amount: '0.00',
-                    note: '',
-                    department_id: '1',
-                    project_id: '',
-                },
-            ];
+                  {
+                      coa_id: '',
+                      amount: '0.00',
+                      note: '',
+                      department_id: '1',
+                      project_id: '',
+                  },
+              ];
 
     const { data, setData, put, processing, errors, transform } =
-        useForm<ExpenseFormData>(
-            {
-                contact_id: String(expense.contact_id),
-                coa_id: String(expense.coa_id),
-                department_id: String(expense.department_id),
-                project_id: expense.project_id ? String(expense.project_id) : '',
-                reference_no: expense.reference_no ?? '',
-                date: expense.date ?? '',
-                description: expense.description ?? '',
-                amount: expense.amount ?? '0.00',
-                details: initialDetails,
-            },
-        );
+        useForm<ExpenseFormData>({
+            contact_id: String(expense.contact_id),
+            coa_id: String(expense.coa_id),
+            department_id: String(expense.department_id),
+            project_id: expense.project_id ? String(expense.project_id) : '',
+            reference_no: expense.reference_no ?? '',
+            date: expense.date ?? '',
+            description: expense.description ?? '',
+            amount: expense.amount ?? '0.00',
+            details: initialDetails,
+        });
 
     const [formattedDetailAmounts, setFormattedDetailAmounts] = useState<
         string[]
@@ -288,7 +286,7 @@ export default function ExpenseEditScreen({
                 <Separator className="mb-8" />
                 <form onSubmit={submit} className="space-y-8 xl:px-12">
                     <div className="flex flex-col lg:flex-row lg:space-x-12">
-                        <aside className="w-full max-w-xl lg:w-[250px] xl:w-[350px] 2xl:w-md">
+                        <aside className="2xl:w-md w-full max-w-xl lg:w-[250px] xl:w-[350px]">
                             <HeadingSmall
                                 title="Data Umum"
                                 description="Perbarui informasi utama pengeluaran"
@@ -296,7 +294,7 @@ export default function ExpenseEditScreen({
                         </aside>
                         <Separator className="my-6 lg:hidden" />
                         <div className="flex-1 space-y-6 md:max-w-2xl">
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-1/3">
                                     <Label htmlFor="reference_no">
                                         No. Referensi
@@ -331,7 +329,7 @@ export default function ExpenseEditScreen({
                                     <InputError message={errors.coa_id} />
                                 </div>
                             </div>
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-1/3">
                                     <Label htmlFor="date">Tanggal</Label>
                                     <InputDatepicker
@@ -357,7 +355,7 @@ export default function ExpenseEditScreen({
                                     <InputError message={errors.contact_id} />
                                 </div>
                             </div>
-                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-y-0 lg:space-x-6">
+                            <div className="max-w-2xl items-baseline space-y-6 lg:flex lg:flex-auto lg:space-x-6 lg:space-y-0">
                                 <div className="grid gap-2 lg:basis-1/3">
                                     <Label>Departemen</Label>
                                     <InputCombobox
@@ -369,7 +367,9 @@ export default function ExpenseEditScreen({
                                             setData('department_id', value)
                                         }
                                     />
-                                    <InputError message={errors.department_id} />
+                                    <InputError
+                                        message={errors.department_id}
+                                    />
                                 </div>
                                 <div className="grid gap-2 lg:basis-2/3">
                                     <Label>Proyek</Label>
@@ -488,7 +488,7 @@ export default function ExpenseEditScreen({
                                                                 name={`details.${index}.amount`}
                                                                 value={
                                                                     formattedDetailAmounts[
-                                                                    index
+                                                                        index
                                                                     ] ?? ''
                                                                 }
                                                                 onValueChange={(
@@ -548,7 +548,7 @@ export default function ExpenseEditScreen({
                                                         </td>
                                                     </tr>
                                                     {isExpanded && (
-                                                        <tr className="border-t bg-muted/40">
+                                                        <tr className="bg-muted/40 border-t">
                                                             <td />
                                                             <td
                                                                 colSpan={3}
@@ -647,7 +647,7 @@ export default function ExpenseEditScreen({
                                                 </Fragment>
                                             );
                                         })}
-                                        <tr className="border-t bg-muted/50 text-[15px] font-medium">
+                                        <tr className="bg-muted/50 border-t text-[15px] font-medium">
                                             <td
                                                 colSpan={2}
                                                 className="px-4 py-2 text-right"

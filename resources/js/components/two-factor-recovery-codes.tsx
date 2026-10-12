@@ -6,7 +6,6 @@ import {
     CardHeader,
     CardTitle,
 } from '@/components/ui/card';
-import { regenerateRecoveryCodes } from '@/routes/two-factor';
 import { Form } from '@inertiajs/react';
 import { Eye, EyeOff, LockKeyhole, RefreshCw } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -81,7 +80,7 @@ export default function TwoFactorRecoveryCodes({
 
                     {canRegenerateCodes && (
                         <Form
-                            {...regenerateRecoveryCodes.form()}
+                            // {...regenerateRecoveryCodes.form()}
                             options={{ preserveScroll: true }}
                             onSuccess={fetchRecoveryCodes}
                         >

@@ -76,7 +76,7 @@ export default function InputCombobox({
                             !selectedValue && 'text-muted-foreground',
                         )}
                     >
-                        <span className="line-clamp-1 text-left whitespace-normal">
+                        <span className="line-clamp-1 whitespace-normal text-left">
                             {selectedLabel ?? placeholder}
                         </span>
                         <ChevronsUpDown className="opacity-50" />

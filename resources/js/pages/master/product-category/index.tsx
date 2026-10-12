@@ -93,7 +93,7 @@ const formatCoa = (
 
 const DetailRow = ({ label, value }: { label: string; value: string }) => (
     <div className="grid gap-1">
-        <div className="text-xs text-muted-foreground">{label}</div>
+        <div className="text-muted-foreground text-xs">{label}</div>
         <div>{value}</div>
     </div>
 );
@@ -195,7 +195,7 @@ export default function ProductCategoryIndexScreen({
                                     <TableRow>
                                         <TableCell
                                             colSpan={4}
-                                            className="text-center text-muted-foreground"
+                                            className="text-muted-foreground text-center"
                                         >
                                             Tidak ada data ditemukan.
                                         </TableCell>
@@ -265,36 +265,36 @@ export default function ProductCategoryIndexScreen({
                                                             {hasPermission([
                                                                 'product-categories.update',
                                                             ]) && (
-                                                                    <DropdownMenuItem
-                                                                        asChild
+                                                                <DropdownMenuItem
+                                                                    asChild
+                                                                >
+                                                                    <Link
+                                                                        href={productCategory.edit(
+                                                                            item.id,
+                                                                        )}
                                                                     >
-                                                                        <Link
-                                                                            href={productCategory.edit(
-                                                                                item.id,
-                                                                            )}
-                                                                        >
-                                                                            <Settings2Icon />
-                                                                            Perbarui
-                                                                        </Link>
-                                                                    </DropdownMenuItem>
-                                                                )}
+                                                                        <Settings2Icon />
+                                                                        Perbarui
+                                                                    </Link>
+                                                                </DropdownMenuItem>
+                                                            )}
                                                             {hasPermission([
                                                                 'product-categories.destroy',
                                                             ]) && (
-                                                                    <DropdownMenuItem
-                                                                        onSelect={(
-                                                                            event,
-                                                                        ) => {
-                                                                            event.preventDefault();
-                                                                            setDeleteTarget(
-                                                                                item,
-                                                                            );
-                                                                        }}
-                                                                    >
-                                                                        <Trash2 />
-                                                                        Hapus
-                                                                    </DropdownMenuItem>
-                                                                )}
+                                                                <DropdownMenuItem
+                                                                    onSelect={(
+                                                                        event,
+                                                                    ) => {
+                                                                        event.preventDefault();
+                                                                        setDeleteTarget(
+                                                                            item,
+                                                                        );
+                                                                    }}
+                                                                >
+                                                                    <Trash2 />
+                                                                    Hapus
+                                                                </DropdownMenuItem>
+                                                            )}
                                                         </DropdownMenuGroup>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
@@ -372,19 +372,19 @@ export default function ProductCategoryIndexScreen({
                                 <div className="space-y-6 text-sm">
                                     <div className="grid gap-4 md:grid-cols-2">
                                         <div className="grid gap-1">
-                                            <div className="text-xs text-muted-foreground">
+                                            <div className="text-muted-foreground text-xs">
                                                 Kode
                                             </div>
                                             <div>{selectedCategory.code}</div>
                                         </div>
                                         <div className="grid gap-1">
-                                            <div className="text-xs text-muted-foreground">
+                                            <div className="text-muted-foreground text-xs">
                                                 Nama
                                             </div>
                                             <div>{selectedCategory.name}</div>
                                         </div>
                                         <div className="grid gap-1">
-                                            <div className="text-xs text-muted-foreground">
+                                            <div className="text-muted-foreground text-xs">
                                                 Status
                                             </div>
                                             <div>
@@ -396,7 +396,7 @@ export default function ProductCategoryIndexScreen({
                                     </div>
 
                                     <div className="space-y-3">
-                                        <div className="text-xs font-semibold text-muted-foreground">
+                                        <div className="text-muted-foreground text-xs font-semibold">
                                             Kontrol Stok
                                         </div>
                                         <div className="grid gap-3 md:grid-cols-2">
@@ -422,7 +422,7 @@ export default function ProductCategoryIndexScreen({
                                     </div>
 
                                     <div className="space-y-3">
-                                        <div className="text-xs font-semibold text-muted-foreground">
+                                        <div className="text-muted-foreground text-xs font-semibold">
                                             Pembelian
                                         </div>
                                         <div className="grid gap-3 md:grid-cols-2">
@@ -448,7 +448,7 @@ export default function ProductCategoryIndexScreen({
                                     </div>
 
                                     <div className="space-y-3">
-                                        <div className="text-xs font-semibold text-muted-foreground">
+                                        <div className="text-muted-foreground text-xs font-semibold">
                                             Penjualan
                                         </div>
                                         <div className="grid gap-3 md:grid-cols-2">

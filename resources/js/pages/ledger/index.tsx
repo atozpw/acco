@@ -47,16 +47,16 @@ import {
 import { useDebounceValue } from '@/hooks/use-debounce';
 import AppLayout from '@/layouts/app-layout';
 import ledger from '@/routes/ledger';
-import print from '@/routes/print';
 import ledgerData from '@/routes/ledger-data';
+import print from '@/routes/print';
 import { BreadcrumbItem, CursorPagination } from '@/types';
 import { Head, Link, router } from '@inertiajs/react';
 import {
     CalendarDays,
     ListFilterPlus,
+    Printer,
     ReceiptText,
     RotateCcw,
-    Printer,
     Share2,
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -169,9 +169,7 @@ export default function LedgerIndexScreen({
     const filtersDepartment = filters.department_id
         ? String(filters.department_id)
         : '';
-    const filtersProject = filters.project_id
-        ? String(filters.project_id)
-        : '';
+    const filtersProject = filters.project_id ? String(filters.project_id) : '';
     const filtersDateFrom = filters.date_from ?? '';
     const filtersDateTo = filters.date_to ?? '';
 
@@ -635,9 +633,9 @@ export default function LedgerIndexScreen({
                                                         Number(
                                                             opening_balance,
                                                         ) +
-                                                        Number(
-                                                            totalMutation,
-                                                        ),
+                                                            Number(
+                                                                totalMutation,
+                                                            ),
                                                     )}
                                                 </p>
                                             </div>

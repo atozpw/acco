@@ -418,7 +418,7 @@ export default function CashFlowReportPage({
                             </TableBody>
                         </Table>
                     ) : (
-                        <div className="py-12 text-center text-sm text-muted-foreground">
+                        <div className="text-muted-foreground py-12 text-center text-sm">
                             Tidak ada data untuk periode dan filter yang
                             dipilih.
                         </div>

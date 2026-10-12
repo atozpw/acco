@@ -43,25 +43,25 @@ export default function ProductDetailDialog({
                         <div className="flex flex-col gap-4 md:flex-row md:items-start">
                             <div className="grid flex-1 gap-4 md:grid-cols-2">
                                 <div className="grid gap-1">
-                                    <div className="text-xs text-muted-foreground">
+                                    <div className="text-muted-foreground text-xs">
                                         Kode
                                     </div>
                                     <div>{product.code}</div>
                                 </div>
                                 <div className="grid gap-1">
-                                    <div className="text-xs text-muted-foreground">
+                                    <div className="text-muted-foreground text-xs">
                                         Nama
                                     </div>
                                     <div>{product.name}</div>
                                 </div>
                                 <div className="grid gap-1">
-                                    <div className="text-xs text-muted-foreground">
+                                    <div className="text-muted-foreground text-xs">
                                         Kategori
                                     </div>
                                     <div>{product.category?.name ?? '-'}</div>
                                 </div>
                                 <div className="grid gap-1">
-                                    <div className="text-xs text-muted-foreground">
+                                    <div className="text-muted-foreground text-xs">
                                         Satuan
                                     </div>
                                     <div>
@@ -70,7 +70,7 @@ export default function ProductDetailDialog({
                                 </div>
                             </div>
                             <div className="flex justify-center md:w-32">
-                                <div className="flex h-35 w-35 items-center justify-center overflow-hidden rounded-md border bg-muted">
+                                <div className="h-35 w-35 bg-muted flex items-center justify-center overflow-hidden rounded-md border">
                                     {product.image ? (
                                         <img
                                             src={product.image}
@@ -79,7 +79,7 @@ export default function ProductDetailDialog({
                                         />
                                     ) : (
                                         <div className="p-2 text-center">
-                                            <span className="text-xs text-muted-foreground">
+                                            <span className="text-muted-foreground text-xs">
                                                 Tidak ada gambar
                                             </span>
                                         </div>
@@ -90,13 +90,13 @@ export default function ProductDetailDialog({
 
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="grid gap-1">
-                                <div className="text-xs text-muted-foreground">
+                                <div className="text-muted-foreground text-xs">
                                     Harga Jual
                                 </div>
                                 <div>{formatNumber(product.sales_price)}</div>
                             </div>
                             <div className="grid gap-1">
-                                <div className="text-xs text-muted-foreground">
+                                <div className="text-muted-foreground text-xs">
                                     Harga Beli
                                 </div>
                                 <div>
@@ -109,13 +109,13 @@ export default function ProductDetailDialog({
 
                         <div className="grid gap-4 md:grid-cols-2">
                             <div className="grid gap-1">
-                                <div className="text-xs text-muted-foreground">
+                                <div className="text-muted-foreground text-xs">
                                     Pajak Penjualan
                                 </div>
                                 <div>{product.sales_tax?.name ?? '-'}</div>
                             </div>
                             <div className="grid gap-1">
-                                <div className="text-xs text-muted-foreground">
+                                <div className="text-muted-foreground text-xs">
                                     Pajak Pembelian
                                 </div>
                                 <div>{product.purchase_tax?.name ?? '-'}</div>
@@ -124,7 +124,7 @@ export default function ProductDetailDialog({
 
                         <div className="grid gap-4 md:grid-cols-3">
                             <div className="grid gap-1">
-                                <div className="text-xs text-muted-foreground">
+                                <div className="text-muted-foreground text-xs">
                                     Stok
                                 </div>
                                 <div>
@@ -133,7 +133,7 @@ export default function ProductDetailDialog({
                                 </div>
                             </div>
                             <div className="grid gap-1">
-                                <div className="text-xs text-muted-foreground">
+                                <div className="text-muted-foreground text-xs">
                                     Minimum Stok
                                 </div>
                                 <div>
@@ -141,7 +141,7 @@ export default function ProductDetailDialog({
                                 </div>
                             </div>
                             <div className="grid gap-1">
-                                <div className="text-xs text-muted-foreground">
+                                <div className="text-muted-foreground text-xs">
                                     Lacak persediaan/ kontrol stok
                                 </div>
                                 <div>
@@ -153,14 +153,14 @@ export default function ProductDetailDialog({
                         </div>
 
                         <div className="grid gap-1">
-                            <div className="text-xs text-muted-foreground">
+                            <div className="text-muted-foreground text-xs">
                                 Deskripsi
                             </div>
                             <div>{product.description || '-'}</div>
                         </div>
 
                         <div className="grid gap-1">
-                            <div className="text-xs text-muted-foreground">
+                            <div className="text-muted-foreground text-xs">
                                 Status
                             </div>
                             <div>

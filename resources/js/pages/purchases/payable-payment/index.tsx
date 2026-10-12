@@ -206,7 +206,7 @@ export default function PayablePaymentIndexScreen({
                                     <TableRow>
                                         <TableCell
                                             colSpan={6}
-                                            className="text-center text-muted-foreground"
+                                            className="text-muted-foreground text-center"
                                         >
                                             Tidak ada data ditemukan.
                                         </TableCell>
@@ -290,7 +290,8 @@ export default function PayablePaymentIndexScreen({
                                                                         href={
                                                                             payablePayment.edit(
                                                                                 item.id,
-                                                                            ).url
+                                                                            )
+                                                                                .url
                                                                         }
                                                                     >
                                                                         <Settings2 />
